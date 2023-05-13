@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@crm/*": ["./apps/crm/src/app/*"]
+      "crm/*": ["./apps/crm/src/app/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
