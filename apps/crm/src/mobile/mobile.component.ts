@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-mobile',
+  selector: 'bits-root',
   templateUrl: './mobile.component.html',
   styleUrls: ['./mobile.component.css']
 })

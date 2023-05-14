@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-desktop',
+  selector: 'bits-root',
   templateUrl: './desktop.component.html',
   styleUrls: ['./desktop.component.css']
 })

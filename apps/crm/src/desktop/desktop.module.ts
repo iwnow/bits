@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { BrowserModule } from '@angular/platform-browser';
 import { DesktopComponent } from './desktop.component';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  declarations: [DesktopComponent]
+  imports: [BrowserModule],
+  declarations: [DesktopComponent],
+  bootstrap: [DesktopComponent],
 })
-export class DesktopModule { }
+export class DesktopModule {}
