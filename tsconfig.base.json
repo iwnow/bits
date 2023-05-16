@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "crm/*": ["./apps/crm/src/app/*"]
+      "@bits/crm-core": ["libs/crm-core/src/index.ts"],
+      "crm/desktop/*": ["./apps/crm/src/app/*"],
+      "crm/mobile": ["./apps/crm-mobile/src/exports.ts"],
+      "crm/mobile/*": ["./apps/crm-mobile/src/app/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]

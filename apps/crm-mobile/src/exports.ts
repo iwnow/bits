@@ -1,0 +1,1 @@
+export { AppModule as MobileAppModule } from './app/app.module';

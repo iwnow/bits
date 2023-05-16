@@ -7,12 +7,12 @@ import { layout } from './layout';
     let bootstrapModule: Type<unknown>;
 
     if (layout.isDesktop) {
-      bootstrapModule = await import('./desktop/desktop.module').then(
-        (m) => m.DesktopModule
+      bootstrapModule = await import('./app/app.module').then(
+        (m) => m.AppModule
       );
     } else {
-      bootstrapModule = await import('./mobile/mobile.module').then(
-        (m) => m.MobileModule
+      bootstrapModule = await import('crm/mobile').then(
+        (m) => m.MobileAppModule
       );
     }
 
