@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import { LayoutService } from '../layout.service';
 
 @Component({
   selector: 'b-bar',
@@ -8,6 +9,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 })
 export class AppBarComponent implements OnInit {
 
+  readonly layout = inject(LayoutService);
 
   ngOnInit() {
   }
