@@ -5,9 +5,6 @@ const loggedIn = true;
 
 export const loggedInGuard: (opt: LoggedInGuardOptions) => CanActivateFn = (opt) => {
   return () => {
-    if (loggedIn) {
-      return true;
-    }
     const router = inject(Router);
     return router.createUrlTree(opt.redirect.commands, opt.redirect.navigationExtras);
   };

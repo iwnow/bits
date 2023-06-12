@@ -53,7 +53,8 @@
           "browserTarget": "crm:build:production"
         },
         "development": {
-          "browserTarget": "crm:build:development"
+          "browserTarget": "crm:build:development",
+          "proxyConfig": "apps/crm/proxy.config.js"
         }
       },
       "defaultConfiguration": "development"
