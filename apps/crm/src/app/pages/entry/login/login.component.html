@@ -1,3 +1,24 @@
-<p>
-  login works!
-</p>
+<form [formGroup]="loginForm" (ngSubmit)="submit()">
+  <div class="flex flex-column gap-2">
+    <label htmlFor="username">Логин</label>
+    <input
+      pInputText
+      id="username"
+      formControlName="username"
+      placeholder="Имя пользователя или почта"
+    />
+  </div>
+  <div class="flex flex-column gap-2 mt-4">
+    <label htmlFor="password">Пароль</label>
+    <input
+      pInputText
+      id="password"
+      formControlName="password"
+      type="password"
+      placeholder="****"
+    />
+  </div>
+  <div class="flex flex-column gap-2 mt-4">
+    <p-button type="submit" label="Войти" styleClass="w-full p-button-lg"></p-button>
+  </div>
+</form>

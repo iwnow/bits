@@ -3,22 +3,29 @@ import { CommonModule } from '@angular/common';
 import { EntryComponent } from './entry.component';
 import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
+import { InputTextModule } from 'primeng/inputtext';
+import { ReactiveFormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   imports: [
     CommonModule,
+    InputTextModule,
+    ButtonModule,
+    ReactiveFormsModule,
     RouterModule.forChild([
       {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
         path: '',
-        redirectTo: 'login',
-        pathMatch: 'full'
+        component: EntryComponent,
+        children: [
+          {
+            path: 'login',
+            component: LoginComponent,
+          },
+        ],
       },
-    ])
+    ]),
   ],
-  declarations: [EntryComponent]
+  declarations: [EntryComponent, LoginComponent],
 })
-export default class EntryModule { }
+export default class EntryModule {}

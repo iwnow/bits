@@ -1,1 +1,1 @@
-export * from './lib/crm-core.module';
+export { provideCrmConfig } from './lib/config';

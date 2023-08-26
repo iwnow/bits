@@ -1,8 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
-  selector: 'bits-login',
+  selector: 'b-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {}
+export class LoginComponent {
+
+  fb = inject(FormBuilder);
+  loginForm = this.fb.group({
+    username: [''],
+    password: ['']
+  });
+
+  submit() {
+    alert('pl')
+  }
+
+}
