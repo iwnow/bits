@@ -1,0 +1,27 @@
+import { Injectable, inject } from '@angular/core';
+import { CommonService } from './common.service';
+import { Observable } from 'rxjs';
+
+@Injectable({ providedIn: 'root' })
+export class AuthService {
+  protected common = inject(CommonService);
+
+  login(args: AuthLoginParams): Observable<AuthLoginResult> {
+    const url = this.common.apiUrl('token');
+    const formData = new FormData();
+    formData.append('username', args.username);
+    formData.append('password', args.password);
+    return this.common.http.post<AuthLoginResult>(url, formData);
+  }
+}
+
+export interface AuthLoginParams {
+  username: string;
+  password: string;
+}
+
+export interface AuthLoginResult {
+  access_token: string;
+  real_user_id: number;
+  refresh_token: string;
+}

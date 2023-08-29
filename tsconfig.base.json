@@ -16,7 +16,7 @@
     "baseUrl": ".",
     "paths": {
       "@bits/crm-core": ["libs/crm-core/src/index.ts"],
-      "crm/desktop/*": ["./apps/crm/src/app/*"],
+      "crm/*": ["./apps/crm/src/app/*"],
       "crm/mobile": ["./apps/crm-mobile/src/exports.ts"],
       "crm/mobile/*": ["./apps/crm-mobile/src/app/*"]
     }

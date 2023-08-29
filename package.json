@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nx serve crm --open --port=4300",
-    "test:w": "nx test crm --watch"
+    "test:w": "nx test crm --watch",
+    "core:t:w": "nx test crm-core --watch"
   },
   "private": true,
   "dependencies": {

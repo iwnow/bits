@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, inject } from '@angular/core';
-import { viewDestroy } from 'crm/desktop/utils';
+import { viewDestroy } from 'crm/utils';
 import { LayoutService } from './layout.service';
 import { takeUntil } from 'rxjs';
 

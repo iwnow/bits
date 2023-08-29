@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { ServerService } from '@bits/crm-core';
 
 @Component({
   selector: 'b-login',
@@ -8,6 +9,7 @@ import { FormBuilder } from '@angular/forms';
 })
 export class LoginComponent {
 
+  server =  inject(ServerService);
   fb = inject(FormBuilder);
   loginForm = this.fb.group({
     username: [''],
@@ -15,7 +17,8 @@ export class LoginComponent {
   });
 
   submit() {
-    alert('pl')
+    const data: any = this.loginForm.value;
+    this.server.auth.login(data).subscribe(console.log);
   }
 
 }
