@@ -6,6 +6,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { provideCrmConfig } from '@bits/crm-core';
 import { AppComponent } from './app.component';
 import { appRoutes } from './app.routes';
+import env from './env';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,7 @@ import { appRoutes } from './app.routes';
   bootstrap: [AppComponent],
   providers: [
     provideCrmConfig({
-      apiBaseUrl: '/api/',
+      apiBaseUrl: env.BIT_API_PREFIX,
     }),
   ],
 })

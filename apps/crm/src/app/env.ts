@@ -1,5 +1,5 @@
 const g = globalThis as any;
 
-export const env = {
-    BIT_API_PREFIX: g.env
+export default {
+    BIT_API_PREFIX: g.env?.BIT_API_PREFIX || '/api/'
 }
