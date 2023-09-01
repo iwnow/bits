@@ -14,6 +14,7 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
+    "noPropertyAccessFromIndexSignature": false,
     "paths": {
       "@bits/crm-core": ["libs/crm-core/src/index.ts"],
       "crm/*": ["./apps/crm/src/app/*"],
