@@ -8,7 +8,7 @@ interface ImportMetaEnv {
    * @see Docs https://github.com/chihab/ngx-env#ng_app_env.
    */
   readonly NG_APP_ENV: string;
-  // Add your environment variables below
-  // readonly NG_APP_API_URL: string;
+  readonly BIT_API_PREFIX: string;
+  readonly BIT_APP_VERSION: string;
   [key: string]: any;
 }

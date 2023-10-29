@@ -1,13 +1,13 @@
 {
   "name": "bits",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "private": true,
   "license": "MIT",
   "scripts": {
     "start": "nx serve crm --open --port=4300",
     "test:w": "nx test crm --watch",
     "core:t:w": "nx test crm-core --watch"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "16.2.2",
     "@angular/common": "16.2.2",

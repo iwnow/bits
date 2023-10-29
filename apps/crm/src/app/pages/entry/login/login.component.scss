@@ -1,7 +1,21 @@
 :host {
-    display: block;
+  display: block;
 
-    form {
-        padding: 0 18px;
+  form {
+    padding: 0 18px;
+  }
+}
+
+::ng-deep {
+  @-webkit-keyframes autofill {
+    to {
+      color: red;
+      background: transparent;
     }
+  }
+
+  input:-webkit-autofill {
+    -webkit-animation-name: autofill;
+    -webkit-animation-fill-mode: both;
+  }
 }

@@ -19,6 +19,6 @@
     />
   </div>
   <div class="flex flex-column gap-2 mt-4">
-    <p-button type="submit" label="Войти" styleClass="w-full p-button-lg"></p-button>
+    <p-button type="submit" label="Войти" styleClass="w-full p-button-lg" [disabled]="!loginForm.valid"></p-button>
   </div>
 </form>

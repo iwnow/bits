@@ -22,5 +22,5 @@
       "crm/mobile/*": ["./apps/crm-mobile/src/app/*"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["tmp"]
 }
