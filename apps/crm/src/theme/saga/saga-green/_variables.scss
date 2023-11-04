@@ -4,7 +4,11 @@ $primaryDarkColor: scale-color($primaryColor, $lightness: -10%) !default;
 $primaryDarkerColor: scale-color($primaryColor, $lightness: -20%) !default;
 $primaryTextColor: #ffffff !default;
 
-$highlightBg: #E8F5E9 !default;
+$highlightBg: #e8f5e9 !default;
 $highlightTextColor: #495057 !default;
+
+$borderRadius: 6px !default;
+
+$inputPadding: 0.75rem 0.75rem !default;
 
 @import '../_variables';
