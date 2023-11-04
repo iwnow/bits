@@ -8,24 +8,15 @@
   "targets": {
     "build": {
       "executor": "@ngx-env/builder:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/crm",
         "index": "apps/crm/src/index.html",
         "main": "apps/crm/src/main.ts",
-        "polyfills": [
-          "zone.js"
-        ],
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/crm/tsconfig.app.json",
-        "assets": [
-          "apps/crm/src/favicon.ico",
-          "apps/crm/src/assets"
-        ],
-        "styles": [
-          "apps/crm/src/styles.scss"
-        ],
+        "assets": ["apps/crm/src/favicon.ico", "apps/crm/src/assets"],
+        "styles": ["apps/crm/src/styles.scss"],
         "scripts": [],
         "ngxEnv": {
           "prefix": "(BIT|CRM|)_"
@@ -78,22 +69,15 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": [
-        "{options.outputFile}"
-      ],
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "apps/crm/**/*.ts",
-          "apps/crm/**/*.html"
-        ]
+        "lintFilePatterns": ["apps/crm/**/*.ts", "apps/crm/**/*.html"]
       }
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": [
-        "{workspaceRoot}/coverage/{projectRoot}"
-      ],
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
         "jestConfig": "apps/crm/jest.config.ts",
         "passWithNoTests": true
