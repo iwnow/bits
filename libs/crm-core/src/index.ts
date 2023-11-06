@@ -1,3 +1,3 @@
 export { provideCrmConfig } from './lib/config';
-export { ServerService } from './lib/server/server.service';
+export * from './lib/client';
 export * from './lib/utils'

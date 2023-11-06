@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ServerService, logRet, useElementRef } from '@bits/crm-core';
+import { useElementRef, CrmClientService } from '@bits/crm-core';
 
 @Component({
   selector: 'b-login',
@@ -9,7 +9,7 @@ import { ServerService, logRet, useElementRef } from '@bits/crm-core';
 })
 export class LoginComponent implements AfterViewInit {
   elRef = useElementRef();
-  server = inject(ServerService);
+  crm = inject(CrmClientService);
   fb = inject(FormBuilder);
   loginForm = this.fb.group({
     username: ['', Validators.required],
@@ -24,6 +24,6 @@ export class LoginComponent implements AfterViewInit {
 
   submit() {
     const data: any = this.loginForm.value;
-    this.server.auth.login(data).subscribe(console.log);
+    this.crm.auth.login(data);
   }
 }

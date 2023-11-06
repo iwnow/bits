@@ -1,8 +1,8 @@
 /* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { By } from '@angular/platform-browser';
-import { DebugElement } from '@angular/core';
 
+import { provideCrmConfig } from '@bits/crm-core';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {
@@ -11,9 +11,14 @@ describe('LoginComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
-    })
-    .compileComponents();
+      declarations: [LoginComponent],
+      imports: [HttpClientTestingModule],
+      providers: [
+        provideCrmConfig({
+          apiBaseUrl: '/',
+        }),
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
