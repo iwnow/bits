@@ -19,6 +19,12 @@
       "options": {
         "lintFilePatterns": ["libs/crm-core/**/*.ts", "libs/crm-core/**/*.html"]
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "angular"
+      }
     }
   }
 }

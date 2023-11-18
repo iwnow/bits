@@ -89,6 +89,12 @@
       "options": {
         "buildTarget": "crm-mobile:build"
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "angular"
+      }
     }
   }
 }

@@ -26,6 +26,12 @@
       "options": {
         "lintFilePatterns": ["apps/crm-e2e/**/*.{js,ts}"]
       }
+    },
+    "version": {
+      "executor": "@jscutlery/semver:version",
+      "options": {
+        "preset": "angular"
+      }
     }
   },
   "tags": [],
