@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.2.0](https://github.com/iwnow/bits/compare/workspace-0.1.0...workspace-0.2.0) (2023-11-19)
+
+
+### Bug Fixes
+
+* tag template v ([da72c51](https://github.com/iwnow/bits/commit/da72c518ad04a08985a74d50445a1d701d156d53))
+
 ## [0.1.0](https://github.com/iwnow/bits/compare/workspace-0.0.0...workspace-0.1.0) (2023-11-19)
 
 
