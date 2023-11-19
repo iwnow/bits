@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.1.0](https://github.com/iwnow/bits/compare/workspace-0.0.0...workspace-0.1.0) (2023-11-19)
+
+
+### Bug Fixes
+
+* release commands ([34dc896](https://github.com/iwnow/bits/commit/34dc896a8b49be3829df7b1b7a1dd31b2401da1e))
+
 ## 0.0.0 (2023-11-19)
 
 
