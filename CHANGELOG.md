@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.3.0](https://github.com/iwnow/bits/compare/v0.2.0...v0.3.0) (2023-11-19)
+
+
+### Bug Fixes
+
+* index 0.3.0 ([e9ab7f4](https://github.com/iwnow/bits/commit/e9ab7f4f789139e9a617fa3a47bbc5aeda301861))
+
 ## [0.2.0](https://github.com/iwnow/bits/compare/v0.1.0...v0.2.0) (2023-11-19)
 
 ## 0.1.0 (2023-11-19)
