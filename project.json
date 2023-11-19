@@ -5,6 +5,7 @@
         "version": {
             "executor": "@jscutlery/semver:version",
             "options": {
+                "tag": "v{tag}",
                 "preset": {
                     "types": [
                         {
