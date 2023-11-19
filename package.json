@@ -9,8 +9,8 @@
     "test:core": "nx test crm-core --watch",
     "core:t:w": "nx test crm-core --watch",
     "prepare": "husky install",
-    "release": "nx affected --target version --releaseAs=minor",
-    "release:major": "nx affected --target version --releaseAs=major"
+    "release": "nx run workspace:version --releaseAs=minor",
+    "release:major": "nx run workspace:version --releaseAs=major"
   },
   "dependencies": {
     "@angular/animations": "17.0.3",
