@@ -1,13 +1,19 @@
-import { AfterViewInit, Component, inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { useElementRef, CrmClientService } from '@bits/crm-core';
+import { Router } from '@angular/router';
+import {
+  useElementRef,
+  CrmClientService,
+  useDestroyStream,
+} from '@bits/crm-core';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'b-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent implements AfterViewInit {
+export class LoginComponent implements AfterViewInit, OnInit {
   elRef = useElementRef();
   crm = inject(CrmClientService);
   fb = inject(FormBuilder);
@@ -15,6 +21,21 @@ export class LoginComponent implements AfterViewInit {
     username: ['', Validators.required],
     password: ['', Validators.required],
   });
+  destroy$ = useDestroyStream();
+  router = inject(Router);
+
+  ngOnInit(): void {
+    this.crm.auth
+      .loginError()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(console.error);
+    this.crm.auth
+      .loginSuccess()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        this.router.navigate(['/']);
+      });
+  }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
