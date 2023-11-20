@@ -4,7 +4,7 @@ migrations.json
 *.local
 
 # compiled output
-dist
+dist/apps/crm-*
 tmp
 /out-tsc
 
