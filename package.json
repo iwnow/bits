@@ -1,10 +1,11 @@
 {
   "name": "bits",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": true,
   "license": "MIT",
   "scripts": {
     "start": "nx serve crm --open --port=4300",
+    "build": "nx build crm",
     "test": "nx run-many --target=test",
     "test:core": "nx test crm-core --watch",
     "core:t:w": "nx test crm-core --watch",
