@@ -15,10 +15,7 @@
     },
     "lint": {
       "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": ["libs/crm-core/**/*.ts", "libs/crm-core/**/*.html"]
-      }
+      "outputs": ["{options.outputFile}"]
     },
     "version": {
       "executor": "@jscutlery/semver:version",
