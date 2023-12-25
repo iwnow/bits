@@ -1,6 +1,6 @@
 {
   "name": "bits",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "nx build crm",
     "test": "nx run-many --target=test",
     "test:core": "nx test crm-core --watch",
-    "core:t:w": "nx test crm-core --watch",
+    "test:core:w": "nx test crm-core --watch",
     "prepare": "husky install",
     "release": "nx run workspace:version --releaseAs=minor --tagPrefix=v",
     "release:major": "nx run workspace:version --releaseAs=major --tagPrefix=v"

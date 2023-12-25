@@ -1,9 +1,7 @@
-<b-bar class="shadow-2"></b-bar>
+<b-bar [class.shadow-2]="scrolled$ | async"></b-bar>
 
-<div class="layout-sidebar shadow-2 border-round-xl">
-  menu
-</div>
+<div class="layout-sidebar shadow-2 border-round-xl">menu</div>
 
 <div class="layout-content">
-  <div style="height: 3000px;">long content</div>
+  <div style="height: 3000px">long content</div>
 </div>

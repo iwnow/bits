@@ -10,5 +10,6 @@ interface ImportMetaEnv {
   readonly NG_APP_ENV: string;
   readonly BIT_API_PREFIX: string;
   readonly BIT_APP_VERSION: string;
+  readonly NG_APP_VERSION: string;
   [key: string]: any;
 }
