@@ -2,6 +2,18 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.9.0](https://github.com/iwnow/bits/compare/v0.8.0...v0.9.0) (2023-12-25)
+
+
+### Features
+
+* primeng 16.9 ([c707151](https://github.com/iwnow/bits/commit/c707151ae2f55d2191a51bd7a0a119b9f84e76e6))
+
+
+### Chores
+
+* nx update latest ([1f3988f](https://github.com/iwnow/bits/commit/1f3988f7bf0643b1e8abbd3d149c57d5b89039cf))
+
 ## [0.8.0](https://github.com/iwnow/bits/compare/v0.7.0...v0.8.0) (2023-12-25)
 
 
