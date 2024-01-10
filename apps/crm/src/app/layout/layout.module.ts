@@ -1,8 +1,10 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from './layout.component';
+import { ToastModule } from 'primeng/toast';
 import { AppBarModule } from './app-bar/app-bar.module';
+import { LayoutComponent } from './layout.component';
+import { LeftBarComponent } from './left-bar/left-bar.component';
 
 @NgModule({
   imports: [
@@ -11,10 +13,11 @@ import { AppBarModule } from './app-bar/app-bar.module';
     RouterModule.forChild([
       {
         path: '',
-        component: LayoutComponent
-      }
-    ])
+        component: LayoutComponent,
+      },
+    ]),
+    ToastModule,
   ],
-  declarations: [LayoutComponent]
+  declarations: [LayoutComponent, LeftBarComponent],
 })
-export class LayoutModule { }
+export class LayoutModule {}

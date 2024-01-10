@@ -43,6 +43,22 @@ export class EventsBusService {
       });
     }
   }
+
+  mapWithPrefix<T>(prefix: string, eventObj: T) {
+    let o: any = eventObj;
+    Object.keys(o).forEach((k) => {
+      o[k] = prefix + o[k];
+    });
+    return eventObj;
+  }
+
+  constructor() {
+    this.eventHub$.subscribe((e) => {
+      console.group('[DISPATCH]', e.name);
+      console.log(e.detail);
+      console.groupEnd();
+    });
+  }
 }
 
 export interface EventData<T> {

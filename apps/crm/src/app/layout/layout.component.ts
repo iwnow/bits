@@ -1,13 +1,14 @@
 import { Component, ElementRef, NgZone, OnInit, inject } from '@angular/core';
 import { viewDestroy } from 'crm/utils';
+import { MessageService } from 'primeng/api';
+import { map, takeUntil } from 'rxjs';
 import { LayoutService } from './layout.service';
-import { debounceTime, map, takeUntil } from 'rxjs';
-import { rxDebug } from '@bits/crm-core';
 
 @Component({
   selector: 'b-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
+  providers: [MessageService],
 })
 export class LayoutComponent implements OnInit {
   readonly destroy$ = viewDestroy();

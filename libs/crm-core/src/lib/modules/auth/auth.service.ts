@@ -19,6 +19,7 @@ import {
   AuthSessionInfoResult,
 } from '../../server/auth.service';
 import { localStorageGet, localStorageSet } from '../../utils/local-storage';
+import { whenTrue } from '../../utils';
 
 @Injectable({ providedIn: 'root' })
 export class CrmAuthService {
@@ -31,11 +32,12 @@ export class CrmAuthService {
   #restoringSession$ = new BehaviorSubject(false);
   #loginResultKey = 'crm_auth_info';
 
-  readonly EVENTS = {
-    login: '/auth/login',
-    login_error: '/auth/login_error',
-    login_success: '/auth/login_success',
-  };
+  readonly EVENTS = this.bus.mapWithPrefix('auth/', {
+    login: 'login',
+    login_error: 'login_error',
+    login_success: 'login_success',
+  });
+  readonly sessionUser$ = this.#sessionInfo$.pipe(whenTrue());
 
   get sessionUser() {
     return structuredClone(this.#sessionInfo$.value);
@@ -104,6 +106,12 @@ export class CrmAuthService {
         },
         complete: () => {
           this.#restoringSession$.next(false);
+          this.bus.dispatch({
+            name: this.EVENTS.login_success,
+            detail: {
+              user: this.sessionUser,
+            },
+          });
         },
       });
   }
