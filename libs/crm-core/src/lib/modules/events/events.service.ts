@@ -45,7 +45,7 @@ export class EventsBusService {
   }
 
   mapWithPrefix<T>(prefix: string, eventObj: T) {
-    let o: any = eventObj;
+    const o: any = eventObj;
     Object.keys(o).forEach((k) => {
       o[k] = prefix + o[k];
     });

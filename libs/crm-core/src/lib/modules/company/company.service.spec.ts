@@ -1,16 +1,27 @@
 /* tslint:disable:no-unused-variable */
 
-import { TestBed, async, inject } from '@angular/core/testing';
-import { CompanyService } from './company.service';
+import { TestBed, inject } from '@angular/core/testing';
+import { CrmCompanyService } from './company.service';
+import {
+  HttpClientTestingModule,
+  HttpTestingController,
+} from '@angular/common/http/testing';
+import { provideCrmConfig } from '../../config';
 
 describe('Service: Company', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CompanyService]
+      imports: [HttpClientTestingModule],
+      providers: [
+        provideCrmConfig({
+          apiBaseUrl: '/api/'
+        }),
+        CrmCompanyService
+      ],
     });
   });
 
-  it('should ...', inject([CompanyService], (service: CompanyService) => {
+  it('should ...', inject([CrmCompanyService], (service: CrmCompanyService) => {
     expect(service).toBeTruthy();
   }));
 });
