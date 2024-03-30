@@ -102,7 +102,13 @@ export class CrmAuthService {
       )
       .subscribe({
         error: (err) => {
-          console.error(err);
+          this.#restoringSession$.next(false);
+          this.bus.dispatch({
+            name: this.EVENTS.login_error,
+            detail: {
+              error: err,
+            },
+          });
         },
         complete: () => {
           this.#restoringSession$.next(false);
