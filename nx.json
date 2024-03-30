@@ -1,26 +1,35 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "affected": { "defaultBase": "master" },
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"],
       "cache": true
     },
-    "e2e": { "inputs": ["default", "^production"], "cache": true },
-    "lint": {
+    "e2e": {
+      "inputs": ["default", "^production"],
+      "cache": true
+    },
+    "@nx/jest:jest": {
+      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
+      "cache": true,
+      "options": {
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "@nx/eslint:lint": {
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.json",
         "{workspaceRoot}/.eslintignore"
       ],
       "cache": true
-    },
-    "@nx/jest:jest": {
-      "inputs": ["default", "^production", "{workspaceRoot}/jest.preset.js"],
-      "cache": true,
-      "options": { "passWithNoTests": true },
-      "configurations": { "ci": { "ci": true, "codeCoverage": true } }
     }
   },
   "namedInputs": {
@@ -42,8 +51,15 @@
       "unitTestRunner": "jest",
       "e2eTestRunner": "cypress"
     },
-    "@nx/angular:library": { "linter": "eslint", "unitTestRunner": "jest" },
-    "@nx/angular:component": { "style": "scss" }
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss"
+    }
   },
-  "nxCloudAccessToken": "NGJiYTc3MzMtZmQ3OS00YzY1LWFhYmEtODdlYzg2NzBjZjkzfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "NGJiYTc3MzMtZmQ3OS00YzY1LWFhYmEtODdlYzg2NzBjZjkzfHJlYWQtd3JpdGU=",
+  "useInferencePlugins": false,
+  "defaultBase": "master"
 }
