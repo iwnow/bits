@@ -1,20 +1,25 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
 import { provideCrmConfig } from '@bits/crm-core';
 import { AppComponent } from './app.component';
-import { appRoutes } from './app.routes';
+import { appBaseRoutes } from './app.routes';
 import env from './env';
+import { Page404Component } from './page-404.component';
+import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, Page404Component],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    RouterModule.forRoot(appRoutes, { initialNavigation: 'enabledBlocking' }),
+    RouterModule.forRoot(appBaseRoutes, {
+      initialNavigation: 'enabledBlocking',
+    }),
+    MessagesModule,
   ],
   bootstrap: [AppComponent],
   providers: [

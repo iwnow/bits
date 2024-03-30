@@ -1,0 +1,8 @@
+<p-button
+  *ngFor="let item of menuItems"
+  icon="pi pi-{{ item.icon }}"
+  [rounded]="true"
+  [text]="true"
+  [severity]="severityValue(item)"
+  (onClick)="selectItem(item)"
+></p-button>

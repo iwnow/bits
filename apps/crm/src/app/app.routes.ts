@@ -1,7 +1,15 @@
 import { Route } from '@angular/router';
 import { loggedInGuard } from './guards';
+import { Page404Component } from './page-404.component';
 
-export const appRoutes: Route[] = [
+export const appSubsystemRoutes: Route[] = [
+  {
+    path: '**',
+    component: Page404Component,
+  },
+];
+
+export const appBaseRoutes: Route[] = [
   {
     path: 'entry',
     loadChildren: () => import('./pages/entry/entry.module'),
