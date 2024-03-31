@@ -2,7 +2,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { provideCrmConfig } from '@bits/crm-core';
+import { provideCrmConfig } from 'crm-core';
 import { LoginComponent } from './login.component';
 
 describe('LoginComponent', () => {

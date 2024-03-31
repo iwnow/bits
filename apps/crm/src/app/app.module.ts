@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { provideCrmConfig } from '@bits/crm-core';
+import { provideCrmConfig } from 'crm-core';
 import { AppComponent } from './app.component';
 import { appBaseRoutes } from './app.routes';
 import env from './env';

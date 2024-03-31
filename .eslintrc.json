@@ -19,7 +19,13 @@
             ]
           }
         ],
-        "@typescript-eslint/no-explicit-any": 0
+        "@typescript-eslint/no-explicit-any": 0,
+        "@angular-eslint/component-class-suffix": [
+          "warn",
+          {
+            "suffixes": ["Component", "Page", "Renderer"]
+          }
+        ]
       }
     },
     {

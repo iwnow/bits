@@ -4,8 +4,13 @@ import { Page404Component } from './page-404.component';
 
 export const appSubsystemRoutes: Route[] = [
   {
+    path: 'clients',
+    loadChildren: () => import('./pages/clients-page/clients-page.module'),
+  },
+  {
     path: '**',
     component: Page404Component,
+    title: '404',
   },
 ];
 

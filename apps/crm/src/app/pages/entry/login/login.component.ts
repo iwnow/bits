@@ -5,7 +5,7 @@ import {
   useElementRef,
   CrmClientService,
   useDestroyStream,
-} from '@bits/crm-core';
+} from 'crm-core';
 import { takeUntil } from 'rxjs';
 
 @Component({

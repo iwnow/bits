@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router, UrlCreationOptions } from '@angular/router';
-import { CrmClientService } from '@bits/crm-core';
+import { CrmClientService } from 'crm-core';
 import { map, take } from 'rxjs';
 
 export const loggedInGuard: (opt: LoggedInGuardOptions) => CanActivateFn = (

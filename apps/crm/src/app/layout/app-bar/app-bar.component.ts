@@ -7,7 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { LayoutService } from '../layout.service';
-import { CrmClientService, stringToHslColor } from '@bits/crm-core';
+import { CrmClientService, stringToHslColor } from 'crm-core';
 import { map, shareReplay, takeUntil } from 'rxjs';
 import { viewDestroy } from 'crm/utils';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -86,14 +86,17 @@ export class AppBarComponent implements OnInit {
         ],
       },
       {
-        label: 'Navigate',
-        items: [
-          {
-            label: 'Angular',
-            icon: 'pi pi-external-link',
-            url: 'http://angular.io',
-          },
-        ],
+        label: 'Angular',
+        icon: 'pi pi-external-link',
+        url: 'http://angular.io',
+      },
+      {
+        separator: true,
+      },
+      {
+        label: 'Выход',
+        icon: 'pi pi-fw pi-power-off',
+        command: () => {},
       },
     ];
   }

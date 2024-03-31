@@ -43,6 +43,11 @@
     [style]="{ 'background-color': (userColorHslColor$ | async) }"
     (click)="menu.toggle($event)"
   ></p-avatar>
-  <p-menu #menu [model]="items" [popup]="true"></p-menu>
+  <!-- <p-menu #menu [model]="items" [popup]="true"></p-menu> -->
+  <p-tieredMenu
+    #menu
+    [model]="items"
+    [popup]="true"
+    appendTo="body"
+  ></p-tieredMenu>
 </div>
-

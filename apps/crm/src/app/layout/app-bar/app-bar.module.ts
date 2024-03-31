@@ -7,7 +7,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ToolbarModule } from 'primeng/toolbar';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenuModule } from 'primeng/menu';
-
+import { TieredMenuModule } from 'primeng/tieredmenu';
 import { FormsModule } from '@angular/forms';
 import { AppBarComponent } from './app-bar.component';
 
@@ -21,7 +21,8 @@ import { AppBarComponent } from './app-bar.component';
     FormsModule,
     AvatarModule,
     InputTextModule,
-    MenuModule
+    MenuModule,
+    TieredMenuModule,
   ],
   declarations: [AppBarComponent],
   exports: [AppBarComponent],
