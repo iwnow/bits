@@ -14,27 +14,36 @@ export class LeftBarComponent {
   createMenuItems() {
     return [
       {
+        path: '/',
+        icon: 'star',
+        tooltip: 'Избранное',
+      },
+      {
         path: '/clients',
         icon: 'users',
+        tooltip: 'Клиенты',
       },
       {
         path: '/calendar',
         icon: 'calendar',
+        tooltip: 'Календарь',
       },
       {
         path: '/orders',
         icon: 'check-circle',
+        tooltip: 'Заказы',
       },
       {
         path: '/admin',
         icon: 'cog',
+        tooltip: 'Администрирование',
       },
     ];
   }
 
   severityValue(item: MenuItem) {
     return this.router.isActive(item.path, {
-      paths: 'subset',
+      paths: item.path === '/' ? 'exact' : 'subset',
       queryParams: 'subset',
       fragment: 'ignored',
       matrixParams: 'ignored',

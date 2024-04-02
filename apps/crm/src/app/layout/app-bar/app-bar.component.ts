@@ -67,23 +67,18 @@ export class AppBarComponent implements OnInit {
   createMenuProfile(): MenuItem[] {
     return [
       {
-        label: 'Options',
-        items: [
-          {
-            label: 'Update',
-            icon: 'pi pi-refresh',
-            command: () => {
-              this.update();
-            },
-          },
-          {
-            label: 'Delete',
-            icon: 'pi pi-times',
-            command: () => {
-              this.delete();
-            },
-          },
-        ],
+        label: 'Update',
+        icon: 'pi pi-refresh',
+        command: () => {
+          this.update();
+        },
+      },
+      {
+        label: 'Delete',
+        icon: 'pi pi-times',
+        command: () => {
+          this.delete();
+        },
       },
       {
         label: 'Angular',
@@ -96,7 +91,12 @@ export class AppBarComponent implements OnInit {
       {
         label: 'Выход',
         icon: 'pi pi-fw pi-power-off',
-        command: () => {},
+        iconStyle: {
+          color: 'var(--red-500)',
+        },
+        command: () => {
+          this.crm.auth.logout();
+        },
       },
     ];
   }

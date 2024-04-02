@@ -11,7 +11,11 @@
     "test:core:w": "nx test crm-core --watch",
     "prepare": "husky install",
     "release": "nx run workspace:version --releaseAs=minor --tagPrefix=v",
-    "release:major": "nx run workspace:version --releaseAs=major --tagPrefix=v"
+    "release:major": "nx run workspace:version --releaseAs=major --tagPrefix=v",
+    "docker:build": "docker build -f ./docker/Dockerfile -t crm-ng:latest .",
+    "docker:tag": "docker tag crm-ng:latest registry.beinteam.ru/crm-ng:latest",
+    "docker:push": "docker push registry.beinteam.ru/crm-ng:latest",
+    "docker:go": "npm run docker:build && npm run docker:tag && npm run docker:push"
   },
   "dependencies": {
     "@ag-grid-community/angular": "^31.2.0",
@@ -37,11 +41,12 @@
     "@angular/platform-browser-dynamic": "17.3.2",
     "@angular/router": "17.3.2",
     "@nx/angular": "18.2.1",
+    "chart.js": "^4.4.2",
     "dotenv": "^16.1.4",
     "minireset.css": "^0.0.7",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
-    "primeng": "^16.9.1",
+    "primeng": "^17.12.0",
     "primeng-sass-theme": "github:primefaces/primeng-sass-theme",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

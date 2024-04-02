@@ -21,6 +21,11 @@ import { ButtonModule } from 'primeng/button';
           {
             path: 'login',
             component: LoginComponent,
+            title: 'Вход',
+          },
+          {
+            path: '**',
+            redirectTo: 'login',
           },
         ],
       },

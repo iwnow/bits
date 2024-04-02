@@ -1,4 +1,6 @@
 import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { CrmClientService } from 'crm-core';
 import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
@@ -10,8 +12,13 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
   readonly primengConfig = inject(PrimeNGConfig);
+  readonly crm = inject(CrmClientService);
+  readonly router = inject(Router);
 
   ngOnInit(): void {
     this.primengConfig.ripple = true;
+    this.crm.auth.logoutSuccess().subscribe(() => {
+      this.router.navigate(['/entry']);
+    });
   }
 }

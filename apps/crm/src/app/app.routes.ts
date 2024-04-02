@@ -8,6 +8,10 @@ export const appSubsystemRoutes: Route[] = [
     loadChildren: () => import('./pages/clients-page/clients-page.module'),
   },
   {
+    path: '',
+    loadChildren: () => import('./pages/home-page/home-page.module'),
+  },
+  {
     path: '**',
     component: Page404Component,
     title: '404',

@@ -36,6 +36,8 @@ export class CrmAuthService {
     login: 'login',
     login_error: 'login_error',
     login_success: 'login_success',
+    logout_start: 'logout-start',
+    logout: 'logout',
   });
   readonly sessionUser$ = this.#sessionInfo$.pipe(whenTrue());
 
@@ -58,12 +60,22 @@ export class CrmAuthService {
     });
   }
 
+  logout() {
+    this.bus.dispatch({
+      name: this.EVENTS.logout_start,
+    });
+  }
+
   loginError() {
     return this.bus.on(this.EVENTS.login_error);
   }
 
   loginSuccess() {
     return this.bus.on(this.EVENTS.login_success);
+  }
+
+  logoutSuccess() {
+    return this.bus.on(this.EVENTS.logout);
   }
 
   authenticated() {
@@ -84,6 +96,7 @@ export class CrmAuthService {
   constructor() {
     this.tryRestoreSession();
     this.configProcessLogin();
+    this.configProcessLogout();
   }
 
   protected tryRestoreSession() {
@@ -152,6 +165,16 @@ export class CrmAuthService {
         )
       )
       .subscribe();
+  }
+
+  protected configProcessLogout() {
+    this.bus.on(this.EVENTS.logout_start).subscribe((e) => {
+      localStorageSet(this.#loginResultKey, null);
+      this.#loginResult$.next(undefined);
+      this.bus.dispatch({
+        name: this.EVENTS.logout,
+      });
+    });
   }
 
   protected setLoginInfo(info: AuthLoginResult) {
