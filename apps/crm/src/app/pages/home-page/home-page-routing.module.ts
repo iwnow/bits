@@ -9,6 +9,7 @@ import { RouterModule } from '@angular/router';
       {
         path: '',
         component: HomePageComponent,
+        title: 'Избранное'
       },
     ]),
   ],

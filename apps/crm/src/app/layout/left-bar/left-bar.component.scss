@@ -23,3 +23,20 @@ p-button ::ng-deep {
     box-shadow: none;
   }
 }
+
+p-button {
+  &::before {
+    position: absolute;
+    content: ' ';
+    display: block;
+    height: 39px;
+    width: 2px;
+    background-color: var(--primary-color);
+    left: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  &.is-active::before {
+    opacity: 1;
+  }
+}

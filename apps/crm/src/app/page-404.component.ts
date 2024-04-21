@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
+import { MessagesModule } from 'primeng/messages';
 
 @Component({
   selector: 'b-page-404',
+  standalone: true,
+  imports: [MessagesModule],
   template: `
     <p-messages
       [value]="messages"

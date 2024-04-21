@@ -8,6 +8,10 @@ export const appSubsystemRoutes: Route[] = [
     loadChildren: () => import('./pages/clients-page/clients-page.module'),
   },
   {
+    path: 'admin',
+    loadChildren: () => import('./pages/admin-page/admin-page.routing'),
+  },
+  {
     path: '',
     loadChildren: () => import('./pages/home-page/home-page.module'),
   },

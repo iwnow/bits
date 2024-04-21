@@ -1,9 +1,11 @@
 <p-button
   *ngFor="let item of menuItems"
   icon="pi pi-{{ item.icon }}"
+  [disabled]="item.disabled"
   [rounded]="true"
   [text]="true"
   [severity]="severityValue(item)"
+  [class.is-active]="isActive(item)"
   (onClick)="selectItem(item)"
   [pTooltip]="item.tooltip"
   tooltipPosition="right"

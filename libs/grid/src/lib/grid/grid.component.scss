@@ -1,2 +1,28 @@
 @import '@ag-grid-community/styles/ag-grid.css';
 @import '@ag-grid-community/styles/ag-theme-quartz.css';
+
+b-grid {
+  display: block;
+  position: relative;
+
+  .grid-loading {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--surface-50);
+  }
+
+  .ag-theme-quartz {
+    // --ag-wrapper-border-radius: 0px;
+
+    .ag-root-wrapper {
+      //   border-left: 0;
+    }
+  }
+}

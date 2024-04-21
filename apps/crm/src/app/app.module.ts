@@ -7,11 +7,10 @@ import { provideCrmConfig } from 'crm-core';
 import { AppComponent } from './app.component';
 import { appBaseRoutes } from './app.routes';
 import env from './env';
-import { Page404Component } from './page-404.component';
 import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
-  declarations: [AppComponent, Page404Component],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -19,7 +18,6 @@ import { MessagesModule } from 'primeng/messages';
     RouterModule.forRoot(appBaseRoutes, {
       initialNavigation: 'enabledBlocking',
     }),
-    MessagesModule,
   ],
   bootstrap: [AppComponent],
   providers: [

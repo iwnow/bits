@@ -22,16 +22,19 @@ export class LeftBarComponent {
         path: '/clients',
         icon: 'users',
         tooltip: 'Клиенты',
+        disabled: true,
       },
       {
         path: '/calendar',
         icon: 'calendar',
         tooltip: 'Календарь',
+        disabled: true,
       },
       {
         path: '/orders',
         icon: 'check-circle',
         tooltip: 'Заказы',
+        disabled: true,
       },
       {
         path: '/admin',
@@ -42,18 +45,23 @@ export class LeftBarComponent {
   }
 
   severityValue(item: MenuItem) {
+    return this.isActive(item) ? 'primary' : 'secondary';
+  }
+
+  selectItem(item: MenuItem) {
+    if (this.isActive(item)) {
+      return;
+    }
+    this.router.navigate([item.path]);
+  }
+
+  isActive(item: MenuItem) {
     return this.router.isActive(item.path, {
       paths: item.path === '/' ? 'exact' : 'subset',
       queryParams: 'subset',
       fragment: 'ignored',
       matrixParams: 'ignored',
-    })
-      ? 'primary'
-      : 'secondary';
-  }
-
-  selectItem(item: MenuItem) {
-    this.router.navigate([item.path]);
+    });
   }
 }
 

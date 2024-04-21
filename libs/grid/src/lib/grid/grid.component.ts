@@ -1,23 +1,37 @@
-import { Component, ViewEncapsulation } from '@angular/core';
-import { CommonModule, NgIf } from '@angular/common';
+import { AgGridAngular } from '@ag-grid-community/angular';
+import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
 import {
-  ModuleRegistry,
-  CellValueChangedEvent,
   ColDef,
   GridReadyEvent,
-  ICellRendererParams,
-  SelectionChangedEvent,
+  ModuleRegistry,
   ValueFormatterParams,
+  GridApi,
+  RowModelType,
 } from '@ag-grid-community/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import {
-  AgGridAngular,
-  ICellRendererAngularComp,
-} from '@ag-grid-community/angular';
-import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+  signal,
+} from '@angular/core';
 import { AG_GRID_LOCALE_RU } from './locales/ru';
+import { BGridCol, BGridOptions } from './grid.api';
+import { OnInit } from '@angular/core';
+import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
+import { BehaviorSubject, combineLatest, filter, first, takeUntil } from 'rxjs';
+import { maybeObservable, viewDestroy } from 'crm-utils';
+import { setAgGridLicense } from './lic-patch';
 
-ModuleRegistry.registerModules([ClientSideRowModelModule]);
+setAgGridLicense();
+
+ModuleRegistry.registerModules([
+  ClientSideRowModelModule,
+  ServerSideRowModelModule,
+]);
 
 @Component({
   selector: 'b-grid',
@@ -27,168 +41,69 @@ ModuleRegistry.registerModules([ClientSideRowModelModule]);
   styleUrl: './grid.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class BitsGridComponent {
+export class BitsGridComponent implements OnInit {
+  @Input()
+  options: BGridOptions;
+
+  @Input()
+  rowModelType: RowModelType = 'serverSide';
+
+  @Output()
+  err = new EventEmitter();
+
   themeClass = 'ag-theme-quartz';
   localeText = AG_GRID_LOCALE_RU;
 
-  // Return formatted date value
-  dateFormatter(params: ValueFormatterParams) {
-    return new Date(params.value).toLocaleDateString('ru-RU', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    });
+  rowData = [];
+  colDefs: BGridCol[] = [];
+  defaultColDef: BGridCol = {};
+  initializing$ = new BehaviorSubject(true);
+  destroy$ = viewDestroy();
+  #gapi$ = new BehaviorSubject<GridApi>(null);
+  error = signal(null);
+  gapi$ = this.#gapi$.pipe(filter(Boolean));
+  get gapi() {
+    return this.#gapi$.value;
   }
 
-  // Row Data: The data to be displayed.
-  rowData: IRow[] = [];
+  ngOnInit(): void {
+    this.refresh();
+  }
 
-  // Column Definitions: Defines & controls grid columns.
-  colDefs: ColDef[] = [
-    {
-      field: 'mission',
-      headerName: 'Миссия',
-      width: 150,
-      checkboxSelection: true,
-    },
-    {
-      field: 'company',
-      headerName: 'Компания',
-      width: 130,
-      cellRenderer: CompanyLogoRenderer,
-    },
-    {
-      field: 'location',
-      headerName: 'Локация',
-      width: 225,
-    },
-    {
-      field: 'date',
-      headerName: 'Дата',
-      valueFormatter: this.dateFormatter,
-    },
-    {
-      field: 'price',
-      headerName: 'Цена',
-      width: 130,
-      valueFormatter: (params) => {
-        return '£' + params.value.toLocaleString();
-      },
-    },
-    {
-      field: 'successful',
-      headerName: 'Удачно',
-      width: 120,
-      cellRenderer: MissionResultRenderer,
-    },
-    { field: 'rocket', headerName: 'Ракета', },
-  ];
+  refresh() {
+    try {
+      this.error.set(null);
+      combineLatest({
+        gapi: this.gapi$,
+        options: maybeObservable(this.options.getOptions()),
+      })
+        .pipe(first(), takeUntil(this.destroy$))
+        .subscribe({
+          next: ({ options, gapi }) => {
+            gapi.updateGridOptions({
+              ...options,
+              serverSideDatasource: {
+                getRows: (params) =>
+                  this.options.getRows({
+                    params,
+                  }),
+              },
+            });
+          },
+          error: (err) => {
+            this.err.emit(err);
+          },
+          complete: () => {
+            this.initializing$.next(false);
+          },
+        });
+    } catch (err) {
+      this.error.set(err);
+      this.err.emit(err);
+    }
+  }
 
-  // Default Column Definitions: Apply configuration across all columns
-  defaultColDef: ColDef = {
-    filter: true, // Enable filtering on all columns
-    editable: true, // Enable editing on all columns
-  };
-
-  // Load data into grid when ready
-  constructor(private http: HttpClient) {}
   onGridReady(params: GridReadyEvent) {
-    this.http
-      .get<any[]>(
-        'https://www.ag-grid.com/example-assets/space-mission-data.json'
-      )
-      .subscribe((data) => (this.rowData = data));
-  }
-
-  // Handle row selection changed event
-  onSelectionChanged = (event: SelectionChangedEvent) => {
-    console.log('Row Selected!');
-  };
-
-  // Handle cell editing event
-  onCellValueChanged = (event: CellValueChangedEvent) => {
-    console.log(`New Cell Value: ${event.value}`);
-  };
-}
-
-// Row Data Interface
-interface IRow {
-  mission: string;
-  company: string;
-  location: string;
-  date: string;
-  time: string;
-  rocket: string;
-  price: number;
-  successful: boolean;
-}
-
-// Custom Cell Renderer Component
-@Component({
-  selector: 'b-mission-result-renderer',
-  standalone: true,
-  imports: [NgIf],
-  template: `
-    <span *ngIf="value">
-      <img
-        [alt]="value"
-        [src]="'https://www.ag-grid.com/example-assets/icons/' + value + '.png'"
-        [height]="30"
-      />
-    </span>
-  `,
-  styles: [
-    'img { width: auto; height: auto; } span {display: flex; height: 100%; justify-content: center; align-items: center} ',
-  ],
-})
-export class MissionResultRenderer implements ICellRendererAngularComp {
-  // Init Cell Value
-  public value!: string;
-  agInit(params: ICellRendererParams): void {
-    this.value = params.value ? 'tick-in-circle' : 'cross-in-circle';
-  }
-
-  // Return Cell Value
-  refresh(params: ICellRendererParams): boolean {
-    this.value = params.value;
-    return true;
-  }
-}
-
-// Custom Cell Renderer Component
-@Component({
-  selector: 'b-company-logo-renderer',
-  standalone: true,
-  imports: [NgIf],
-  template: `
-    <span *ngIf="value">
-      <img
-        [alt]="value"
-        [src]="
-          'https://www.ag-grid.com/example-assets/space-company-logos/' +
-          value.toLowerCase() +
-          '.png'
-        "
-        [height]="30"
-      />
-      <p>{{ value }}</p>
-    </span>
-  `,
-  styles: [
-    'img {display: block; width: 25px; height: auto; max-height: 50%; margin-right: 12px; filter: brightness(1.1);} span {display: flex; height: 100%; width: 100%; align-items: center} p { text-overflow: ellipsis; overflow: hidden; white-space: nowrap }',
-  ],
-})
-export class CompanyLogoRenderer implements ICellRendererAngularComp {
-  // Init Cell Value
-  public value!: string;
-  agInit(params: ICellRendererParams): void {
-    this.value = params.value;
-  }
-
-  // Return Cell Value
-  refresh(params: ICellRendererParams): boolean {
-    this.value = params.value;
-    return true;
+    this.#gapi$.next(params.api);
   }
 }
