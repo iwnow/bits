@@ -1,6 +1,11 @@
 import { Component, OnInit, inject } from '@angular/core';
+import {
+  BGridOptions,
+  BitsGridComponent,
+  column,
+  columnsFromClass,
+} from 'bits-grid';
 import { CrmClientService } from 'crm-core';
-import { BGridOptions, BitsGridComponent } from 'bits-grid';
 import { parseErrorMessage, viewDestroy } from 'crm-utils';
 import { MessageService } from 'primeng/api';
 import { takeUntil } from 'rxjs';
@@ -34,7 +39,7 @@ export class AdminPageUserListComponent implements OnInit {
     const opt: BGridOptions = {
       getOptions: () => {
         return {
-          columnDefs: fieldsFromClass(DTOUser),
+          columnDefs: columnsFromClass(DTOUser),
         };
       },
       getRows: (req) => {
@@ -66,48 +71,51 @@ export class AdminPageUserListComponent implements OnInit {
   }
 }
 
-const symFields = Symbol();
-export function field() {
-  return (ctor, field) => {
-    ctor[symFields] = ctor[symFields] || {
-      fields: [],
-    };
-    const fields = ctor[symFields].fields;
-    fields.push({
-      field,
-    });
-  };
-}
-
-export function fieldsFromClass(type: any) {
-  const proto = type?.prototype;
-  if (!proto[symFields]) {
-    return [];
-  }
-  const fields = proto[symFields].fields;
-  return fields;
-}
-
 export class DTOUser {
-  @field()
+  @column({
+    hide: true
+  })
   id: number;
 
-  @field()
+  @column({
+    headerName: 'Имя'
+  })
   name: string;
-  @field()
+
+  @column({
+    headerName: 'Пол'
+  })
   gender?: string;
-  @field()
+
+  @column({
+    headerName: 'Фото Id',
+    hide: true
+  })
   photo_file_id?: number;
-  @field()
+
+  @column()
   login: string;
-  @field()
+
+  @column()
   telegram_id?: number;
-  @field()
+
+  @column({
+    headerName: 'Админ'
+  })
   is_admin: boolean;
-  @field()
+
+  @column({
+    hide: true
+  })
   is_referee: boolean;
-  @field()
+
+  @column({
+    headerName: 'Дата рождения'
+  })
   birth_date?: string;
-  @field()
+
+  @column({
+    headerName: 'Телефон'
+  })
   phone?: string;
 }

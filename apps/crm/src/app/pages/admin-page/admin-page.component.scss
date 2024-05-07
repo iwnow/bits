@@ -1,29 +1,55 @@
 :host {
+  display: block;
+  position: relative;
+
   .admin-menu {
-    position: fixed;
-    height: calc(100% - 3.5rem);
-    border-right: 1px solid var(--surface-200);
+    position: absolute;
+    height: calc(100vh - 88px - 3.5rem);
     width: 12.5rem;
-    background-color: var(--surface-50);
+    background-color: var(--surface-0);
+    left: 6px;
+    top: 84px;
+    border-radius: 6px;
+    transition: transform 0.2s;
   }
   .admin-content {
-    padding-left: 12.5rem;
-    min-height: calc(100vh - 3.5rem);
-    background-color: var(--surface-0);
+    padding-left: 13.5rem;
+    padding-top: 84px;
+    padding-right: 6px;
+    transition: padding-left 0.2s;
+  }
+
+  b-content-tab-bar {
+    position: absolute;
+    z-index: 10;
+    background-color: var(--surface-50);
+    display: block;
+    width: 100%;
+  }
+
+  &:not(.menu-opened) {
+    .admin-menu {
+      transform: translateX(-200px);
+    }
+    .admin-content {
+      padding-left: 6px;
+    }
   }
 }
 
 ::ng-deep {
   b-admin-page {
     .admin-menu {
-      .p-menu,
-      .p-menu .p-submenu-header {
-        border: none;
-        background-color: transparent;
-      }
       .p-menuitem-link-active span {
         color: var(--primary-500);
         font-weight: 500;
+      }
+      .p-menu.p-component {
+        border: none;
+
+        .p-menuitem-content:has(.p-menuitem-link-active) {
+          background-color: var(--surface-100);
+        }
       }
     }
   }

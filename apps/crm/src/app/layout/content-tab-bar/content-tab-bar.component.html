@@ -1,0 +1,24 @@
+<div class="b-ctb-row-tabs">
+  <p-button
+    icon="pi pi-bars"
+    [rounded]="false"
+    [text]="true"
+    severity="secondary "
+    class="p-button-no-focus"
+    (onClick)="onMenuBtnClick($event)"
+  ></p-button>
+
+  <div class="b-ctb-tabs">
+    <div class="b-ctb-tab active">
+      <span>Список</span>
+    </div>
+
+    <div class="b-ctb-tab">
+      <span>Роли</span>
+    </div>
+  </div>
+</div>
+
+<div class="b-ctb-row-menu">
+  <p-menubar [model]="items" />
+</div>

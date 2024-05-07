@@ -6,6 +6,7 @@
   "scripts": {
     "start": "nx serve crm --open --port=4300",
     "build": "nx build crm",
+    "build:push": "npm run build && npm run docker:go",
     "test": "nx run-many --target=test",
     "test:core": "nx test crm-core --watch",
     "test:core:w": "nx test crm-core --watch",

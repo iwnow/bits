@@ -53,10 +53,10 @@
       "executor": "@ngx-env/builder:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "crm:build:production"
+          "buildTarget": "crm:build:production"
         },
         "development": {
-          "browserTarget": "crm:build:development",
+          "buildTarget": "crm:build:development",
           "proxyConfig": "apps/crm/proxy.config.js"
         }
       },
