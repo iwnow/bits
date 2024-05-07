@@ -7,23 +7,35 @@ import {
 } from 'bits-grid';
 import { CrmClientService } from 'crm-core';
 import { parseErrorMessage, viewDestroy } from 'crm-utils';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { takeUntil } from 'rxjs';
+import { AdminPageService } from '../../admin-page.service';
 
 @Component({
-  selector: 'b-admin-page-user-list',
-  templateUrl: './admin-page-user-list.component.html',
-  styleUrls: ['./admin-page-user-list.component.css'],
+  selector: 'b-admin-page-users-list',
+  templateUrl: './admin-page-users-list.component.html',
+  styleUrls: ['./admin-page-users-list.component.scss'],
   standalone: true,
   imports: [BitsGridComponent],
 })
-export class AdminPageUserListComponent implements OnInit {
+export class AdminPageUsersListComponent implements OnInit {
   crm = inject(CrmClientService);
   msg = inject(MessageService);
   options = this.createGridOption();
   destroy$ = viewDestroy();
+  page = inject(AdminPageService);
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.page.updateRibbonMenu([
+      {
+        label: 'Создать',
+        icon: 'pi pi-plus',
+      },
+    ]);
+    this.destroy$.subscribe(() => {
+      this.page.clearRibbonMenu();
+    });
+  }
 
   onError(err) {
     console.error(err);
@@ -73,23 +85,23 @@ export class AdminPageUserListComponent implements OnInit {
 
 export class DTOUser {
   @column({
-    hide: true
+    hide: true,
   })
   id: number;
 
   @column({
-    headerName: 'Имя'
+    headerName: 'Имя',
   })
   name: string;
 
   @column({
-    headerName: 'Пол'
+    headerName: 'Пол',
   })
   gender?: string;
 
   @column({
     headerName: 'Фото Id',
-    hide: true
+    hide: true,
   })
   photo_file_id?: number;
 
@@ -100,22 +112,22 @@ export class DTOUser {
   telegram_id?: number;
 
   @column({
-    headerName: 'Админ'
+    headerName: 'Админ',
   })
   is_admin: boolean;
 
   @column({
-    hide: true
+    hide: true,
   })
   is_referee: boolean;
 
   @column({
-    headerName: 'Дата рождения'
+    headerName: 'Дата рождения',
   })
   birth_date?: string;
 
   @column({
-    headerName: 'Телефон'
+    headerName: 'Телефон',
   })
   phone?: string;
 }

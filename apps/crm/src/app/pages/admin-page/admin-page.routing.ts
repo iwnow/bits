@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { AdminPageComponent } from './admin-page.component';
-import { AdminPageUserListComponent } from './admin-page-user-list/admin-page-user-list.component';
 import { AdminPageObjectsComponent } from './admin-page-objects/admin-page-objects.component';
 import { AdminPageTariffsComponent } from './admin-page-tariffs/admin-page-tariffs.component';
+import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.component';
+import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
+import { AdminPageComponent } from './admin-page.component';
 
 export const adminPagesRouting: Routes = [
   {
@@ -12,7 +13,8 @@ export const adminPagesRouting: Routes = [
     children: [
       {
         path: 'users',
-        component: AdminPageUserListComponent,
+        component: AdminPageUsersComponent,
+        children: adminPagesUsersRouting,
       },
       {
         path: 'objects',

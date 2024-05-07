@@ -1,6 +1,6 @@
-<b-content-tab-bar (menuBtnClick)="toggleMenuOpened()"></b-content-tab-bar>
-<div class="admin-menu">
-  <p-menu [model]="items"></p-menu>
+<b-ribbon-bar (menuBtnClick)="toggleMenuOpened()"></b-ribbon-bar>
+<div class="admin-menu shadow-1">
+  <p-menu [model]="menuItems()"></p-menu>
 </div>
 <div class="admin-content">
   <router-outlet></router-outlet>

@@ -4,7 +4,7 @@
 
   .admin-menu {
     position: absolute;
-    height: calc(100vh - 88px - 3.5rem);
+    height: calc(100vh - 90px - 3.5rem);
     width: 12.5rem;
     background-color: var(--surface-0);
     left: 6px;
@@ -19,7 +19,7 @@
     transition: padding-left 0.2s;
   }
 
-  b-content-tab-bar {
+  b-ribbon-bar {
     position: absolute;
     z-index: 10;
     background-color: var(--surface-50);
@@ -49,6 +49,23 @@
 
         .p-menuitem-content:has(.p-menuitem-link-active) {
           background-color: var(--surface-100);
+        }
+      }
+    }
+
+    &.ribbon-menu-above-content {
+      .admin-menu {
+        top: calc(3.5rem - 2px) !important;
+        height: calc(100vh - 7.5rem) !important;
+        z-index: 11;
+      }
+      b-ribbon-bar .b-ctb-row-menu {
+        transition: padding-left 0.2s;
+      }
+
+      &.menu-opened {
+        b-ribbon-bar .b-ctb-row-menu {
+          padding-left: 13.5rem;
         }
       }
     }

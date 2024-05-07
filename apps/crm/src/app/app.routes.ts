@@ -15,11 +15,7 @@ export const appSubsystemRoutes: Route[] = [
     path: '',
     loadChildren: () => import('./pages/home-page/home-page.module'),
   },
-  {
-    path: '**',
-    component: Page404Component,
-    title: '404',
-  },
+  notFoundPath(),
 ];
 
 export const appBaseRoutes: Route[] = [
@@ -36,3 +32,19 @@ export const appBaseRoutes: Route[] = [
       import('./layout/layout.module').then((m) => m.LayoutModule),
   },
 ];
+
+export function notFoundPath(): Route {
+  return {
+    path: '**',
+    component: Page404Component,
+    title: '404',
+  };
+}
+
+export function rootPathTo(path: string): Route {
+  return {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'list',
+  };
+}

@@ -9,16 +9,18 @@
   ></p-button>
 
   <div class="b-ctb-tabs">
-    <div class="b-ctb-tab active">
-      <span>Список</span>
+    @for (tab of tabs(); track tab.id) {
+    <div
+      class="b-ctb-tab"
+      routerLinkActive="active"
+      [routerLink]="tab.routerLink"
+    >
+      <span>{{ tab.label }}</span>
     </div>
-
-    <div class="b-ctb-tab">
-      <span>Роли</span>
-    </div>
+    }
   </div>
 </div>
 
 <div class="b-ctb-row-menu">
-  <p-menubar [model]="items" />
+  <p-menubar [model]="menu()" />
 </div>

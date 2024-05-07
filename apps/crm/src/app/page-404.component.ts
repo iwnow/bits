@@ -26,3 +26,4 @@ export class Page404Component {
     { severity: 'error', summary: '404', detail: 'Страницы не существует' },
   ];
 }
+
