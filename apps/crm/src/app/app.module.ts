@@ -7,7 +7,6 @@ import { provideCrmConfig } from 'crm-core';
 import { AppComponent } from './app.component';
 import { appBaseRoutes } from './app.routes';
 import env from './env';
-import { MessagesModule } from 'primeng/messages';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +22,7 @@ import { MessagesModule } from 'primeng/messages';
   providers: [
     provideCrmConfig({
       apiBaseUrl: env.BIT_API_PREFIX,
+      eventLog: false
     }),
   ],
 })

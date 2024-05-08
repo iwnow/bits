@@ -15,4 +15,5 @@ export function useCrmConfig() {
 
 export interface ICrmConfig {
     apiBaseUrl: string;
+    eventLog?: boolean;
 }

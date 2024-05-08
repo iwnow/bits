@@ -1,4 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { FrmsComponent, frmControl, frmGroup } from 'bits-frms';
 import {
   BGridOptions,
   BitsGridComponent,
@@ -7,7 +8,8 @@ import {
 } from 'bits-grid';
 import { CrmClientService } from 'crm-core';
 import { parseErrorMessage, viewDestroy } from 'crm-utils';
-import { MenuItem, MessageService } from 'primeng/api';
+import { InputTextComponent } from 'crm/components/input-text/input-text.component';
+import { MessageService } from 'primeng/api';
 import { takeUntil } from 'rxjs';
 import { AdminPageService } from '../../admin-page.service';
 
@@ -16,7 +18,7 @@ import { AdminPageService } from '../../admin-page.service';
   templateUrl: './admin-page-users-list.component.html',
   styleUrls: ['./admin-page-users-list.component.scss'],
   standalone: true,
-  imports: [BitsGridComponent],
+  imports: [BitsGridComponent, FrmsComponent],
 })
 export class AdminPageUsersListComponent implements OnInit {
   crm = inject(CrmClientService);
@@ -24,6 +26,14 @@ export class AdminPageUsersListComponent implements OnInit {
   options = this.createGridOption();
   destroy$ = viewDestroy();
   page = inject(AdminPageService);
+
+  userEntity = DTOUser;
+
+  frmComponents = {
+    string: {
+      type: InputTextComponent,
+    },
+  };
 
   ngOnInit() {
     this.page.updateRibbonMenu([
@@ -83,17 +93,20 @@ export class AdminPageUsersListComponent implements OnInit {
   }
 }
 
+@frmGroup()
 export class DTOUser {
   @column({
     hide: true,
   })
   id: number;
 
+  @frmControl({ type: 'string' })
   @column({
     headerName: 'Имя',
   })
   name: string;
 
+  @frmControl({ type: 'gender' })
   @column({
     headerName: 'Пол',
   })
@@ -105,12 +118,15 @@ export class DTOUser {
   })
   photo_file_id?: number;
 
+  @frmControl({ type: 'string' })
   @column()
   login: string;
 
+  @frmControl({ type: 'number' })
   @column()
   telegram_id?: number;
 
+  @frmControl({ type: 'boolean' })
   @column({
     headerName: 'Админ',
   })
@@ -121,11 +137,13 @@ export class DTOUser {
   })
   is_referee: boolean;
 
+  @frmControl({ type: 'date' })
   @column({
     headerName: 'Дата рождения',
   })
   birth_date?: string;
 
+  @frmControl({ type: 'phone' })
   @column({
     headerName: 'Телефон',
   })

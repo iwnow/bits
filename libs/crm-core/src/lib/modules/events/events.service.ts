@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, filter, map } from 'rxjs';
+import { useCrmConfig } from '../../config';
 
 @Injectable({ providedIn: 'root' })
 export class EventsBusService {
   protected eventHub$ = new Subject<DispatchEvent>();
+  protected config = useCrmConfig();
 
   on<R>(name: string, options?: unknown): Observable<EventData<R>> {
     return this.eventHub$.pipe(
@@ -54,9 +56,11 @@ export class EventsBusService {
 
   constructor() {
     this.eventHub$.subscribe((e) => {
-      console.group('[DISPATCH]', e.name);
-      console.log(e.detail);
-      console.groupEnd();
+      if (this.config.eventLog) {
+        console.group('[DISPATCH]', e.name);
+        console.log(e.detail);
+        console.groupEnd();
+      }
     });
   }
 }
