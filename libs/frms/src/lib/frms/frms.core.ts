@@ -85,16 +85,16 @@ export function schemaFromEntity(e: any): FrmSchema {
 export function formGroupFromSchema(sc: FrmSchema, fb: FormBuilder): FormGroup {
   const controls: any = {};
   Object.entries(sc.meta.controls).forEach(([name, options]) => {
-    controls[name] = ['']
+    controls[name] = [];
   });
   const fg = fb.group(controls);
   return fg;
 }
 
 export type FrmsMeta = {
-  controls: Record<string, any>;
-  groups: Record<string, any>;
-  arrays: Record<string, any>;
+  controls: Record<string, FrmControlOptions>;
+  groups: Record<string, FrmControlOptions>;
+  arrays: Record<string, FrmControlOptions>;
 };
 
 export type FrmControlOptions = Extendable<{
@@ -104,3 +104,10 @@ export type FrmControlOptions = Extendable<{
 export type FrmSchema = Extendable<{
   meta: FrmsMeta;
 }>;
+
+export type FrmComponentDesc = Extendable<{
+  type: any;
+  inputs?: Record<string, any>;
+}>;
+
+export type FrmComponents = Record<string, FrmComponentDesc>;

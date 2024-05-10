@@ -1,5 +1,6 @@
-import { Component, OnInit, input } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { Component, Input } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FrmsControlBaseComponent } from 'bits-frms';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
@@ -9,6 +10,4 @@ import { InputTextModule } from 'primeng/inputtext';
   standalone: true,
   imports: [InputTextModule, ReactiveFormsModule],
 })
-export class InputTextComponent {
-  formControlName = input('');
-}
+export class InputTextComponent extends FrmsControlBaseComponent {}

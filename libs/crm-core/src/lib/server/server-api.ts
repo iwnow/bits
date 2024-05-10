@@ -17,4 +17,10 @@ export interface User {
   is_referee: boolean;
   birth_date?: string;
   phone?: string;
+  password?: string;
+}
+
+export interface ListResult<T> {
+  data: T[];
+  total: number;
 }

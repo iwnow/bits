@@ -1,5 +1,20 @@
 <form [formGroup]="_fg()">
+  @for (control of _controls(); track $index) {
 
-    
+  <div class="frms-field">
+    <div class="frms-field-label">
+      {{ control.options?.label || control.name }}
+    </div>
+    <div class="frms-field-control">
+      <ng-container
+        *ngComponentOutlet="
+          control.componentType;
+          inputs: control.componentInputs;
+          injector: _frmsInjector
+        "
+      />
+    </div>
+  </div>
 
+  }
 </form>

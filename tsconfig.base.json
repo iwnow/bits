@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "resolveJsonModule": true,
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
@@ -15,6 +16,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "noPropertyAccessFromIndexSignature": false,
+    "allowSyntheticDefaultImports": true,
     "paths": {
       "bits-grid": ["libs/grid/src/index.ts"],
       "crm-core": ["libs/crm-core/src/index.ts"],
