@@ -24,10 +24,12 @@ import {
   styleUrl: './frms.component.scss',
 })
 export class FrmsComponent {
+  _componentsInitial = inject(FrmComponents, { optional: true });
+
   value = input();
   entity = input();
   schema = input<FrmSchema>(null as any as FrmSchema);
-  components = input<FrmComponents>({});
+  components = input<FrmComponents>(this._componentsInitial || {});
 
   _injector = inject(Injector);
   _fb = inject(FormBuilder);
@@ -38,7 +40,11 @@ export class FrmsComponent {
     this.schema() ? this.schema() : this._entityScehma()
   );
   _fg = computed(() => {
+    const value = this.value();
     const fg = formGroupFromSchema(this._schema(), this._fb);
+    if (value) {
+      fg.patchValue(value);
+    }
     return fg;
   });
   _controls = computed(() => {
@@ -65,11 +71,15 @@ export class FrmsComponent {
     return result;
   });
 
+  get valid() {
+    return this._fg().valid;
+  }
+
   reset() {
     this._fg().reset();
   }
 
-  getValue() {
+  getValue<T>(): T {
     return this._fg().value;
   }
 

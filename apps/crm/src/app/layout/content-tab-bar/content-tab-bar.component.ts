@@ -1,8 +1,8 @@
-import { Component, input, output } from '@angular/core';
+import { Component, ViewChild, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { MenubarModule } from 'primeng/menubar';
+import { MenubarModule, Menubar } from 'primeng/menubar';
 
 @Component({
   selector: 'b-content-tab-bar',
@@ -16,6 +16,13 @@ export class ContentTabBarComponent {
 
   tabs = input<TabItem[]>([]);
   menu = input<MenuItem[]>([]);
+
+  @ViewChild(Menubar)
+  menubar: Menubar;
+
+  get menuItems() {
+    return this.menubar?.visibleItems;
+  }
 
   onMenuBtnClick(e) {
     this.menuBtnClick.emit(e);

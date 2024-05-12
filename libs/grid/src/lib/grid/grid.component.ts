@@ -49,6 +49,9 @@ export class BitsGridComponent implements OnInit {
   rowModelType: RowModelType = 'serverSide';
 
   @Input()
+  rowSelection: 'single' | 'multiple' = 'single';
+
+  @Input()
   height = '450px';
 
   @Output()

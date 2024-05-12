@@ -35,8 +35,16 @@ class Role {
 
  */
 
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Extendable } from 'crm-utils';
+import { Provider } from '@angular/core';
+import {
+  AsyncValidator,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  Validator,
+  ValidatorFn,
+} from '@angular/forms';
+import { Extendable, WithRequired } from 'crm-utils';
 
 const SYM_FRMS = Symbol('frms metadata');
 
@@ -85,7 +93,7 @@ export function schemaFromEntity(e: any): FrmSchema {
 export function formGroupFromSchema(sc: FrmSchema, fb: FormBuilder): FormGroup {
   const controls: any = {};
   Object.entries(sc.meta.controls).forEach(([name, options]) => {
-    controls[name] = [];
+    controls[name] = [undefined, options.validators];
   });
   const fg = fb.group(controls);
   return fg;
@@ -97,9 +105,20 @@ export type FrmsMeta = {
   arrays: Record<string, FrmControlOptions>;
 };
 
-export type FrmControlOptions = Extendable<{
-  type: any;
-}>;
+export type FrmControlOptions = Extendable<
+  WithRequired<
+    Partial<{
+      type: any;
+      label: string;
+      validators:
+        | ValidatorFn
+        | AsyncValidatorFn
+        | ValidatorFn[]
+        | AsyncValidatorFn[];
+    }>,
+    'type'
+  >
+>;
 
 export type FrmSchema = Extendable<{
   meta: FrmsMeta;
@@ -110,4 +129,13 @@ export type FrmComponentDesc = Extendable<{
   inputs?: Record<string, any>;
 }>;
 
-export type FrmComponents = Record<string, FrmComponentDesc>;
+export abstract class FrmComponents {
+  [key: string]: FrmComponentDesc;
+}
+
+export function provideFrmsComponents(cs: FrmComponents): Provider {
+  return {
+    provide: FrmComponents,
+    useFactory: () => cs,
+  };
+}

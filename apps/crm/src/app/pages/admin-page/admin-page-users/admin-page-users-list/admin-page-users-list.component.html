@@ -4,34 +4,3 @@
   height="calc(100vh - 136px)"
 ></b-grid>
 
-<p-dialog
-  header="Создание пользователя"
-  [modal]="true"
-  [visible]="userCreateModal()"
-  (visibleChange)="userCreateModal.set($event)"
-  [style]="{ width: '30rem' }"
-  appendTo="body"
-  [closeOnEscape]="true"
-  [closable]="true"
->
-  <span class="p-text-secondary block mb-5">Заполните поля.</span>
-
-  <b-frms
-    #frm
-    [entity]="userEntity"
-    [components]="frmComponents"
-    class="frm-user-create mb-6"
-  ></b-frms>
-
-  <div class="flex justify-content-end gap-2">
-    <p-button
-      label="Отмена"
-      severity="secondary"
-      (click)="userCreateModal.set(false)"
-    />
-    <p-button
-      label="Создать"
-      (click)="onUserCreate(frm.getValue()); frm.reset()"
-    />
-  </div>
-</p-dialog>

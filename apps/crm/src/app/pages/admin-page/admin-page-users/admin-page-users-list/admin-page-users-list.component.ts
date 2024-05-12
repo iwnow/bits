@@ -1,25 +1,14 @@
-import { Component, OnInit, ViewChild, inject, signal } from '@angular/core';
-import { FrmsComponent, frmControl, frmGroup } from 'bits-frms';
-import {
-  BGridOptions,
-  BitsGridComponent,
-  column,
-  columnsFromClass,
-} from 'bits-grid';
-import { CrmClientService } from 'crm-core';
-import { dateUtil, parseErrorMessage, viewDestroy } from 'crm-utils';
-import { CheckboxComponent } from 'crm/components/checkbox/checkbox.component';
-import { DateComponent } from 'crm/components/date/date.component';
-import { GenderComponent } from 'crm/components/gender/gender.component';
-import { InputTextComponent } from 'crm/components/input-text/input-text.component';
-import { NumberComponent } from 'crm/components/number/number.component';
-import { PhoneComponent } from 'crm/components/phone/phone.component';
-import { MessageService } from 'primeng/api';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FrmsComponent } from 'bits-frms';
+import { BGridOptions, BitsGridComponent, columnsFromClass } from 'bits-grid';
+import { parseErrorMessage } from 'crm-utils';
+import { DTOUser } from 'crm/core/dto';
+import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { takeUntil } from 'rxjs';
-import { AdminPageService } from '../../admin-page.service';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
+import { useAdminCommon } from '../../admin-common';
+import { uiElements } from 'crm/core/ui-elements';
 
 @Component({
   selector: 'b-admin-page-users-list',
@@ -35,58 +24,33 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class AdminPageUsersListComponent implements OnInit {
-  crm = inject(CrmClientService);
-  msg = inject(MessageService);
   options = this.createGridOption();
-  destroy$ = viewDestroy();
-  page = inject(AdminPageService);
-
-  userEntity = DTOUser;
-  userCreateModal = signal(false);
-
-  frmComponents = {
-    string: {
-      type: InputTextComponent,
-    },
-    gender: {
-      type: GenderComponent,
-    },
-    checkbox: {
-      type: CheckboxComponent,
-    },
-    number: {
-      type: NumberComponent,
-    },
-    date: {
-      type: DateComponent,
-    },
-    phone: {
-      type: PhoneComponent,
-    },
-  };
+  ad = useAdminCommon();
 
   @ViewChild(BitsGridComponent)
   grid: BitsGridComponent;
 
-  ngOnInit() {
-    this.page.updateRibbonMenu([
-      {
-        label: 'Создать',
-        icon: 'pi pi-plus',
-        command: () => {
-          this.userCreateModal.set(true);
-        },
+  defaultRibbonItems = [
+    uiElements.menuItems.createButton({
+      command: () => {
+        this.ad.router.navigate(['../create'], {
+          relativeTo: this.ad.route,
+        });
       },
-    ]);
-    this.destroy$.subscribe(() => {
-      this.page.clearRibbonMenu();
+    }),
+  ];
+
+  ngOnInit() {
+    this.ad.page.updateRibbonMenu(this.defaultRibbonItems);
+    this.ad.destroy$.subscribe(() => {
+      this.ad.page.clearRibbonMenu();
     });
   }
 
   onError(err) {
     console.error(err);
     const msg = parseErrorMessage(err);
-    this.msg.add({
+    this.ad.msg.add({
       severity: 'error',
       summary: 'Ошибка',
       detail: msg,
@@ -98,15 +62,36 @@ export class AdminPageUsersListComponent implements OnInit {
       getOptions: () => {
         return {
           columnDefs: columnsFromClass(DTOUser),
+          rowSelection: 'single',
+          onRowSelected: (e) => {
+            const selected = this.grid.gapi.getSelectedRows();
+            if (selected.length) {
+              this.ad.page.updateRibbonMenu([
+                ...this.defaultRibbonItems,
+                uiElements.menuItems.editButton({
+                  command: () => {
+                    this.ad.router.navigate(['../edit'], {
+                      relativeTo: this.ad.route,
+                      queryParams: {
+                        id: selected[0]?.id,
+                      },
+                    });
+                  },
+                }),
+              ]);
+            } else {
+              this.ad.page.updateRibbonMenu(this.defaultRibbonItems);
+            }
+          },
         };
       },
       getRows: (req) => {
-        this.crm.server.admin
+        this.ad.crm.server.admin
           .userList({
             skip: req.params.request.startRow || 0,
             limit: req.params.request.endRow,
           })
-          .pipe(takeUntil(this.destroy$))
+          .pipe(takeUntil(this.ad.destroy$))
           .subscribe({
             next: (r) => {
               req.params.success({
@@ -117,7 +102,7 @@ export class AdminPageUsersListComponent implements OnInit {
             error: (err) => {
               req.params.fail();
               const msg = parseErrorMessage(err);
-              this.msg.add({
+              this.ad.msg.add({
                 severity: 'error',
                 summary: 'Ошибка',
                 detail: msg,
@@ -128,96 +113,4 @@ export class AdminPageUsersListComponent implements OnInit {
     };
     return opt;
   }
-
-  onUserCreate(user: DTOUser) {
-    this.userCreateModal.set(false);
-    user.birth_date = user.birth_date
-      ? dateUtil(user.birth_date).format('YYYY-MM-DD')
-      : undefined;
-    user.is_admin = !!user.is_admin;
-    user.phone = user.phone ? user.phone.replace(/\D/g, '') : null;
-
-    this.crm.server.admin.createUser(user).subscribe({
-      next: () => {
-        this.grid.refresh();
-      },
-      error: (err) => {
-        const message = parseErrorMessage(err);
-        this.msg.add({
-          severity: 'error',
-          summary: 'Ошибка создания пользователя',
-          detail: message,
-        });
-      },
-    });
-  }
-}
-
-@frmGroup()
-export class DTOUser {
-  @column({
-    hide: true,
-  })
-  id: number;
-
-  @frmControl({ type: 'string', label: 'Имя' })
-  @column({
-    headerName: 'Имя',
-  })
-  name: string;
-
-  @frmControl({ type: 'gender', label: 'Пол' })
-  @column({
-    headerName: 'Пол',
-  })
-  gender?: string;
-
-  @column({
-    headerName: 'Фото Id',
-    hide: true,
-  })
-  photo_file_id?: number;
-
-  @frmControl({ type: 'string', label: 'Логин' })
-  @column()
-  login: string;
-
-  @frmControl({ type: 'string', label: 'Пароль' })
-  password: string;
-
-  @frmControl({
-    type: 'number',
-    label: 'Telegram Id',
-    inputs: {
-      inputId: 'withoutgrouping',
-      useGrouping: false,
-    },
-  })
-  @column({
-    headerName: 'Telegram Id',
-  })
-  telegram_id?: number;
-
-  @frmControl({ type: 'checkbox', label: 'Админ' })
-  @column({
-    headerName: 'Админ',
-  })
-  is_admin: boolean;
-
-  @column({
-    hide: true,
-  })
-  is_referee: boolean;
-
-  @frmControl({ type: 'date', label: 'Дата рождения' })
-  @column({
-    headerName: 'Дата рождения',
-  })
-  birth_date?: string;
-
-  @frmControl({ type: 'phone', label: 'Телефон' })
-  @column({
-    headerName: 'Телефон',
-  })
-  phone?: string;
 }

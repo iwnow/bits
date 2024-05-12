@@ -1,9 +1,17 @@
 export interface ListRequest {
   skip: number;
   limit: number;
-}
-export interface SearchListRequest extends ListRequest {
-  q?: string;
+  sort_by?: string;
+  sort_is_desc?: boolean;
+  filters?: {
+    items: Array<{
+      key: string;
+      op?: 'EQ';
+      value: string | number | boolean;
+      custom_op?: string;
+    }>;
+    op: 'AND' | 'OR';
+  };
 }
 
 export interface User {

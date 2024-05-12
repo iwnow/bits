@@ -16,6 +16,8 @@ import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { AdminPageService } from './admin-page.service';
 import { waitFor } from 'crm-utils';
+import { provideFrmsComponents } from 'bits-frms';
+import { crmFrmComponents } from 'crm/core/frms.components';
 
 @Component({
   selector: 'b-admin-page',
@@ -23,7 +25,7 @@ import { waitFor } from 'crm-utils';
   styleUrls: ['./admin-page.component.scss'],
   standalone: true,
   imports: [CommonModule, MenuModule, RibbonBarComponent],
-  providers: [AdminPageService],
+  providers: [AdminPageService, provideFrmsComponents(crmFrmComponents)],
 })
 export class AdminPageComponent implements OnInit {
   menuItems = signal<MenuItem[]>([]);
@@ -42,7 +44,7 @@ export class AdminPageComponent implements OnInit {
   ribbon: RibbonBarComponent;
 
   @HostBinding('class.ribbon-menu-above-content')
-  ribbonMenuAboveContent = false;
+  ribbonMenuAboveContent = true;
 
   ngOnInit() {
     this.aps.linkComponent(this);
