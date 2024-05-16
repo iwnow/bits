@@ -9,6 +9,7 @@ import { DialogModule } from 'primeng/dialog';
 import { takeUntil } from 'rxjs';
 import { useAdminCommon } from '../../admin-common';
 import { uiElements } from 'crm/core/ui-elements';
+import { mapGridRequest } from 'crm/utils/ag-grid';
 
 @Component({
   selector: 'b-admin-page-users-list',
@@ -63,19 +64,15 @@ export class AdminPageUsersListComponent implements OnInit {
         return {
           columnDefs: columnsFromClass(DTOUser),
           rowSelection: 'single',
-          onRowSelected: (e) => {
+          onSelectionChanged: () => {
             const selected = this.grid.gapi.getSelectedRows();
             if (selected.length) {
               this.ad.page.updateRibbonMenu([
                 ...this.defaultRibbonItems,
                 uiElements.menuItems.editButton({
                   command: () => {
-                    this.ad.router.navigate(['../edit'], {
-                      relativeTo: this.ad.route,
-                      queryParams: {
-                        id: selected[0]?.id,
-                      },
-                    });
+                    const userId = selected[0].id;
+                    this.editUser(userId);
                   },
                 }),
               ]);
@@ -83,14 +80,29 @@ export class AdminPageUsersListComponent implements OnInit {
               this.ad.page.updateRibbonMenu(this.defaultRibbonItems);
             }
           },
+          onRowDoubleClicked: (e) => {
+            const userId = e.node.data.id;
+            this.editUser(userId);
+          },
+          getContextMenuItems: (e) => {
+            return [
+              {
+                name: 'Редактировать',
+                icon: uiElements.icons.edit(),
+                action: (e) => {
+                  const userId = e.node.data.id;
+                  this.editUser(userId);
+                },
+              },
+              'copy',
+            ];
+          },
         };
       },
       getRows: (req) => {
+        const crmReq = mapGridRequest(req);
         this.ad.crm.server.admin
-          .userList({
-            skip: req.params.request.startRow || 0,
-            limit: req.params.request.endRow,
-          })
+          .userList(crmReq)
           .pipe(takeUntil(this.ad.destroy$))
           .subscribe({
             next: (r) => {
@@ -112,5 +124,14 @@ export class AdminPageUsersListComponent implements OnInit {
       },
     };
     return opt;
+  }
+
+  editUser(id: number) {
+    this.ad.router.navigate(['../edit'], {
+      relativeTo: this.ad.route,
+      queryParams: {
+        id,
+      },
+    });
   }
 }

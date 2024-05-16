@@ -29,5 +29,6 @@ export function columnsFromClass(type: any) {
 function defaultColumn(): BGridCol {
   return {
     sortable: false,
+    floatingFilter: true,
   };
 }

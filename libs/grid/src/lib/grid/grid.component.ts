@@ -1,5 +1,13 @@
 import { AgGridAngular } from '@ag-grid-community/angular';
 import { ClientSideRowModelModule } from '@ag-grid-community/client-side-row-model';
+import { MasterDetailModule } from '@ag-grid-enterprise/master-detail';
+import { MenuModule } from '@ag-grid-enterprise/menu';
+import { ClipboardModule } from '@ag-grid-enterprise/clipboard';
+import { ColumnsToolPanelModule } from '@ag-grid-enterprise/column-tool-panel';
+import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
+import { SetFilterModule } from '@ag-grid-enterprise/set-filter';
+import { SideBarModule } from '@ag-grid-enterprise/side-bar';
+import { ExcelExportModule } from '@ag-grid-enterprise/excel-export';
 import {
   ColDef,
   GridReadyEvent,
@@ -31,6 +39,14 @@ setAgGridLicense();
 ModuleRegistry.registerModules([
   ClientSideRowModelModule,
   ServerSideRowModelModule,
+  ClipboardModule,
+  ColumnsToolPanelModule,
+  MenuModule,
+  RowGroupingModule,
+  SetFilterModule,
+  SideBarModule,
+  MasterDetailModule,
+  ExcelExportModule,
 ]);
 
 @Component({
@@ -53,6 +69,9 @@ export class BitsGridComponent implements OnInit {
 
   @Input()
   height = '450px';
+
+  @Input()
+  rowHeight = 30;
 
   @Output()
   err = new EventEmitter();
@@ -87,6 +106,7 @@ export class BitsGridComponent implements OnInit {
         .subscribe({
           next: ({ options, gapi }) => {
             gapi.updateGridOptions({
+              headerHeight: 35,
               ...options,
               serverSideDatasource: {
                 getRows: (params) =>

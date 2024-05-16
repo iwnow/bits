@@ -23,6 +23,11 @@ b-grid {
 
     .ag-root-wrapper {
       //   border-left: 0;
+
+      input.ag-input-field-input {
+        min-height: 1rem;
+        height: 2rem;
+      }
     }
   }
 }

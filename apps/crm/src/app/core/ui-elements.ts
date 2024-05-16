@@ -7,6 +7,9 @@ export const uiElements: {
     createButton: MenuItemCreate;
     editButton: MenuItemCreate;
   };
+  icons: {
+    edit: IconFactory;
+  };
 } = {
   menuItems: {
     saveButton: (e) => ({
@@ -39,6 +42,19 @@ export const uiElements: {
       ...(e || {}),
     }),
   },
+  icons: {
+    edit: (e) =>
+      `<i class="pi pi-user-edit ${e?.iconClass || ''}" style="${
+        e?.style || ''
+      }"></i>`,
+  },
 };
 
 type MenuItemCreate = (e: Partial<MenuItem>) => MenuItem;
+
+type IconFactory = (
+  e?: Partial<{
+    iconClass: string;
+    style: string;
+  }>
+) => string;

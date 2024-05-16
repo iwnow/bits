@@ -32,10 +32,10 @@ export class AdminPageUsersComponent implements OnInit {
             label: 'Список',
             routerLink: 'users/list',
           },
-          {
-            label: 'Роли',
-            routerLink: 'users/roles',
-          },
+          // {
+          //   label: 'Роли',
+          //   routerLink: 'users/roles',
+          // },
         ],
       },
     ];

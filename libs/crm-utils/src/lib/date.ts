@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
+import customParse from 'dayjs/plugin/customParseFormat';
 
-export const dateUtil = (
-  date: string | number | Date | dayjs.Dayjs | null | undefined
-) => dayjs(date);
+dayjs.extend(customParse);
+
+export const dateUtil = dayjs;

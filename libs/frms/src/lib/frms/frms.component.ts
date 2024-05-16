@@ -30,6 +30,8 @@ export class FrmsComponent {
   entity = input();
   schema = input<FrmSchema>(null as any as FrmSchema);
   components = input<FrmComponents>(this._componentsInitial || {});
+  formClass = input('');
+  fieldClass = input('');
 
   _injector = inject(Injector);
   _fb = inject(FormBuilder);

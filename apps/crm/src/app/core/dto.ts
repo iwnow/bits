@@ -16,6 +16,7 @@ export class DTOUser {
   })
   @column({
     headerName: 'Имя',
+    filter: 'agTextColumnFilter',
   })
   name: string;
 
@@ -62,6 +63,7 @@ export class DTOUser {
   })
   @column({
     headerName: 'Telegram Id',
+    filter: 'agTextColumnFilter',
   })
   telegram_id?: number;
 
@@ -72,7 +74,7 @@ export class DTOUser {
       if (typeof e.value !== 'boolean') {
         return '';
       }
-      return e.value ? '✅' : '';
+      return e.value ? '💎' : '';
     },
   })
   is_admin: boolean;
@@ -85,12 +87,26 @@ export class DTOUser {
   @frmControl({ type: 'date', label: 'Дата рождения' })
   @column({
     headerName: 'Дата рождения',
+    filter: 'agDateColumnFilter',
   })
   birth_date?: any;
 
   @frmControl({ type: 'phone', label: 'Телефон' })
   @column({
     headerName: 'Телефон',
+    filter: 'agTextColumnFilter',
   })
   phone?: string;
+
+  @frmControl({ type: 'checkbox', label: 'Активен' })
+  @column({
+    headerName: 'Активен',
+    valueFormatter: (e) => {
+      if (typeof e.value !== 'boolean') {
+        return '';
+      }
+      return e.value ? '🟢' : '🔴';
+    },
+  })
+  is_active?: boolean;
 }

@@ -1,7 +1,7 @@
-<form [formGroup]="_fg()">
+<form [formGroup]="_fg()" class="{{ formClass() }}">
   @for (control of _controls(); track $index) {
 
-  <div class="frms-field">
+  <div class="frms-field" class="{{ fieldClass() }}">
     <div class="frms-field-label">
       {{ control.options?.label || control.name }}
     </div>
