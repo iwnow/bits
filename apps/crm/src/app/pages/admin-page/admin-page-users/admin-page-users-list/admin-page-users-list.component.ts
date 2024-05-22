@@ -3,13 +3,13 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FrmsComponent } from 'bits-frms';
 import { BGridOptions, BitsGridComponent, columnsFromClass } from 'bits-grid';
 import { parseErrorMessage } from 'crm-utils';
-import { DTOUser } from 'crm/core/dto';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { takeUntil } from 'rxjs';
 import { useAdminCommon } from '../../admin-common';
 import { uiElements } from 'crm/core/ui-elements';
 import { mapGridRequest } from 'crm/utils/ag-grid';
+import { DOMAIN } from 'crm-core';
 
 @Component({
   selector: 'b-admin-page-users-list',
@@ -62,7 +62,7 @@ export class AdminPageUsersListComponent implements OnInit {
     const opt: BGridOptions = {
       getOptions: () => {
         return {
-          columnDefs: columnsFromClass(DTOUser),
+          columnDefs: columnsFromClass(DOMAIN.User),
           rowSelection: 'single',
           onSelectionChanged: () => {
             const selected = this.grid.gapi.getSelectedRows();

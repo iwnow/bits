@@ -3,3 +3,8 @@ export type Extendable<T> = T & {
 };
 
 export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export interface Type<T> extends Function {
+  new (...args: any[]): T;
+}

@@ -5,13 +5,13 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { CrmClientService } from 'crm-core';
-import { DTOUser } from 'crm/core/dto';
+import { DTO } from 'crm-core';
 
-export const userResolver: ResolveFn<DTOUser> = (
+export const userResolver: ResolveFn<DTO.DTOUser> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  return inject(CrmClientService).server.admin.userId<DTOUser>(
+  return inject(CrmClientService).server.admin.userId<DTO.DTOUser>(
     +route.queryParamMap.get('id')
   );
 };

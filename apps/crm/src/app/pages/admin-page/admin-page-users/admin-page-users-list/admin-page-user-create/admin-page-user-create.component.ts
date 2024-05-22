@@ -5,6 +5,7 @@ import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { PanelModule } from 'primeng/panel';
 import { uiElements } from 'crm/core/ui-elements';
 import { dateUtil, parseErrorMessage } from 'crm-utils';
+import { DOMAIN, DTO } from 'crm-core';
 
 @Component({
   selector: 'b-admin-page-user-create',
@@ -44,12 +45,7 @@ export class AdminPageUserCreateComponent implements OnInit {
       return;
     }
     this.saving = true;
-    const user = this.ucc.getUser();
-    user.birth_date = user.birth_date
-      ? dateUtil(user.birth_date).format('YYYY-MM-DD')
-      : undefined;
-    user.is_admin = !!user.is_admin;
-    user.phone = user.phone ? user.phone.replace(/\D/g, '') : null;
+    const user = DOMAIN.toDTO<DTO.DTOUser>(this.ucc.getUser(), DOMAIN.User);
 
     this.ad.crm.server.admin.createUser(user).subscribe({
       next: () => {

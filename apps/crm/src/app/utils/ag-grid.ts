@@ -1,9 +1,9 @@
 import type { GetRowsParams } from 'bits-grid';
-import type { CrmServerApi } from 'crm-core';
+import { DTO } from 'crm-core';
 import { dateUtil } from 'crm-utils';
 
-export function mapGridRequest(e: GetRowsParams): CrmServerApi.ListRequest {
-  const r: CrmServerApi.ListRequest = {
+export function mapGridRequest(e: GetRowsParams): DTO.DTOListRequest {
+  const r: DTO.DTOListRequest = {
     limit: e?.params?.request?.endRow,
     skip: e?.params?.request?.startRow || 0,
   };

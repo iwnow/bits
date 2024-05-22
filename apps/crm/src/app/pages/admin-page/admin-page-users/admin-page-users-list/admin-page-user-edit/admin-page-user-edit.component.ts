@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FrmsComponent } from 'bits-frms';
+import { DOMAIN, DTO } from 'crm-core';
 import { dateUtil, parseErrorMessage } from 'crm-utils';
-import { DTOUser } from 'crm/core/dto';
 import { uiElements } from 'crm/core/ui-elements';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { PanelModule } from 'primeng/panel';
@@ -20,9 +20,9 @@ export class AdminPageUserEditComponent implements OnInit {
   @ViewChild(FrmsComponent)
   frms: FrmsComponent;
 
-  userEntity = DTOUser;
+  userEntity = DOMAIN.User;
   saving = false;
-  user: DTOUser = null;
+  user: DOMAIN.User = null;
 
   ngOnInit() {
     this.user = this.ad.route.snapshot.data.user;
@@ -52,14 +52,8 @@ export class AdminPageUserEditComponent implements OnInit {
       return;
     }
     this.saving = true;
-    const user = this.frms.getValue<DTOUser>();
-    user.birth_date = user.birth_date
-      ? dateUtil(user.birth_date).format('YYYY-MM-DD')
-      : undefined;
-    user.is_admin = !!user.is_admin;
-    user.phone = user.phone ? user.phone.replace(/\D/g, '') : null;
+    const user = DOMAIN.toDTO<DTO.DTOUser>(this.frms.getValue(), DOMAIN.User);
     user.id = this.user.id;
-
     this.ad.crm.server.admin.editUser(user).subscribe({
       next: () => {
         this.saving = false;

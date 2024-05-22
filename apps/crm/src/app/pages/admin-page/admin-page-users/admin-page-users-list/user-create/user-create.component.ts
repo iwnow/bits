@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FrmsComponent } from 'bits-frms';
-import { DTOUser } from 'crm/core/dto';
+import { DOMAIN } from 'crm-core';
 
 @Component({
   selector: 'b-user-create',
@@ -14,13 +14,13 @@ export class UserCreateComponent {
   @ViewChild(FrmsComponent)
   frms: FrmsComponent;
 
-  userEntity = DTOUser;
+  userEntity = DOMAIN.User;
 
   get valid() {
     return this.frms.valid;
   }
 
-  getUser(): DTOUser {
+  getUser(): DOMAIN.User {
     return this.frms?.getValue();
   }
 }

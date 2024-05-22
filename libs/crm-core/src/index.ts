@@ -1,4 +1,5 @@
 export { provideCrmConfig } from './lib/config';
 export * from './lib/client';
 export * from './lib/utils';
-export type * as CrmServerApi from './lib/server/server-api';
+export * as DTO from './lib/server/dto';
+export * as DOMAIN from './lib/domain';

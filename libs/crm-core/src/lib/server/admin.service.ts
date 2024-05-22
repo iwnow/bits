@@ -1,33 +1,28 @@
 import { Injectable, inject } from '@angular/core';
 import { CommonService } from './common.service';
 import { Observable, map } from 'rxjs';
-import type * as CrmServerApi from './server-api';
+import { DTOListRequest, DTOListResult, DTOUser } from './dto';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   protected common = inject(CommonService);
 
-  userList(
-    args: CrmServerApi.ListRequest
-  ): Observable<CrmServerApi.ListResult<CrmServerApi.User>> {
+  userList(args: DTOListRequest): Observable<DTOListResult<DTOUser>> {
     args.sort_by = args.sort_by || 'id';
     args.sort_is_desc =
       typeof args.sort_is_desc === 'boolean' ? args.sort_is_desc : true;
     const url = this.common.apiUrl('users/search');
 
-    return this.common.http.post<CrmServerApi.ListResult<CrmServerApi.User>>(
-      url,
-      args
-    );
+    return this.common.http.post<DTOListResult<DTOUser>>(url, args);
   }
 
-  createUser(user: Partial<CrmServerApi.User>): Observable<any> {
+  createUser(user: Partial<DTOUser>): Observable<any> {
     const url = this.common.apiUrl('users');
 
     return this.common.http.post<any>(url, user);
   }
 
-  editUser(user: Partial<CrmServerApi.User>): Observable<any> {
+  editUser(user: Partial<DTOUser>): Observable<any> {
     const url = this.common.apiUrl(`users/${user.id}`);
     const body: any = {};
     Object.entries(user).forEach(([k, v]) => {
@@ -38,9 +33,9 @@ export class AdminService {
     return this.common.http.patch(url, body);
   }
 
-  userId<T = CrmServerApi.User>(id: number): Observable<T> {
+  userId<T = DTOUser>(id: number): Observable<T> {
     const url = this.common.apiUrl('users/search');
-    const args: CrmServerApi.ListRequest = {
+    const args: DTOListRequest = {
       skip: 0,
       limit: 1,
       filters: {
@@ -56,7 +51,7 @@ export class AdminService {
     };
 
     return this.common.http
-      .post<CrmServerApi.ListResult<T>>(url, args)
+      .post<DTOListResult<T>>(url, args)
       .pipe(map((r) => r.data[0]));
   }
 }
