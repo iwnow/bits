@@ -2,9 +2,12 @@
   @for (control of _controls(); track $index) {
 
   <div class="frms-field" class="{{ fieldClass() }}">
+    @if (control.options?.label !== false) {
     <div class="frms-field-label">
       {{ control.options?.label || control.name }}
     </div>
+    }
+
     <div class="frms-field-control">
       <ng-container
         *ngComponentOutlet="

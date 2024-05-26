@@ -2,8 +2,12 @@ import type { GetRowsParams } from 'bits-grid';
 import { DTO } from 'crm-core';
 import { dateUtil } from 'crm-utils';
 
-export function mapGridRequest(e: GetRowsParams): DTO.DTOListRequest {
+export function mapGridRequest(
+  e: GetRowsParams,
+  defaults?: Partial<DTO.DTOListRequest>
+): DTO.DTOListRequest {
   const r: DTO.DTOListRequest = {
+    ...(defaults || {}),
     limit: e?.params?.request?.endRow,
     skip: e?.params?.request?.startRow || 0,
   };
@@ -29,6 +33,12 @@ export function mapGridRequest(e: GetRowsParams): DTO.DTOListRequest {
       });
     }
   );
+
+  const sort = (e?.params?.request?.sortModel || [])[0];
+  if (sort) {
+    r.sort_by = sort.colId;
+    r.sort_is_desc = sort.sort === 'desc';
+  }
 
   return r;
 }

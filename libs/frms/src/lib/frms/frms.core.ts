@@ -109,7 +109,7 @@ export type FrmControlOptions = Extendable<
   WithRequired<
     Partial<{
       type: any;
-      label: string;
+      label: string | boolean;
       validators:
         | ValidatorFn
         | AsyncValidatorFn

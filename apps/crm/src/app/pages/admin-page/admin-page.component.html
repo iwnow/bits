@@ -1,5 +1,8 @@
 <b-ribbon-bar (menuBtnClick)="toggleMenuOpened()"></b-ribbon-bar>
-<div class="admin-menu shadow-1">
+<div
+  class="admin-menu shadow-1"
+  [class.nav-menu-empty]="menuItems().length === 0"
+>
   <p-menu [model]="menuItems()"></p-menu>
 </div>
 <div class="admin-content">

@@ -100,7 +100,10 @@ export class AdminPageUsersListComponent implements OnInit {
         };
       },
       getRows: (req) => {
-        const crmReq = mapGridRequest(req);
+        const crmReq = mapGridRequest(req, {
+          sort_by: 'id',
+          sort_is_desc: true,
+        });
         this.ad.crm.server.admin
           .userList(crmReq)
           .pipe(takeUntil(this.ad.destroy$))
@@ -127,11 +130,8 @@ export class AdminPageUsersListComponent implements OnInit {
   }
 
   editUser(id: number) {
-    this.ad.router.navigate(['../edit'], {
+    this.ad.router.navigate(['../edit', id], {
       relativeTo: this.ad.route,
-      queryParams: {
-        id,
-      },
     });
   }
 }

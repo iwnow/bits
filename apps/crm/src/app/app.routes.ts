@@ -45,6 +45,6 @@ export function rootPathTo(path: string): Route {
   return {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'list',
+    redirectTo: path,
   };
 }

@@ -1,81 +1,49 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FrmsComponent } from 'bits-frms';
-import { DOMAIN, DTO } from 'crm-core';
-import { dateUtil, parseErrorMessage } from 'crm-utils';
-import { uiElements } from 'crm/core/ui-elements';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { DTO } from 'crm-core';
+import { inheritResolvers } from 'crm-utils';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
-import { PanelModule } from 'primeng/panel';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'b-admin-page-user-edit',
   templateUrl: './admin-page-user-edit.component.html',
   styleUrls: ['./admin-page-user-edit.component.css'],
   standalone: true,
-  imports: [CommonModule, FrmsComponent, PanelModule],
+  imports: [CommonModule, RouterModule],
 })
 export class AdminPageUserEditComponent implements OnInit {
   ad = useAdminCommon();
 
-  @ViewChild(FrmsComponent)
-  frms: FrmsComponent;
-
-  userEntity = DOMAIN.User;
-  saving = false;
-  user: DOMAIN.User = null;
-
-  ngOnInit() {
-    this.user = this.ad.route.snapshot.data.user;
-    this.user.birth_date = this.user.birth_date
-      ? dateUtil(this.user.birth_date).toDate()
-      : null;
-    this.user.gender = +this.user.gender;
-    this.ad.page.updateRibbonMenu([
-      uiElements.menuItems.saveButton({
-        command: () => {
-          this.saveUser();
-        },
-      }),
-      uiElements.menuItems.cancelButton({
-        command: () => {
-          this.cancel();
-        },
-      }),
-    ]);
+  ngOnInit(): void {
+    const routeData = inheritResolvers(this.ad.route);
+    const user: DTO.DTOUser = routeData.user;
+    const userCompany: DTO.DTOCompanyUser[] = routeData.userCompany;
+    userCompany.sort((a, b) => a.company_id - b.company_id);
+    const menu: MenuItem[] = [
+      {
+        label: user.name,
+        items: [
+          {
+            label: 'Инфо',
+            routerLink: `users/edit/${user.id}/info`,
+          },
+        ],
+      },
+      {
+        label: 'Компании',
+        items: userCompany.map((i) => {
+          return {
+            label: i.company.name,
+            routerLink: `users/edit/${user.id}/company/${i.company_id}`,
+          };
+        }),
+      },
+    ];
+    this.ad.page.updateMenuItems(menu);
     this.ad.destroy$.subscribe(() => {
-      this.ad.page.clearRibbonMenu();
+      this.ad.page.clearMenuItems();
     });
-  }
-
-  saveUser() {
-    if (this.saving) {
-      return;
-    }
-    this.saving = true;
-    const user = DOMAIN.toDTO<DTO.DTOUser>(this.frms.getValue(), DOMAIN.User);
-    user.id = this.user.id;
-    this.ad.crm.server.admin.editUser(user).subscribe({
-      next: () => {
-        this.saving = false;
-        this.ad.msg.add({
-          severity: 'success',
-          summary: 'Пользователь успешно сохранен',
-        });
-        this.ad.router.navigate(['..'], { relativeTo: this.ad.route });
-      },
-      error: (err) => {
-        this.saving = false;
-        const message = parseErrorMessage(err);
-        this.ad.msg.add({
-          severity: 'error',
-          summary: 'Ошибка редактирования пользователя',
-          detail: message,
-        });
-      },
-    });
-  }
-
-  cancel() {
-    this.ad.router.navigate(['..'], { relativeTo: this.ad.route });
   }
 }

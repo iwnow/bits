@@ -46,13 +46,18 @@
         width: 100%;
         left: 0;
       }
-
     }
   }
 }
 
 .b-ctb-row-menu {
   padding: 6px;
+}
+
+:host.epmty-menubar {
+  .b-ctb-row-menu {
+    display: none;
+  }
 }
 
 :host ::ng-deep {

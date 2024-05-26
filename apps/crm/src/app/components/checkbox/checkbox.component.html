@@ -1,1 +1,14 @@
+@if (!group()) {
 <p-checkbox [formControl]="formControl()" [binary]="true" inputId="binary" />
+} @else {
+<div class="checkbox-group">
+  @for (opt of options(); track $index) {
+  <p-checkbox
+    [formControl]="fa().controls[$index]"
+    [binary]="true"
+    inputId="binary"
+    [label]="opt"
+  />
+  }
+</div>
+}

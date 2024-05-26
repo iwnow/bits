@@ -4,3 +4,4 @@ export * from './lib/parse-error';
 export * from './lib/wait';
 export * from './lib/types';
 export * from './lib/date';
+export * from './lib/route';

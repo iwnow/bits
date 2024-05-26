@@ -17,6 +17,10 @@ export function useAdminCommon() {
     page: inject(AdminPageService),
     router: inject(Router),
     route: inject(ActivatedRoute),
+    toRootRoute: () => {
+      const seg = ad.router.url.split('/').filter(Boolean).slice(0, 2);
+      ad.router.navigate(seg);
+    },
   };
   return ad;
 }

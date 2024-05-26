@@ -3,8 +3,8 @@ import { CrmServerService } from '../../server/server.service';
 import { EventsBusService } from '../events/events.service';
 import { CrmAuthService } from '../auth/auth.service';
 import { BehaviorSubject, filter, switchMap } from 'rxjs';
-import { DTOCompany } from '../../server/company.service';
 import { whenTrue } from '../../utils';
+import { DTOCompany } from '../../server/dto';
 
 @Injectable({ providedIn: 'root' })
 export class CrmCompanyService {
@@ -29,10 +29,12 @@ export class CrmCompanyService {
   }
 
   selectCompanies() {
-    return this.loading$.pipe(
-      whenTrue(),
-      switchMap(() => this.companies$)
-    );
+    if (this.loading$.value)
+      return this.loading$.pipe(
+        whenTrue(),
+        switchMap(() => this.companies$)
+      );
+    return this.companies$;
   }
 
   activeCompany() {

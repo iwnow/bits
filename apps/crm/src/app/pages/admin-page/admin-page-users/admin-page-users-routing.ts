@@ -5,6 +5,9 @@ import { AdminPageUserCreateComponent } from './admin-page-users-list/admin-page
 import { AdminPageUsersListComponent } from './admin-page-users-list/admin-page-users-list.component';
 import { AdminPageUserEditComponent } from './admin-page-users-list/admin-page-user-edit/admin-page-user-edit.component';
 import { userResolver } from 'crm/resolvers/user.resolver';
+import { AdminPageUserEditInfoComponent } from './admin-page-users-list/admin-page-user-edit/admin-page-user-edit-info/admin-page-user-edit-info.component';
+import { userCompanyResolver } from 'crm/resolvers/user-company.resolver';
+import { AdminPageUserEditCompanyComponent } from './admin-page-users-list/admin-page-user-edit/admin-page-user-edit-company/admin-page-user-edit-company.component';
 
 export const adminPagesUsersRouting: Routes = [
   {
@@ -12,11 +15,23 @@ export const adminPagesUsersRouting: Routes = [
     component: AdminPageUserCreateComponent,
   },
   {
-    path: 'edit',
+    path: 'edit/:userId',
     component: AdminPageUserEditComponent,
     resolve: {
       user: userResolver,
+      userCompany: userCompanyResolver,
     },
+    children: [
+      {
+        path: 'info',
+        component: AdminPageUserEditInfoComponent,
+      },
+      {
+        path: 'company/:companyId',
+        component: AdminPageUserEditCompanyComponent,
+      },
+      rootPathTo('info'),
+    ],
   },
   {
     path: 'list',

@@ -20,6 +20,7 @@ export class User implements Omit<DTOUser, 'birth_date'> {
   @column({
     headerName: 'Имя',
     filter: 'agTextColumnFilter',
+    sortable: true,
   })
   name: string;
 
@@ -46,7 +47,10 @@ export class User implements Omit<DTOUser, 'birth_date'> {
     label: 'Логин',
     validators: [Validators.required],
   })
-  @column()
+  @column({
+    sortable: true,
+    filter: 'agTextColumnFilter',
+  })
   login: string;
 
   @frmControl({

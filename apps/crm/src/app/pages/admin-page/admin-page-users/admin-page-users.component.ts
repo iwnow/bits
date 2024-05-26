@@ -25,19 +25,15 @@ export class AdminPageUsersComponent implements OnInit {
 
   createMenuItems(): MenuItem[] {
     return [
-      {
-        label: 'Пользователи',
-        items: [
-          {
-            label: 'Список',
-            routerLink: 'users/list',
-          },
-          // {
-          //   label: 'Роли',
-          //   routerLink: 'users/roles',
-          // },
-        ],
-      },
+      // {
+      //   label: 'Пользователи',
+      //   items: [
+      //     {
+      //       label: 'Список',
+      //       routerLink: 'users/list',
+      //     },
+      //   ],
+      // },
     ];
   }
 }

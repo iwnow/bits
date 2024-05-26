@@ -1,4 +1,10 @@
-import { Component, ViewChild, input, output } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  ViewChild,
+  input,
+  output,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -19,6 +25,11 @@ export class ContentTabBarComponent {
 
   @ViewChild(Menubar)
   menubar: Menubar;
+
+  @HostBinding('class.epmty-menubar')
+  get isEmptyMenubar() {
+    return this.menu().length === 0;
+  }
 
   get menuItems() {
     return this.menubar?.visibleItems;

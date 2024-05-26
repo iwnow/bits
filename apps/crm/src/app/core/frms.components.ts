@@ -15,6 +15,12 @@ export const crmFrmComponents = {
   checkbox: {
     type: CheckboxComponent,
   },
+  groupCheckbox: {
+    type: CheckboxComponent,
+    inputs: {
+      group: true,
+    },
+  },
   number: {
     type: NumberComponent,
   },

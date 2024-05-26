@@ -1,0 +1,10 @@
+<p-panel [header]="'Права в компании ' + companyName()">
+  @if (userCompany(); as uc) {
+  <b-frms
+    [entity]="frmEntity"
+    [value]="uc"
+    fieldClass="col-12 md:col-6 lg:col-4"
+    formClass="grid"
+  ></b-frms>
+  }
+</p-panel>

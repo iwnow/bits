@@ -64,8 +64,38 @@
       }
 
       &.menu-opened {
-        b-ribbon-bar .b-ctb-row-menu {
-          padding-left: 13.5rem;
+        b-ribbon-bar {
+          .b-ctb-row-menu {
+            padding-left: 13.5rem;
+          }
+        }
+      }
+    }
+
+    &:not(.menu-opened) {
+      b-ribbon-bar {
+        .b-ctb-row-tabs {
+          & > p-button:first-child {
+            .p-button-icon {
+              color: var(--primary-300);
+            }
+          }
+        }
+      }
+    }
+
+    &:has(.nav-menu-empty) {
+      b-ribbon-bar {
+        .b-ctb-row-tabs {
+          & > p-button:first-child {
+            button {
+              cursor: default;
+              pointer-events: none;
+            }
+            .p-button-icon {
+              color: var(--gray-300);
+            }
+          }
         }
       }
     }

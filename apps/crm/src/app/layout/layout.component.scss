@@ -2,3 +2,11 @@
   padding-top: 3.5rem;
   padding-left: 3.725rem;
 }
+
+::ng-deep {
+  .layout-content:has(b-ribbon-bar.is-empty-menu) {
+    .admin-content {
+      padding-top: calc(3.5rem - 2px);
+    }
+  }
+}

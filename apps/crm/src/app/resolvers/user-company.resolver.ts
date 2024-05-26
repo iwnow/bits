@@ -7,11 +7,11 @@ import {
 import { CrmClientService } from 'crm-core';
 import { DTO } from 'crm-core';
 
-export const userResolver: ResolveFn<DTO.DTOUser> = (
+export const userCompanyResolver: ResolveFn<DTO.DTOCompanyUser[]> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  return inject(CrmClientService).server.admin.userId(
+  return inject(CrmClientService).server.admin.companyUser(
     +route.paramMap.get('userId')
   );
 };

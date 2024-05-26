@@ -1,3 +1,5 @@
+import { DTOCompany } from './company';
+
 export class DTOUser {
   id: number;
   name: string;
@@ -10,4 +12,12 @@ export class DTOUser {
   birth_date?: string;
   phone?: string;
   password?: string;
+}
+
+export class DTOCompanyUser {
+  id: number;
+  user_id: number;
+  company_id: number;
+  rights: string[];
+  company?: DTOCompany;
 }

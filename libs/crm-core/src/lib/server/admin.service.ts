@@ -1,16 +1,15 @@
 import { Injectable, inject } from '@angular/core';
 import { CommonService } from './common.service';
-import { Observable, map } from 'rxjs';
-import { DTOListRequest, DTOListResult, DTOUser } from './dto';
+import { Observable, forkJoin, map } from 'rxjs';
+import { DTOCompanyUser, DTOListRequest, DTOListResult, DTOUser } from './dto';
+import { CompanyService } from './company.service';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
   protected common = inject(CommonService);
+  protected company = inject(CompanyService);
 
   userList(args: DTOListRequest): Observable<DTOListResult<DTOUser>> {
-    args.sort_by = args.sort_by || 'id';
-    args.sort_is_desc =
-      typeof args.sort_is_desc === 'boolean' ? args.sort_is_desc : true;
     const url = this.common.apiUrl('users/search');
 
     return this.common.http.post<DTOListResult<DTOUser>>(url, args);
@@ -33,7 +32,7 @@ export class AdminService {
     return this.common.http.patch(url, body);
   }
 
-  userId<T = DTOUser>(id: number): Observable<T> {
+  userId(id: number) {
     const url = this.common.apiUrl('users/search');
     const args: DTOListRequest = {
       skip: 0,
@@ -51,7 +50,47 @@ export class AdminService {
     };
 
     return this.common.http
-      .post<DTOListResult<T>>(url, args)
+      .post<DTOListResult<DTOUser>>(url, args)
       .pipe(map((r) => r.data[0]));
+  }
+
+  companyUser(userId: number) {
+    const url = this.common.apiUrl('company-users/search');
+    const args: DTOListRequest = {
+      skip: 0,
+      limit: 100,
+      filters: {
+        op: 'AND',
+        items: [
+          {
+            key: 'user_id',
+            value: userId,
+            op: 'EQ',
+          },
+        ],
+      },
+    };
+
+    return forkJoin({
+      companyUsers: this.common.http
+        .post<DTOListResult<DTOCompanyUser>>(url, args)
+        .pipe(map((r) => r.data)),
+      companies: this.company.companies(),
+    }).pipe(
+      map((r) => {
+        r.companyUsers.forEach((cu) => {
+          cu.company = r.companies.find((i) => i.id === cu.company_id);
+        });
+        return r.companyUsers;
+      })
+    );
+  }
+
+  companyUserUpdate(e: Partial<DTOCompanyUser>) {
+    const url = this.common.apiUrl(`company-users/${e.id}`);
+    const body: any = {
+      rights: e.rights,
+    };
+    return this.common.http.put(url, body);
   }
 }
