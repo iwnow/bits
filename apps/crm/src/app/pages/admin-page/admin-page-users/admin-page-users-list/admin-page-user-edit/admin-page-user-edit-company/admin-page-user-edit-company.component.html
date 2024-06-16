@@ -1,6 +1,7 @@
 <p-panel [header]="'Права в компании ' + companyName()">
   @if (userCompany(); as uc) {
   <b-frms
+    #userCompanyRef
     [entity]="frmEntity"
     [value]="uc"
     fieldClass="col-12 md:col-6 lg:col-4"
@@ -19,11 +20,12 @@
     (onChange)="onSelectObject($event)"
   >
     <ng-template let-o pTemplate="item">
-      <div>{{ o.name }} ({{ o.address }})</div>
+      <div>{{ o.id }}. {{ o.name }} ({{ o.address }})</div>
     </ng-template>
   </p-dropdown>
   @if (userObject(); as uo) {
   <b-frms
+    #userObjectRef
     [entity]="frmEntityUserObject"
     [value]="uo"
     fieldClass="col-12 md:col-6 lg:col-4"

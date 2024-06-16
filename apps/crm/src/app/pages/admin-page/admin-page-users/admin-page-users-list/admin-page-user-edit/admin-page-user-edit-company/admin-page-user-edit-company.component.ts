@@ -6,7 +6,14 @@ import { inheritResolvers, parseErrorMessage } from 'crm-utils';
 import { uiElements } from 'crm/core/ui-elements';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { PanelModule } from 'primeng/panel';
-import { firstValueFrom, map, takeUntil, tap } from 'rxjs';
+import {
+  Observable,
+  firstValueFrom,
+  forkJoin,
+  map,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 
@@ -34,8 +41,11 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
     return this.userCompany()?.company?.name || '';
   });
 
-  @ViewChild(FrmsComponent)
+  @ViewChild('userCompanyRef')
   frms: FrmsComponent;
+
+  @ViewChild('userObjectRef')
+  userObjectRef: FrmsComponent;
 
   selectedObject: DTO.ICompanyObject;
   saving = false;
@@ -99,31 +109,54 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
     }
     const { rights }: DTO.DTOCompanyUser = this.frms.getValue();
     const uc = this.userCompany();
-    this.ad.crm.server.admin
-      .companyUserUpdate({
-        id: uc.id,
-        rights,
-      })
-      .subscribe({
-        next: () => {
-          this.saving = false;
-          const rduc = this.routeData.userCompany.find((i) => i.id === uc.id);
-          rduc.rights = rights;
-          this.ad.msg.add({
-            severity: 'success',
-            summary: 'Права успешно сохранены',
-          });
-        },
-        error: (err) => {
-          this.saving = false;
-          const message = parseErrorMessage(err);
-          this.ad.msg.add({
-            severity: 'error',
-            summary: 'Ошибка редактирования права',
-            detail: message,
-          });
-        },
+    const companyUserUpdate$ = this.ad.crm.server.admin.companyUserUpdate({
+      id: uc.id,
+      rights,
+    });
+
+    const uo = this.userObject();
+    const { rights: userObjectRights } = this.userObjectRef.getValue<any>();
+    let updateUserObjectRights$: Observable<any>;
+    if (uo.id) {
+      updateUserObjectRights$ = this.ad.crm.server.admin.updateUserObject({
+        rights: userObjectRights,
+        id: uo.id,
       });
+    } else {
+      updateUserObjectRights$ = this.ad.crm.server.admin
+        .createUserObject({
+          company_user: uc.id,
+          object_id: uo.object_id,
+          rights: userObjectRights,
+        })
+        .pipe(
+          tap((r) => {
+            uo.id = r.detail.id;
+            this.userObject.set({ ...uo });
+          })
+        );
+    }
+
+    forkJoin([companyUserUpdate$, updateUserObjectRights$]).subscribe({
+      next: () => {
+        this.saving = false;
+        const rduc = this.routeData.userCompany.find((i) => i.id === uc.id);
+        rduc.rights = rights;
+        this.ad.msg.add({
+          severity: 'success',
+          summary: 'Права успешно сохранены',
+        });
+      },
+      error: (err) => {
+        this.saving = false;
+        const message = parseErrorMessage(err);
+        this.ad.msg.add({
+          severity: 'error',
+          summary: 'Ошибка редактирования права',
+          detail: message,
+        });
+      },
+    });
   }
 
   cancel() {

@@ -149,4 +149,14 @@ export class AdminService {
       .post<DTOListResult<DTOCompanyUserObject>>(url, args)
       .pipe(map((r) => r.data[0]));
   }
+
+  createUserObject(e: Partial<DTOCompanyUserObject>) {
+    const url = this.common.apiUrl(`company-user-objects`);
+    return this.common.http.post(url, e);
+  }
+
+  updateUserObject(e: Partial<DTOCompanyUserObject>) {
+    const url = this.common.apiUrl(`company-user-objects/${e.id}`);
+    return this.common.http.put(url, e);
+  }
 }
