@@ -5,6 +5,7 @@ import { DTO } from 'crm-core';
 import { inheritResolvers } from 'crm-utils';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { MenuItem } from 'primeng/api';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'b-admin-page-user-edit',
@@ -45,5 +46,33 @@ export class AdminPageUserEditComponent implements OnInit {
     this.ad.destroy$.subscribe(() => {
       this.ad.page.clearMenuItems();
     });
+    this.ad
+      .onUpdateNavMenu()
+      .pipe(takeUntil(this.ad.destroy$))
+      .subscribe((e) => {
+        if (Array.isArray(e?.userCompany)) {
+          const menu: MenuItem[] = [
+            {
+              label: user.name,
+              items: [
+                {
+                  label: 'Инфо',
+                  routerLink: `users/edit/${user.id}/info`,
+                },
+              ],
+            },
+            {
+              label: 'Компании',
+              items: e.userCompany.map((i) => {
+                return {
+                  label: i.company.name,
+                  routerLink: `users/edit/${user.id}/company/${i.company_id}`,
+                };
+              }),
+            },
+          ];
+          this.ad.page.updateMenuItems(menu);
+        }
+      });
   }
 }

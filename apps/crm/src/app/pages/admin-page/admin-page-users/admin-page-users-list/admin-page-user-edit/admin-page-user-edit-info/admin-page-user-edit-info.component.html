@@ -6,3 +6,14 @@
     formClass="grid"
   ></b-frms>
 </p-panel>
+<p-panel header="Доступ к компании" class="block mt-2">
+  <div class="flex flex-column gap-2">
+    @for (comp of companies(); track comp.id) {
+    <p-checkbox
+      [label]="comp.name"
+      [value]="comp.id"
+      [(ngModel)]="selectedCompanies"
+    />
+    }
+  </div>
+</p-panel>

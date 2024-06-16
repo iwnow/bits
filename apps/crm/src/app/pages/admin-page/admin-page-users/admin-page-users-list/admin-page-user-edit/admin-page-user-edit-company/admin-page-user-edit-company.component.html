@@ -8,3 +8,26 @@
   ></b-frms>
   }
 </p-panel>
+
+<p-panel header="Права на объект" class="block mt-2">
+  <p-dropdown
+    [(ngModel)]="selectedObject"
+    [options]="objects()"
+    optionLabel="name"
+    placeholder="Объект"
+    styleClass="dropdown-objects"
+    (onChange)="onSelectObject($event)"
+  >
+    <ng-template let-o pTemplate="item">
+      <div>{{ o.name }} ({{ o.address }})</div>
+    </ng-template>
+  </p-dropdown>
+  @if (userObject(); as uo) {
+  <b-frms
+    [entity]="frmEntityUserObject"
+    [value]="uo"
+    fieldClass="col-12 md:col-6 lg:col-4"
+    formClass="grid mt-4"
+  ></b-frms>
+  }
+</p-panel>

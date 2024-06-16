@@ -10,8 +10,8 @@ export class CompanyService {
 
   protected lastCompanies: DTOCompany[];
 
-  companies() {
-    if (this.lastCompanies) {
+  companies(invalidate = false) {
+    if (this.lastCompanies && !invalidate) {
       return of(structuredClone(this.lastCompanies));
     }
     const url = this.common.apiUrl('companies');

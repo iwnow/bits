@@ -47,7 +47,6 @@ export class CheckboxComponent
         }
       }
       fc.patchValue(values);
-      console.log('patchValue', values);
     });
   });
 
