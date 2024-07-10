@@ -13,7 +13,9 @@ export const appSubsystemRoutes: Route[] = [
   },
   {
     path: '',
-    loadChildren: () => import('./pages/home-page/home-page.module'),
+    // loadChildren: () => import('./pages/home-page/home-page.module'),
+    pathMatch: 'full',
+    redirectTo: 'admin'
   },
   notFoundPath(),
 ];

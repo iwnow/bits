@@ -17,6 +17,7 @@ export class LeftBarComponent {
         path: '/',
         icon: 'star',
         tooltip: 'Избранное',
+        disabled: true,
       },
       {
         path: '/clients',

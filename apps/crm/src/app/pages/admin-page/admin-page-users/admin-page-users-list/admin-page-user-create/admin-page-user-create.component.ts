@@ -47,6 +47,8 @@ export class AdminPageUserCreateComponent implements OnInit {
     this.saving = true;
     const user = DOMAIN.toDTO<DTO.DTOUser>(this.ucc.getUser(), DOMAIN.User);
 
+    user.is_admin = !!user.is_admin;
+
     this.ad.crm.server.admin.createUser(user).subscribe({
       next: () => {
         this.saving = false;
