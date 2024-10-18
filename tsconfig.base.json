@@ -18,13 +18,13 @@
     "noPropertyAccessFromIndexSignature": false,
     "allowSyntheticDefaultImports": true,
     "paths": {
+      "bits-frms": ["libs/frms/src/index.ts"],
       "bits-grid": ["libs/grid/src/index.ts"],
       "crm-core": ["libs/crm-core/src/index.ts"],
       "crm-utils": ["libs/crm-utils/src/index.ts"],
       "crm/*": ["./apps/crm/src/app/*"],
       "crm/mobile": ["./apps/crm-mobile/src/exports.ts"],
-      "crm/mobile/*": ["./apps/crm-mobile/src/app/*"],
-      "bits-frms": ["libs/frms/src/index.ts"]
+      "crm/mobile/*": ["./apps/crm-mobile/src/app/*"]
     }
   },
   "exclude": ["tmp"]

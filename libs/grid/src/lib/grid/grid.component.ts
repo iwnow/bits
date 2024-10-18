@@ -17,7 +17,7 @@ import {
   RowModelType,
 } from '@ag-grid-community/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {} from '@angular/common/http';
 import {
   Component,
   EventEmitter,
@@ -52,7 +52,7 @@ ModuleRegistry.registerModules([
 @Component({
   selector: 'b-grid',
   standalone: true,
-  imports: [CommonModule, AgGridAngular, HttpClientModule],
+  imports: [CommonModule, AgGridAngular],
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.scss',
   encapsulation: ViewEncapsulation.None,
