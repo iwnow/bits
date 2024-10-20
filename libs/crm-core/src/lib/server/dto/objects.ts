@@ -5,44 +5,43 @@ export interface DTOCompanyUserObject {
   id: number;
 }
 
-export interface ICompanyObject {
+export interface DTOCompanyObject {
   id: number;
   address: string;
   name: string;
-  city: ICity;
-  district: ICityDistrict;
-  places: IPlace[];
+  city: DTOCity;
+  district: DTOCityDistrict;
+  places: DTOPlace[];
   rights?: string[];
-
-  city_id: number;
-  company_id: number;
-  district_id: number;
+  city_id?: number;
+  company_id?: number;
+  district_id?: number;
 }
 
-export interface ICity {
+export interface DTOCity {
   name: string;
   tzone: string;
   id: number;
 }
 
-export interface ICityDistrict {
+export interface DTOCityDistrict {
   name: string;
   id: number;
   city_id: number;
 }
 
-export interface IPlace {
+export interface DTOPlace {
   id: number;
   name: string;
   photo_file_id: number;
   url: string;
-  cover: IPlaceCover;
+  cover: DTOPlaceCover;
   cover_id: number;
-  object?: ICompanyObject;
+  object?: DTOCompanyObject;
   is_sectioned?: boolean;
   section_columns: number;
   section_rows: number;
-  sections: IPlaceSection[];
+  sections: DTOPlaceSection[];
   cameras?: Array<{
     url: string;
     name: string;
@@ -52,12 +51,12 @@ export interface IPlace {
   dimension_width?: number;
 }
 
-export interface IPlaceCover {
+export interface DTOPlaceCover {
   name: string;
   id: number;
 }
 
-export interface IPlaceSection {
+export interface DTOPlaceSection {
   id: number;
   column_end: number;
   column_start: number;
@@ -66,6 +65,6 @@ export interface IPlaceSection {
   row_start: number;
 }
 
-export function sectionName(section: IPlaceSection) {
+export function sectionName(section: DTOPlaceSection) {
   return `${section.name} (к[${section.column_start}:${section.column_end}], c[${section.row_start}:${section.row_end}])`;
 }

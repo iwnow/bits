@@ -47,11 +47,11 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
   @ViewChild('userObjectRef')
   userObjectRef: FrmsComponent;
 
-  selectedObject: DTO.ICompanyObject;
+  selectedObject: DTO.DTOCompanyObject;
   saving = false;
   routeData: any;
   loadingObjects = signal(true);
-  objects = signal<DTO.ICompanyObject[]>([]);
+  objects = signal<DTO.DTOCompanyObject[]>([]);
   userObject = signal<Partial<DTO.DTOCompanyUserObject>>(null);
 
   async ngOnInit() {
@@ -164,7 +164,7 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
   }
 
   onSelectObject(e) {
-    const o: DTO.ICompanyObject = e.value;
+    const o: DTO.DTOCompanyObject = e.value;
     const userCompanyId = this.userCompany().id;
     this.ad.crm.server.admin
       .companyUserObject(userCompanyId, o.id)

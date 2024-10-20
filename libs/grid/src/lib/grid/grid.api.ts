@@ -1,5 +1,6 @@
 import {
   ColDef,
+  ColGroupDef,
   GridOptions,
   IServerSideGetRowsParams,
 } from '@ag-grid-community/core';
@@ -10,7 +11,7 @@ export interface BGridOptions {
   getRows(params: GetRowsParams): void;
 }
 
-export interface BGridCol extends ColDef {
+export interface BGridCol extends ColDef, Partial<ColGroupDef> {
   data?: any;
 }
 

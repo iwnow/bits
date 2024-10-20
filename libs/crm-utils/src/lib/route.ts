@@ -1,4 +1,4 @@
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 export function inheritResolvers(route: ActivatedRoute) {
   return inheritResolversInternal(route);
@@ -17,4 +17,14 @@ function inheritResolversInternal(
     ...parent,
     ...data,
   });
+}
+
+export function objectToQueryParams(o: Record<any, any>): Params {
+  const ret: any = {};
+  if (o && typeof o === 'object') {
+    Object.entries(o).forEach(([k, v]) => {
+      ret[k] = JSON.stringify(v);
+    });
+  }
+  return ret;
 }

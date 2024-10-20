@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { CommonService } from './common.service';
 import { Observable, forkJoin, map } from 'rxjs';
 import {
+  DTOCompanyObject,
   DTOCompanyUser,
   DTOCompanyUserObject,
   DTOListRequest,
@@ -9,6 +10,7 @@ import {
   DTOUser,
 } from './dto';
 import { CompanyService } from './company.service';
+import { objectToQueryParams } from 'crm-utils';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -158,5 +160,15 @@ export class AdminService {
   updateUserObject(e: Partial<DTOCompanyUserObject>) {
     const url = this.common.apiUrl(`company-user-objects/${e.id}`);
     return this.common.http.put(url, e);
+  }
+
+  objectList(
+    args: DTOListRequest
+  ): Observable<DTOListResult<DTOCompanyObject>> {
+    const url = this.common.apiUrl('objects');
+
+    return this.common.http.get<DTOListResult<DTOCompanyObject>>(url, {
+      params: objectToQueryParams(args),
+    });
   }
 }
