@@ -4,6 +4,7 @@ import { AdminPageTariffsComponent } from './admin-page-tariffs/admin-page-tarif
 import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.component';
 import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
 import { AdminPageComponent } from './admin-page.component';
+import adminPagesObjectsRouting from './admin-page-objects/admin-page-objects-routing';
 
 export const adminPagesRouting: Routes = [
   {
@@ -19,6 +20,7 @@ export const adminPagesRouting: Routes = [
       {
         path: 'objects',
         component: AdminPageObjectsComponent,
+        children: adminPagesObjectsRouting,
       },
       {
         path: 'tariffs',
