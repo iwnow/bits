@@ -165,10 +165,14 @@ export class AdminService {
   objectList(
     args: DTOListRequest
   ): Observable<DTOListResult<DTOCompanyObject>> {
-    const url = this.common.apiUrl('objects');
+    const url = this.common.apiUrl('objects/search');
 
-    return this.common.http.get<DTOListResult<DTOCompanyObject>>(url, {
-      params: objectToQueryParams(args),
-    });
+    return this.common.http.post<DTOListResult<DTOCompanyObject>>(url, args);
+  }
+
+  object(id: number): Observable<DTOCompanyObject> {
+    const url = this.common.apiUrl(`objects/${id}`);
+
+    return this.common.http.get<DTOCompanyObject>(url);
   }
 }

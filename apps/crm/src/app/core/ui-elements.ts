@@ -6,6 +6,7 @@ export const uiElements: {
     cancelButton: MenuItemCreate;
     createButton: MenuItemCreate;
     editButton: MenuItemCreate;
+    closeButton: MenuItemCreate;
   };
   icons: {
     edit: IconFactory;
@@ -22,6 +23,14 @@ export const uiElements: {
     }),
     cancelButton: (e) => ({
       label: 'Отмена',
+      icon: 'pi pi-times',
+      iconStyle: {
+        color: 'var(--red-500)',
+      },
+      ...(e || {}),
+    }),
+    closeButton: (e) => ({
+      label: 'Закрыть',
       icon: 'pi pi-times',
       iconStyle: {
         color: 'var(--red-500)',

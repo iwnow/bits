@@ -7,6 +7,7 @@ export class FrmsControlBaseComponent {
   formControl = input<FormControl>(null);
 
   placeholder = input('');
+  disabled = input(false);
 
   destroy$ = useDestroyStream();
 }

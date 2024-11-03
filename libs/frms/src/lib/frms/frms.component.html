@@ -1,4 +1,4 @@
-<form [formGroup]="_fg()" class="{{ formClass() }}">
+<!-- <form [formGroup]="_fg()" class="{{ formClass() }}">
   @for (control of _controls(); track $index) {
 
   <div class="frms-field" class="{{ fieldClass() }}">
@@ -20,4 +20,105 @@
   </div>
 
   }
+</form> -->
+
+<form [formGroup]="_fg()" class="{{ formClass() || 'b-frms-form' }}">
+  @for (centry of _fg().controls | keyvalue; track centry) { @if
+  (isFormControl(centry.value)) {
+
+  <ng-container
+    *ngTemplateOutlet="
+      t_control;
+      context: {
+        $implicit: centry.value,
+        desc: getControlDesc(centry.value, centry.key),
+        field: centry.key,
+        path: [centry.key]
+      }
+    "
+  ></ng-container>
+
+  } @else if (isFormGroup(centry.value)) {
+  <ng-container
+    *ngTemplateOutlet="
+      t_form;
+      context: {
+        $implicit: centry.value,
+        field: centry.key,
+        path: [centry.key]
+      }
+    "
+  ></ng-container>
+  } }
 </form>
+
+<ng-template #t_form let-fg let-field="field" let-path="path">
+  <div
+    [formGroup]="fg.parent"
+    class="frms-group-field frms-container-field"
+    [attr.data-field]="field"
+    [attr.data-path]="path.join('.')"
+    [style.order]="getControlOrder(path)"
+  >
+    <div formGroupName="{{ field }}" class="frms-group-name-container">
+      @for (centry of fg.controls | keyvalue; track centry) { @if
+      (isFormControl(centry.value)) {
+
+      <ng-container
+        *ngTemplateOutlet="
+          t_control;
+          context: {
+            $implicit: centry.value,
+            desc: getControlDesc(centry.value, centry.key),
+            path: addPath(path, centry.key)
+          }
+        "
+      ></ng-container>
+
+      } @else if (isFormGroup(centry.value)) {
+      <ng-container
+        *ngTemplateOutlet="
+          t_form;
+          context: {
+            $implicit: centry.value,
+            field: centry.key,
+            path: addPath(path, centry.key)
+          }
+        "
+      ></ng-container>
+      } }
+    </div>
+  </div>
+</ng-template>
+
+<ng-template
+  #t_control
+  let-control
+  let-desc="desc"
+  let-field="field"
+  let-path="path"
+>
+  <div
+    class="frms-field frms-container-field"
+    class="{{ fieldClass() }}"
+    [attr.data-field]="field"
+    [attr.data-path]="path.join('.')"
+    [style.order]="getControlOrder(path)"
+  >
+    @if (control.$options?.label !== false) {
+    <div class="frms-field-label">
+      {{ control.$options?.label || control.name }}
+    </div>
+    }
+
+    <div class="frms-field-control">
+      <ng-container
+        *ngComponentOutlet="
+          desc.componentType;
+          inputs: desc.componentInputs;
+          injector: _frmsInjector
+        "
+      />
+    </div>
+  </div>
+</ng-template>

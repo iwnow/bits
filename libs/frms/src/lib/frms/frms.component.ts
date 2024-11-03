@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   Injector,
   OnInit,
@@ -8,11 +9,18 @@ import {
   inject,
   input,
 } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import {
   FrmComponents,
   FrmSchema,
+  FrmsMeta,
   formGroupFromSchema,
+  frmsMeta,
   schemaFromEntity,
 } from './frms.core';
 
@@ -22,6 +30,7 @@ import {
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './frms.component.html',
   styleUrl: './frms.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FrmsComponent {
   _componentsInitial = inject(FrmComponents, { optional: true });
@@ -49,29 +58,6 @@ export class FrmsComponent {
     }
     return fg;
   });
-  _controls = computed(() => {
-    const components = this.components();
-    const schema = this._schema();
-    const fg = this._fg();
-    const result = Object.entries(schema.meta.controls).map(
-      ([name, options]) => {
-        const componentType = components[options.type]?.type;
-        const componentInputs = {
-          ...(components[options.type]?.inputs || {}),
-          placeholder: options.placeholder || options.label,
-          ...(options.inputs || {}),
-          formControl: fg.get(name),
-        };
-        return {
-          name,
-          options,
-          componentType,
-          componentInputs,
-        };
-      }
-    );
-    return result;
-  });
 
   get valid() {
     return this._fg().valid;
@@ -96,5 +82,46 @@ export class FrmsComponent {
         },
       ],
     });
+  }
+
+  isFormGroup(e: any) {
+    return e instanceof FormGroup;
+  }
+
+  isFormControl(e: any) {
+    return e instanceof FormControl;
+  }
+
+  getControlDesc(control, field) {
+    const components = this.components();
+    const options = control.$options;
+    const componentType = components[options.type]?.type;
+    const componentInputs = {
+      ...(components[options.type]?.inputs || {}),
+      placeholder: options.placeholder || options.label,
+      ...(options.inputs || {}),
+      formControl: control,
+    };
+    return {
+      field,
+      options,
+      componentType,
+      componentInputs,
+    };
+  }
+
+  addPath(path: string[], ...fields) {
+    return [...path, ...fields];
+  }
+
+  getControlOrder(path: string[]) {
+    let prefm: FrmsMeta;
+    const meta = path.reduce((fm, field) => {
+      prefm = fm;
+      fm = fm.groups?.[field]?.type ? frmsMeta(fm.groups[field].type) : fm;
+      return fm;
+    }, this._entityScehma().meta);
+    const order = prefm.fields.indexOf(path[path.length - 1]);
+    return order;
   }
 }

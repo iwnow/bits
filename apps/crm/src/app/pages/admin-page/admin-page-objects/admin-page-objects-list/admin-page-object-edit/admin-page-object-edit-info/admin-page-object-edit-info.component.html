@@ -1,0 +1,11 @@
+<p-panel
+  header="{{
+    'Редактирование обьекта' +
+      (companyObjectName ? ' &#x00AB;' + companyObjectName + '&#x00BB;' : '')
+  }}"
+>
+  <b-frms
+    [entity]="companyObjectEntity"
+    [value]="companyObject"
+  ></b-frms>
+</p-panel>

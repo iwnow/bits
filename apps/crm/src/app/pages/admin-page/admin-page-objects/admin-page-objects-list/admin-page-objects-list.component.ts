@@ -89,10 +89,10 @@ export class AdminPageObjectsListComponent implements OnInit {
           .objectList(crmReq)
           .pipe(takeUntil(this.ad.destroy$))
           .subscribe({
-            next: (r: any) => {
+            next: (r) => {
               req.params.success({
-                rowData: r,
-                rowCount: r.length,
+                rowData: r.data,
+                rowCount: r.total,
               });
             },
             error: (err) => {

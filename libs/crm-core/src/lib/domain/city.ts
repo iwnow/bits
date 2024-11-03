@@ -1,18 +1,19 @@
 import { Validators } from '@angular/forms';
 import { frmGroup, frmControl } from 'bits-frms';
 import { column } from 'bits-grid';
-import { DTOCity } from '../server/dto';
+import { DTOAddressCity } from '../server/dto';
 import { addDTOMapper } from './to-dto';
 
 @frmGroup()
-export class City implements DTOCity {
+export class City implements DTOAddressCity {
   @frmControl({
     type: 'string',
-    label: 'Название',
+    label: 'Город',
     validators: [Validators.required],
+    disabled: true,
   })
   @column({
-    headerName: 'Название',
+    headerName: 'Город',
     filter: 'agTextColumnFilter',
     sortable: true,
   })
@@ -22,6 +23,7 @@ export class City implements DTOCity {
     type: 'string',
     label: 'Таймзона',
     validators: [Validators.required],
+    disabled: true,
   })
   @column({
     headerName: 'Таймзона',
@@ -35,8 +37,8 @@ export class City implements DTOCity {
   })
   id: number;
 
-  toDTO(): DTOCity {
-    const dto: DTOCity = {
+  toDTO(): DTOAddressCity {
+    const dto: DTOAddressCity = {
       ...this,
     };
     return dto;

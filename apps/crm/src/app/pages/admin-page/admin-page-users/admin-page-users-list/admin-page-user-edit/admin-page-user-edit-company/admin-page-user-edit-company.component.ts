@@ -61,7 +61,7 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
           this.saveRights();
         },
       }),
-      uiElements.menuItems.cancelButton({
+      uiElements.menuItems.closeButton({
         command: () => {
           this.cancel();
         },

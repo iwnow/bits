@@ -54,7 +54,7 @@ export class AdminPageUserEditInfoComponent implements OnInit {
           this.saveUser();
         },
       }),
-      uiElements.menuItems.cancelButton({
+      uiElements.menuItems.closeButton({
         command: () => {
           this.cancel();
         },

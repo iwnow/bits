@@ -1,5 +1,12 @@
 :host {
   display: block;
+
+  .b-frms-form,
+  .frms-group-name-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 }
 
 .frms-field {
@@ -7,8 +14,7 @@
     font-weight: 500;
     margin-bottom: 0.5rem;
   }
+}
 
-  & + & {
-    margin-top: 1rem;
-  }
+.frms-container-field {
 }

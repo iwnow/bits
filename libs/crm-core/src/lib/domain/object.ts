@@ -2,19 +2,19 @@ import { Validators } from '@angular/forms';
 import { frmControl, frmGroup } from 'bits-frms';
 import { column } from 'bits-grid';
 import {
-  DTOCity,
-  DTOCityDistrict,
+  DTOAddressCity,
+  DTOAddressDistrict,
+  DTOAddressInfo,
   DTOCompanyObject,
   DTOPlace,
 } from '../server/dto';
 import { dateUtil } from 'crm-utils';
 import { addDTOMapper } from './to-dto';
 import { City } from './city';
+import { AddressInfo } from './address-info';
 
 @frmGroup()
-export class CompanyObject
-  implements Omit<DTOCompanyObject, 'city_id' | 'company_id' | 'district_id'>
-{
+export class CompanyObject {
   @column({
     hide: true,
   })
@@ -32,36 +32,27 @@ export class CompanyObject
   })
   name: string;
 
-  @frmControl({
-    type: 'string',
-    label: 'Адрес',
-    validators: [Validators.required],
-  })
+  @frmGroup(AddressInfo)
   @column({
     headerName: 'Адрес',
-    filter: 'agTextColumnFilter',
+    field: 'address_info.address',
   })
-  address: string;
+  address_info: DTOAddressInfo;
 
-  @frmGroup(City)
   @column({
     headerName: 'Город',
-    children: [
-      { headerName: 'Название', field: 'city.name' },
-      { headerName: 'Таймзона', field: 'city.tzone' },
-    ],
+    field: 'address_info.city.name',
   })
-  city: DTOCity;
+  city: DTOAddressCity;
 
-  @column({
-    headerName: 'Район',
-    field: 'district.name',
-  })
-  district: DTOCityDistrict;
-
+  district: DTOAddressDistrict;
   places: DTOPlace[];
 
-  rights?: string[];
+  @column({
+    headerName: 'Компания',
+    field: 'company.name',
+  })
+  company_name: string;
 
   toDTO(): DTOCompanyObject {
     const dto: DTOCompanyObject = {

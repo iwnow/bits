@@ -54,12 +54,14 @@ export function frmsMeta(type: any) {
   return proto[SYM_FRMS] as FrmsMeta;
 }
 
-export function frmGroup(type?: any) {
+export function frmGroup(type?: any, options?: FrmControlOptions) {
   return (ctor: any, field?: string) => {
     const meta = frmsMeta(ctor);
     if (typeof field === 'string') {
       meta.groups = meta.groups || {};
-      meta.groups[field] = { type };
+      meta.groups[field] = { type, options };
+      meta.fields = meta.fields || [];
+      meta.fields.push(field);
     }
   };
 }
@@ -70,6 +72,8 @@ export function frmControl(options: FrmControlOptions) {
     if (typeof field === 'string') {
       meta.controls = meta.controls || {};
       meta.controls[field] = options;
+      meta.fields = meta.fields || [];
+      meta.fields.push(field);
     }
   };
 }
@@ -92,9 +96,22 @@ export function schemaFromEntity(e: any): FrmSchema {
 
 export function formGroupFromSchema(sc: FrmSchema, fb: FormBuilder): FormGroup {
   const controls: any = {};
-  Object.entries(sc.meta.controls).forEach(([name, options]) => {
-    controls[name] = [undefined, options.validators];
-  });
+  const isGroup = (f: string) => f in (sc.meta.groups || {});
+  for (const field of sc.meta.fields) {
+    if (isGroup(field)) {
+      const options = sc.meta.groups[field];
+      const meta = frmsMeta(options.type);
+      controls[field] = formGroupFromSchema({ meta }, fb);
+      controls[field].$options = options;
+    } else {
+      const options = sc.meta.controls[field];
+      controls[field] = fb.control(
+        { value: undefined, disabled: options.disabled },
+        options.validators
+      );
+      controls[field].$options = options;
+    }
+  }
   const fg = fb.group(controls);
   return fg;
 }
@@ -103,6 +120,7 @@ export type FrmsMeta = {
   controls: Record<string, FrmControlOptions>;
   groups: Record<string, FrmControlOptions>;
   arrays: Record<string, FrmControlOptions>;
+  fields: string[];
 };
 
 export type FrmControlOptions = Extendable<
@@ -115,6 +133,7 @@ export type FrmControlOptions = Extendable<
         | AsyncValidatorFn
         | ValidatorFn[]
         | AsyncValidatorFn[];
+      disabled: boolean;
     }>,
     'type'
   >

@@ -29,7 +29,7 @@ export class AdminPageUserCreateComponent implements OnInit {
           this.saveUser();
         },
       }),
-      uiElements.menuItems.cancelButton({
+      uiElements.menuItems.closeButton({
         command: () => {
           this.cancel();
         },
