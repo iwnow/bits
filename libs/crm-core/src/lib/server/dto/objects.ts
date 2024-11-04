@@ -1,4 +1,5 @@
 import { DTOAddressCity, DTOAddressDistrict, DTOAddressInfo } from './address-info';
+import { DTOCompany } from './company';
 
 export interface DTOCompanyUserObject {
   company_user: number;
@@ -14,10 +15,12 @@ export interface DTOCompanyObject {
   city: DTOAddressCity;
   district: DTOAddressDistrict;
   places: DTOPlace[];
+  address?: string;
   rights?: string[];
   city_id?: number;
   company_id?: number;
   district_id?: number;
+  company?: DTOCompany;
 }
 
 export interface DTOPlace {

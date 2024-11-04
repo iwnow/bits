@@ -8,3 +8,7 @@ export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 export interface Type<T> extends Function {
   new (...args: any[]): T;
 }
+
+export function ket<T>(type: Type<T>, key: keyof T) {
+  return key as string;
+}

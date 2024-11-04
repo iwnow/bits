@@ -35,6 +35,12 @@ export class City implements DTOAddressCity {
   @column({
     hide: true,
   })
+  @frmControl({
+    type: 'number',
+    label: 'Id',
+    disabled: true,
+    hide: true,
+  })
   id: number;
 
   toDTO(): DTOAddressCity {

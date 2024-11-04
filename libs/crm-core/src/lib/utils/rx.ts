@@ -22,3 +22,10 @@ export function whenTrue<T>() {
     map((i) => i as NonNullable<T>)
   );
 }
+
+export function whenFalse<T>() {
+  return pipe(
+    filter<T>((e) => !e),
+    map((i) => i as NonNullable<T>)
+  );
+}

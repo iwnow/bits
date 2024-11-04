@@ -4,12 +4,13 @@ import { AdminPageObjectsListComponent } from './admin-page-objects-list/admin-p
 import { AdminPageObjectEditComponent } from './admin-page-objects-list/admin-page-object-edit/admin-page-object-edit.component';
 import { objectResolver } from 'crm/resolvers/object.resolver';
 import { AdminPageObjectEditInfoComponent } from './admin-page-objects-list/admin-page-object-edit/admin-page-object-edit-info/admin-page-object-edit-info.component';
+import { AdminPageObjectCreateComponent } from './admin-page-objects-list/admin-page-object-create/admin-page-object-create.component';
 
 export const adminPagesObjectsRouting: Routes = [
-  // {
-  //   path: 'create',
-  //   component: AdminPageUserCreateComponent,
-  // },
+  {
+    path: 'create',
+    component: AdminPageObjectCreateComponent,
+  },
   {
     path: 'edit/:objectId',
     component: AdminPageObjectEditComponent,

@@ -59,6 +59,7 @@
     [attr.data-field]="field"
     [attr.data-path]="path.join('.')"
     [style.order]="getControlOrder(path)"
+    [class.frms-field-hidden]="fg.$options?.hide"
   >
     <div formGroupName="{{ field }}" class="frms-group-name-container">
       @for (centry of fg.controls | keyvalue; track centry) { @if
@@ -104,6 +105,7 @@
     [attr.data-field]="field"
     [attr.data-path]="path.join('.')"
     [style.order]="getControlOrder(path)"
+    [class.frms-field-hidden]="control.$options?.hide"
   >
     @if (control.$options?.label !== false) {
     <div class="frms-field-label">

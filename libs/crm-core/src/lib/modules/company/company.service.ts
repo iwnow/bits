@@ -2,8 +2,8 @@ import { Injectable, inject } from '@angular/core';
 import { CrmServerService } from '../../server/server.service';
 import { EventsBusService } from '../events/events.service';
 import { CrmAuthService } from '../auth/auth.service';
-import { BehaviorSubject, filter, switchMap } from 'rxjs';
-import { whenTrue } from '../../utils';
+import { BehaviorSubject, filter, Observable, switchMap } from 'rxjs';
+import { whenFalse, whenTrue } from '../../utils';
 import { DTOCompany } from '../../server/dto';
 
 @Injectable({ providedIn: 'root' })
@@ -29,19 +29,11 @@ export class CrmCompanyService {
   }
 
   selectCompanies() {
-    if (this.loading$.value)
-      return this.loading$.pipe(
-        whenTrue(),
-        switchMap(() => this.companies$)
-      );
-    return this.companies$;
+    return this.ofLoading(this.companies$);
   }
 
   activeCompany() {
-    return this.loading$.pipe(
-      whenTrue(),
-      switchMap(() => this.activeCompany$)
-    );
+    return this.ofLoading(this.activeCompany$);
   }
 
   selectActiveCompany(id: number) {
@@ -49,6 +41,15 @@ export class CrmCompanyService {
       name: this.EVENTS.selectActiveCompany,
       detail: { id },
     });
+  }
+
+  protected ofLoading<T>(stream$: Observable<T>) {
+    if (this.loading$.value)
+      return this.loading$.pipe(
+        whenFalse(),
+        switchMap(() => stream$)
+      );
+    return stream$;
   }
 
   constructor() {

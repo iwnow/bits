@@ -8,14 +8,21 @@ import {
   DTOCompanyObject,
   DTOPlace,
 } from '../server/dto';
-import { dateUtil } from 'crm-utils';
+import { dateUtil, ket } from 'crm-utils';
 import { addDTOMapper } from './to-dto';
 import { City } from './city';
 import { AddressInfo } from './address-info';
+import { Company } from './company';
 
 @frmGroup()
 export class CompanyObject {
   @column({
+    hide: true,
+  })
+  @frmControl({
+    type: 'number',
+    label: 'Id',
+    disabled: true,
     hide: true,
   })
   id: number;
@@ -53,6 +60,18 @@ export class CompanyObject {
     field: 'company.name',
   })
   company_name: string;
+
+  @frmControl({
+    type: 'select',
+    inputs: {
+      textField: ket(Company, 'name'),
+      itemsLoader: 'company',
+    },
+    label: 'Компания',
+    disabled: true,
+    validators: [Validators.required],
+  })
+  company: Company;
 
   toDTO(): DTOCompanyObject {
     const dto: DTOCompanyObject = {

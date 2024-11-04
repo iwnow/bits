@@ -4,6 +4,7 @@ import { GenderComponent } from 'crm/components/gender/gender.component';
 import { InputTextComponent } from 'crm/components/input-text/input-text.component';
 import { NumberComponent } from 'crm/components/number/number.component';
 import { PhoneComponent } from 'crm/components/phone/phone.component';
+import { SelectComponent } from 'crm/components/select/select.component';
 
 export const crmFrmComponents = {
   string: {
@@ -29,5 +30,8 @@ export const crmFrmComponents = {
   },
   phone: {
     type: PhoneComponent,
+  },
+  select: {
+    type: SelectComponent,
   },
 };

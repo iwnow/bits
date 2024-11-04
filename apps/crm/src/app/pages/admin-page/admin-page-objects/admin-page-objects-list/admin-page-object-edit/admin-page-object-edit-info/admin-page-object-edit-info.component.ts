@@ -2,12 +2,13 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FrmsComponent } from 'bits-frms';
-import { DOMAIN } from 'crm-core';
-import { inheritResolvers } from 'crm-utils';
+import { DOMAIN, DTO } from 'crm-core';
+import { inheritResolvers, parseErrorMessage } from 'crm-utils';
 import { uiElements } from 'crm/core/ui-elements';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PanelModule } from 'primeng/panel';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'b-admin-page-object-edit-info',
@@ -57,7 +58,34 @@ export class AdminPageObjectEditInfoComponent implements OnInit {
     });
   }
 
-  saveObject() {}
+  async saveObject() {
+    if (this.saving) {
+      return;
+    }
+    this.saving = true;
+    try {
+      const object = DOMAIN.toDTO<DTO.DTOCompanyObject>(
+        this.frms.getValue(),
+        DOMAIN.CompanyObject
+      );
+      object.address = object.address_info.address;
+      delete object.address_info;
+      await firstValueFrom(this.ad.crm.server.admin.updateObject(object));
+      this.ad.msg.add({
+        severity: 'success',
+        summary: 'Обьект успешно сохранен',
+      });
+    } catch (err) {
+      const message = parseErrorMessage(err);
+      this.ad.msg.add({
+        severity: 'error',
+        summary: 'Ошибка редактирования обьекта',
+        detail: message,
+      });
+    } finally {
+      this.saving = false;
+    }
+  }
 
   cancel() {
     this.cancelRoute();

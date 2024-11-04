@@ -175,4 +175,16 @@ export class AdminService {
 
     return this.common.http.get<DTOCompanyObject>(url);
   }
+
+  updateObject(object: Partial<DTOCompanyObject>) {
+    const url = this.common.apiUrl(`objects/${object.id}`);
+
+    return this.common.http.patch<any>(url, object);
+  }
+
+  createObject(object: Partial<DTOCompanyObject>) {
+    const url = this.common.apiUrl(`objects`);
+
+    return this.common.http.post<any>(url, object);
+  }
 }

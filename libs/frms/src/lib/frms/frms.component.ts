@@ -68,7 +68,7 @@ export class FrmsComponent {
   }
 
   getValue<T>(): T {
-    return this._fg().value;
+    return this.getValueFormGroup(this._fg());
   }
 
   createInjector(inj: Injector) {
@@ -123,5 +123,17 @@ export class FrmsComponent {
     }, this._entityScehma().meta);
     const order = prefm.fields.indexOf(path[path.length - 1]);
     return order;
+  }
+
+  getValueFormGroup(fg: FormGroup) {
+    const ret = {} as any;
+    Object.entries(fg.controls).forEach(([name, control]) => {
+      if (this.isFormGroup(control)) {
+        ret[name] = this.getValueFormGroup(control);
+      } else {
+        ret[name] = control.value;
+      }
+    });
+    return ret;
   }
 }

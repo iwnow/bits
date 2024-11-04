@@ -15,11 +15,6 @@ export class AdminPageObjectsComponent implements OnInit {
   page = inject(AdminPageService);
 
   ngOnInit() {
-    this.page.updateRibbonMenu([
-      {
-        label: 'Создать',
-        icon: 'pi pi-plus',
-      },
-    ]);
+    
   }
 }

@@ -97,7 +97,7 @@ export function schemaFromEntity(e: any): FrmSchema {
 export function formGroupFromSchema(sc: FrmSchema, fb: FormBuilder): FormGroup {
   const controls: any = {};
   const isGroup = (f: string) => f in (sc.meta.groups || {});
-  for (const field of sc.meta.fields) {
+  for (const field of sc.meta?.fields || []) {
     if (isGroup(field)) {
       const options = sc.meta.groups[field];
       const meta = frmsMeta(options.type);
@@ -134,6 +134,7 @@ export type FrmControlOptions = Extendable<
         | ValidatorFn[]
         | AsyncValidatorFn[];
       disabled: boolean;
+      inputs: Record<string, any>;
     }>,
     'type'
   >

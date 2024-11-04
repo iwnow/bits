@@ -7,6 +7,10 @@
     flex-direction: column;
     gap: 1rem;
   }
+
+  .frms-field-hidden {
+    display: none;
+  }
 }
 
 .frms-field {
