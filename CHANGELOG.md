@@ -2,6 +2,49 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [0.10.0](https://github.com/iwnow/bits/compare/v0.9.0...v0.10.0) (2024-11-04)
+
+
+### Features
+
+* add ci github ([3ef2749](https://github.com/iwnow/bits/commit/3ef2749fb15572c31c0f7c02c66e074b957b2148))
+* add docker ([114da82](https://github.com/iwnow/bits/commit/114da822bc9d4fc84dee6fc600f1c20144c2ce3a))
+* add grid ([e8e5820](https://github.com/iwnow/bits/commit/e8e58206728adde8fbbb989ca34ae561b6dc0167))
+* crud objects ([646e200](https://github.com/iwnow/bits/commit/646e200a92143e6e4f3accf2aa73da84a1bdac02))
+* dynamic form render ([e43ba5e](https://github.com/iwnow/bits/commit/e43ba5e00ff70eb656d0ab5edf4e28823b59ef09))
+* ng 17.3.2 ([0e9c5d3](https://github.com/iwnow/bits/commit/0e9c5d3eb3ac143340b747e735861201aaed3495))
+* **nx-cloud:** setup nx cloud workspace  ([d12da4c](https://github.com/iwnow/bits/commit/d12da4c180d9f6c45c7765e2f9141ffed648b4aa))
+* objects ([0562be8](https://github.com/iwnow/bits/commit/0562be8b3628627064e8e1da878a4e1b48e4327e))
+
+
+### Bug Fixes
+
+* auth refresh ([7a1a61e](https://github.com/iwnow/bits/commit/7a1a61e6b72a4f06cc4e9bd0df92822e8d5b3800))
+
+
+### Chores
+
+* + ([79a3d87](https://github.com/iwnow/bits/commit/79a3d87b64af8d2759d8212f292ad2895f7fdf9f))
+* + ([5507330](https://github.com/iwnow/bits/commit/5507330827606e5197662566409b5bc35ad837d3))
+* + ([207f7b0](https://github.com/iwnow/bits/commit/207f7b011e1ff89a1781e9ea97c222ae7611ca59))
+* add layers domain dto ([dcda334](https://github.com/iwnow/bits/commit/dcda3343075d4119ac60ad50238943b2f3bc1afe))
+* add rights company menu ([a39b4bc](https://github.com/iwnow/bits/commit/a39b4bc90c6a5f43679814be9e8b6e358b0eb31b))
+* adm ([82bf2f3](https://github.com/iwnow/bits/commit/82bf2f323b0d40ec3876b84a5d805ffa45dbe36f))
+* adm user crud ([6aefb8e](https://github.com/iwnow/bits/commit/6aefb8efb90692e5f273160a4a1e052f03376dbd))
+* admin layout ([0e9050e](https://github.com/iwnow/bits/commit/0e9050ea443a5ab72b14124082027b3470201ea4))
+* dynamic forms ([a01fcce](https://github.com/iwnow/bits/commit/a01fcce8c5f97d8f7636096d5a92af22b407e60a))
+* fix ci ([eef6030](https://github.com/iwnow/bits/commit/eef6030d4c4fe66466ea47685230db9bd2298d95))
+* fix tests ([8391025](https://github.com/iwnow/bits/commit/83910250035ef340737cd4612db3ebd4d0feecb5))
+* grid filter ([a210dc7](https://github.com/iwnow/bits/commit/a210dc7ad1a1ddda92ff50a0ebe4a2b15b1e747c))
+* layout ([ac13941](https://github.com/iwnow/bits/commit/ac13941a0be31734ed0fe0aca30cc60402ca60c0))
+* ng18 ([39318c6](https://github.com/iwnow/bits/commit/39318c645d262a27f7a0f5be31c78481d3380cb3))
+* rm fav ([d28f888](https://github.com/iwnow/bits/commit/d28f888f7a28bbc395a8bdb6e6d49ddb5a60a8c8))
+* users ([5dab014](https://github.com/iwnow/bits/commit/5dab0145ef927146558a5e9f2dea1cfeae0d600a))
+* wip ([dfb5349](https://github.com/iwnow/bits/commit/dfb53490f806465c9fdf0bb350a1d0856cc3d44f))
+* wip ([627cf3b](https://github.com/iwnow/bits/commit/627cf3bed07b36a7ec036f5ecb8808bba9e373d8))
+* wip ([57a032f](https://github.com/iwnow/bits/commit/57a032f86788877799107dc3a15ca6e448a5c81d))
+* wip admin ([9ab2fc5](https://github.com/iwnow/bits/commit/9ab2fc56982830456293e2ea6a2bc580ac5edd60))
+
 ## [0.9.0](https://github.com/iwnow/bits/compare/v0.8.0...v0.9.0) (2023-12-25)
 
 
