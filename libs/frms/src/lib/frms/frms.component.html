@@ -1,27 +1,3 @@
-<!-- <form [formGroup]="_fg()" class="{{ formClass() }}">
-  @for (control of _controls(); track $index) {
-
-  <div class="frms-field" class="{{ fieldClass() }}">
-    @if (control.options?.label !== false) {
-    <div class="frms-field-label">
-      {{ control.options?.label || control.name }}
-    </div>
-    }
-
-    <div class="frms-field-control">
-      <ng-container
-        *ngComponentOutlet="
-          control.componentType;
-          inputs: control.componentInputs;
-          injector: _frmsInjector
-        "
-      />
-    </div>
-  </div>
-
-  }
-</form> -->
-
 <form [formGroup]="_fg()" class="{{ formClass() || 'b-frms-form' }}">
   @for (centry of _fg().controls | keyvalue; track centry) { @if
   (isFormControl(centry.value)) {
@@ -71,7 +47,8 @@
           context: {
             $implicit: centry.value,
             desc: getControlDesc(centry.value, centry.key),
-            path: addPath(path, centry.key)
+            path: addPath(path, centry.key),
+            field: centry.key
           }
         "
       ></ng-container>
@@ -109,7 +86,7 @@
   >
     @if (control.$options?.label !== false) {
     <div class="frms-field-label">
-      {{ control.$options?.label || control.name }}
+      {{ control.$options?.label || control.name || field }}
     </div>
     }
 

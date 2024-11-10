@@ -5,3 +5,5 @@ export * from './lib/wait';
 export * from './lib/types';
 export * from './lib/date';
 export * from './lib/route';
+export * from './lib/json';
+export * from './lib/array';

@@ -187,4 +187,10 @@ export class AdminService {
 
     return this.common.http.post<any>(url, object);
   }
+
+  deleteObject(id: number) {
+    const url = this.common.apiUrl(`objects/${id}`);
+
+    return this.common.http.delete<any>(url);
+  }
 }

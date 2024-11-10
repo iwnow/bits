@@ -7,9 +7,11 @@ export const uiElements: {
     createButton: MenuItemCreate;
     editButton: MenuItemCreate;
     closeButton: MenuItemCreate;
+    deleteButton: MenuItemCreate;
   };
   icons: {
     edit: IconFactory;
+    delete: IconFactory;
   };
 } = {
   menuItems: {
@@ -48,12 +50,27 @@ export const uiElements: {
     editButton: (e) => ({
       label: 'Редактировать',
       icon: 'pi pi-pencil',
+      iconStyle: {
+        color: 'var(--orange-500)',
+      },
+      ...(e || {}),
+    }),
+    deleteButton: (e) => ({
+      label: 'Удалить',
+      icon: 'pi pi-trash',
+      iconStyle: {
+        color: 'var(--red-500)',
+      },
       ...(e || {}),
     }),
   },
   icons: {
     edit: (e) =>
       `<i class="pi pi-user-edit ${e?.iconClass || ''}" style="${
+        e?.style || ''
+      }"></i>`,
+    delete: (e) =>
+      `<i class="pi pi-trash ${e?.iconClass || ''}" style="${
         e?.style || ''
       }"></i>`,
   },

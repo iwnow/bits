@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { CrmClientService } from 'crm-core';
 import { viewDestroy } from 'crm-utils';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { AdminPageService } from './admin-page.service';
 import { fromEvent, map } from 'rxjs';
 
@@ -20,6 +20,7 @@ export function useAdminCommon() {
     page: inject(AdminPageService),
     router: inject(Router),
     route: inject(ActivatedRoute),
+    confirm: inject(ConfirmationService),
     toRootRoute: () => {
       const seg = ad.router.url.split('/').filter(Boolean).slice(0, 2);
       ad.router.navigate(seg);

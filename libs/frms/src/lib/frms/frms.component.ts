@@ -21,6 +21,7 @@ import {
   FrmsMeta,
   formGroupFromSchema,
   frmsMeta,
+  iterateControls,
   schemaFromEntity,
 } from './frms.core';
 
@@ -52,7 +53,8 @@ export class FrmsComponent {
   );
   _fg = computed(() => {
     const value = this.value();
-    const fg = formGroupFromSchema(this._schema(), this._fb);
+    const components = this.components();
+    const fg = formGroupFromSchema(this._schema(), this._fb, components);
     if (value) {
       fg.patchValue(value);
     }
@@ -65,6 +67,16 @@ export class FrmsComponent {
 
   reset() {
     this._fg().reset();
+  }
+
+  getValid(mark = true) {
+    if (mark) {
+      iterateControls(this._fg(), (control) => {
+        control.markAsTouched();
+        control.markAsDirty();
+      });
+    }
+    return this._fg().valid;
   }
 
   getValue<T>(): T {
@@ -94,6 +106,7 @@ export class FrmsComponent {
 
   getControlDesc(control, field) {
     const components = this.components();
+    control.$options = control.$options || {};
     const options = control.$options;
     const componentType = components[options.type]?.type;
     const componentInputs = {
@@ -131,7 +144,14 @@ export class FrmsComponent {
       if (this.isFormGroup(control)) {
         ret[name] = this.getValueFormGroup(control);
       } else {
-        ret[name] = control.value;
+        ret[name] =
+          typeof (control as any).$controlValueGetter === 'function'
+            ? (control as any).$controlValueGetter({
+                control,
+                value: control.value,
+                options: (control as any).$options,
+              })
+            : control.value;
       }
     });
     return ret;

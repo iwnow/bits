@@ -32,3 +32,14 @@ function defaultColumn(): BGridCol {
     floatingFilter: true,
   };
 }
+
+export function jsonColumnDesc(desc: Partial<BGridCol>) {
+  return column({
+    cellStyle: {
+      whiteSpace: 'pre',
+    },
+    wrapText: true,
+    autoHeight: true,
+    ...desc,
+  });
+}

@@ -17,8 +17,20 @@
   .frms-field-label {
     font-weight: 500;
     margin-bottom: 0.5rem;
+
+    &::first-letter {
+      text-transform: capitalize;
+    }
   }
 }
 
 .frms-container-field {
+}
+
+.frms-group-field {
+  padding: 1rem 2rem;
+  background-color: var(--surface-50);
+  border-radius: 8px;
+  border: 1px solid;
+  border-color: var(--surface-200);
 }

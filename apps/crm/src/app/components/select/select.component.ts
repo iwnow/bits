@@ -41,11 +41,13 @@ export class SelectComponent
   ngOnInit(): void {
     this.allItems.set(this.items() || []);
     const loader = this.itemsLoader();
-    maybePromise(this.loaderFactory.run(loader)).then((res) => {
-      if (res.data) {
-        this.allItems.set(res.data);
-      }
-    });
+    if (loader) {
+      maybePromise(this.loaderFactory.run(loader)).then((res) => {
+        if (res.data) {
+          this.allItems.set(res.data);
+        }
+      });
+    }
   }
 
   onLazyLoad(e) {}

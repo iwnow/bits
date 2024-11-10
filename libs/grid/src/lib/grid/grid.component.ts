@@ -8,6 +8,7 @@ import { RowGroupingModule } from '@ag-grid-enterprise/row-grouping';
 import { SetFilterModule } from '@ag-grid-enterprise/set-filter';
 import { SideBarModule } from '@ag-grid-enterprise/side-bar';
 import { ExcelExportModule } from '@ag-grid-enterprise/excel-export';
+import { RangeSelectionModule } from '@ag-grid-enterprise/range-selection';
 import {
   ColDef,
   GridReadyEvent,
@@ -15,6 +16,7 @@ import {
   ValueFormatterParams,
   GridApi,
   RowModelType,
+  GridOptions,
 } from '@ag-grid-community/core';
 import { CommonModule } from '@angular/common';
 import {} from '@angular/common/http';
@@ -31,7 +33,7 @@ import { BGridCol, BGridOptions } from './grid.api';
 import { OnInit } from '@angular/core';
 import { ServerSideRowModelModule } from '@ag-grid-enterprise/server-side-row-model';
 import { BehaviorSubject, combineLatest, filter, first, takeUntil } from 'rxjs';
-import { maybeObservable, viewDestroy } from 'crm-utils';
+import { Extendable, maybeObservable, viewDestroy } from 'crm-utils';
 import { setAgGridLicense } from './lic-patch';
 
 setAgGridLicense();
@@ -47,6 +49,7 @@ ModuleRegistry.registerModules([
   SideBarModule,
   MasterDetailModule,
   ExcelExportModule,
+  RangeSelectionModule,
 ]);
 
 @Component({
@@ -72,6 +75,11 @@ export class BitsGridComponent implements OnInit {
 
   @Input()
   rowHeight = 30;
+
+  @Input()
+  gridOptions: GridOptions = {
+    cellSelection: true,
+  };
 
   @Output()
   err = new EventEmitter();
@@ -107,6 +115,10 @@ export class BitsGridComponent implements OnInit {
           next: ({ options, gapi }) => {
             gapi.updateGridOptions({
               headerHeight: 35,
+              allowContextMenuWithControlKey: true,
+              // getContextMenuItems: getContextMenuItems,
+              // enableCellTextSelection: true,
+              // ensureDomOrder: true,
               ...options,
               serverSideDatasource: {
                 getRows: (params) =>

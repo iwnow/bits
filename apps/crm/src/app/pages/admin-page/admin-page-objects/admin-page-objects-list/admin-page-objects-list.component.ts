@@ -56,6 +56,12 @@ export class AdminPageObjectsListComponent implements OnInit {
                     this.editObject(objectId);
                   },
                 }),
+                uiElements.menuItems.deleteButton({
+                  command: () => {
+                    const { id, name } = selected[0];
+                    this.deleteObject(id, name);
+                  },
+                }),
               ]);
             } else {
               this.ad.page.updateRibbonMenu(this.defaultRibbonItems);
@@ -75,6 +81,15 @@ export class AdminPageObjectsListComponent implements OnInit {
                   this.editObject(objectId);
                 },
               },
+              {
+                name: 'Удалить',
+                icon: uiElements.icons.delete(),
+                action: (e) => {
+                  const { id, name } = e.node.data;
+                  this.deleteObject(id, name);
+                },
+              },
+              'separator',
               'copy',
             ];
           },
@@ -119,6 +134,33 @@ export class AdminPageObjectsListComponent implements OnInit {
   editObject(id: number) {
     this.ad.router.navigate(['../edit', id], {
       relativeTo: this.ad.route,
+    });
+  }
+
+  deleteObject(id: number, name?: string) {
+    this.ad.confirm.confirm({
+      // target: event.target as EventTarget,
+      message: `Удалить обьект${name ? ' "' + name + '"' : ''}?`,
+      header: 'Подтвердить удаление',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        this.ad.crm.server.admin.deleteObject(id).subscribe({
+          next: () => {
+            this.ad.msg.add({
+              severity: 'info',
+              summary: 'Выполнено',
+              detail: 'Обьект удален',
+            });
+          },
+          error: (err) => this.onError(err),
+        });
+      },
+      reject: () => {},
     });
   }
 

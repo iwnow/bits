@@ -59,7 +59,7 @@ export class AdminPageObjectEditInfoComponent implements OnInit {
   }
 
   async saveObject() {
-    if (this.saving) {
+    if (this.saving || !this.frms.getValid()) {
       return;
     }
     this.saving = true;

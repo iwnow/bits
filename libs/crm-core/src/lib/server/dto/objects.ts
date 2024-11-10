@@ -1,4 +1,8 @@
-import { DTOAddressCity, DTOAddressDistrict, DTOAddressInfo } from './address-info';
+import {
+  DTOAddressCity,
+  DTOAddressDistrict,
+  DTOAddressInfo,
+} from './address-info';
 import { DTOCompany } from './company';
 
 export interface DTOCompanyUserObject {
@@ -21,6 +25,9 @@ export interface DTOCompanyObject {
   company_id?: number;
   district_id?: number;
   company?: DTOCompany;
+  acquiring_operators?: string[];
+  yookassa?: DTOYookassaOptions;
+  meta?: any;
 }
 
 export interface DTOPlace {
@@ -60,4 +67,11 @@ export interface DTOPlaceSection {
 
 export function sectionName(section: DTOPlaceSection) {
   return `${section.name} (к[${section.column_start}:${section.column_end}], c[${section.row_start}:${section.row_end}])`;
+}
+
+export interface DTOYookassaOptions {
+  is_captured: boolean;
+  is_with_receipt: boolean;
+  shop_id: number;
+  vat_code: number;
 }

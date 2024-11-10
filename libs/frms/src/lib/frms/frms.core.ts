@@ -40,7 +40,10 @@ import {
   AsyncValidator,
   AsyncValidatorFn,
   FormBuilder,
+  FormControl,
   FormGroup,
+  isFormControl,
+  isFormGroup,
   Validator,
   ValidatorFn,
 } from '@angular/forms';
@@ -94,22 +97,39 @@ export function schemaFromEntity(e: any): FrmSchema {
   };
 }
 
-export function formGroupFromSchema(sc: FrmSchema, fb: FormBuilder): FormGroup {
+export function formGroupFromSchema(
+  sc: FrmSchema,
+  fb: FormBuilder,
+  components: FrmComponents
+): FormGroup {
   const controls: any = {};
   const isGroup = (f: string) => f in (sc.meta.groups || {});
   for (const field of sc.meta?.fields || []) {
     if (isGroup(field)) {
       const options = sc.meta.groups[field];
       const meta = frmsMeta(options.type);
-      controls[field] = formGroupFromSchema({ meta }, fb);
+      controls[field] = formGroupFromSchema({ meta }, fb, components);
       controls[field].$options = options;
     } else {
       const options = sc.meta.controls[field];
+      const componentTypeOptions = components[options.type]?.options || {};
+      Object.assign(componentTypeOptions, options);
+      Object.assign(options, componentTypeOptions);
       controls[field] = fb.control(
-        { value: undefined, disabled: options.disabled },
+        { value: options.defaultValue, disabled: options.disabled },
         options.validators
       );
       controls[field].$options = options;
+      if (typeof options.valueGetter === 'function') {
+        controls[field].$controlValueGetter = options.valueGetter;
+      }
+      if (typeof options.valueSetter === 'function') {
+        const realSetter = controls[field].setValue;
+        controls[field].setValue = function setValue(...args) {
+          args[0] = options.valueSetter({ value: args[0] });
+          return realSetter.call(controls[field], ...args);
+        };
+      }
     }
   }
   const fg = fb.group(controls);
@@ -134,7 +154,10 @@ export type FrmControlOptions = Extendable<
         | ValidatorFn[]
         | AsyncValidatorFn[];
       disabled: boolean;
+      defaultValue: any;
       inputs: Record<string, any>;
+      valueGetter: (opt: { control: FormControl; value: any }) => any;
+      valueSetter: (opt: { value: any }) => any;
     }>,
     'type'
   >
@@ -147,6 +170,7 @@ export type FrmSchema = Extendable<{
 export type FrmComponentDesc = Extendable<{
   type: any;
   inputs?: Record<string, any>;
+  options?: Partial<FrmControlOptions>;
 }>;
 
 export abstract class FrmComponents {
@@ -158,4 +182,17 @@ export function provideFrmsComponents(cs: FrmComponents): Provider {
     provide: FrmComponents,
     useFactory: () => cs,
   };
+}
+
+export function iterateControls(
+  fg: FormGroup,
+  cb: (control: FormControl) => void
+) {
+  for (const control of Object.values(fg.controls)) {
+    if (isFormGroup(control)) {
+      iterateControls(control, cb);
+    } else if (isFormControl(control)) {
+      cb(control);
+    }
+  }
 }
