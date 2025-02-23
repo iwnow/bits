@@ -31,11 +31,11 @@ export class CompanyObject {
 
   @frmControl({
     type: 'string',
-    label: 'Имя',
+    label: 'Название',
     validators: [Validators.required],
   })
   @column({
-    headerName: 'Имя',
+    headerName: 'Название',
     filter: 'agTextColumnFilter',
     sortable: true,
   })

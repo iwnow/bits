@@ -9,6 +9,7 @@ import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
 import { forkJoin, takeUntil } from 'rxjs';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'b-admin-page-user-edit-info',
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
     PanelModule,
     CheckboxModule,
     FormsModule,
+    ButtonModule
   ],
 })
 export class AdminPageUserEditInfoComponent implements OnInit {
@@ -36,6 +38,10 @@ export class AdminPageUserEditInfoComponent implements OnInit {
   companies = signal<DTO.DTOCompany[]>([]);
   selectedCompanies: number[] = [];
   savedCompanies = new Set<number>();
+  passwordEntity = PasswordEntity;
+  passwordEntityValue: PasswordEntity = {
+    password: '',
+  };
 
   ngOnInit() {
     this.routeData = inheritResolvers(this.ad.route);
@@ -148,4 +154,13 @@ export class AdminPageUserEditInfoComponent implements OnInit {
   cancelRoute() {
     this.ad.router.navigate(['../../..'], { relativeTo: this.ad.route });
   }
+}
+
+@frmGroup()
+class PasswordEntity {
+  @frmControl({
+    type: 'string',
+    label: 'Пароль',
+  })
+  password: string;
 }

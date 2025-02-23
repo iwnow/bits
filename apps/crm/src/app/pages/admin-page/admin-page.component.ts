@@ -58,6 +58,10 @@ export class AdminPageComponent implements OnInit {
         routerLink: 'objects',
       },
       {
+        label: 'Площадки',
+        routerLink: 'places',
+      },
+      {
         label: 'Тарифы',
         routerLink: 'tariffs',
       },

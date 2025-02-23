@@ -5,6 +5,8 @@ import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.com
 import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
 import { AdminPageComponent } from './admin-page.component';
 import adminPagesObjectsRouting from './admin-page-objects/admin-page-objects-routing';
+import { AdminPagePlacesComponent } from './admin-page-places/admin-page-places.component';
+import adminPagesPlacesRouting from './admin-page-places/admin-page-places-routing';
 
 export const adminPagesRouting: Routes = [
   {
@@ -21,6 +23,11 @@ export const adminPagesRouting: Routes = [
         path: 'objects',
         component: AdminPageObjectsComponent,
         children: adminPagesObjectsRouting,
+      },
+      {
+        path: 'places',
+        component: AdminPagePlacesComponent,
+        children: adminPagesPlacesRouting,
       },
       {
         path: 'tariffs',

@@ -23,6 +23,7 @@ import {} from '@angular/common/http';
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   Output,
   ViewEncapsulation,
@@ -83,6 +84,9 @@ export class BitsGridComponent implements OnInit {
 
   @Output()
   err = new EventEmitter();
+
+  @HostBinding('class.column-color')
+  coloredColumn = true;
 
   themeClass = 'ag-theme-quartz';
   localeText = AG_GRID_LOCALE_RU;

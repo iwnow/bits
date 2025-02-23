@@ -24,7 +24,8 @@
       "crm-utils": ["libs/crm-utils/src/index.ts"],
       "crm/*": ["./apps/crm/src/app/*"],
       "crm/mobile": ["./apps/crm-mobile/src/exports.ts"],
-      "crm/mobile/*": ["./apps/crm-mobile/src/app/*"]
+      "crm/mobile/*": ["./apps/crm-mobile/src/app/*"],
+      "bits-json-editor": ["libs/json-editor/src/index.ts"]
     }
   },
   "exclude": ["tmp"]

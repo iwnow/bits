@@ -30,4 +30,10 @@ b-grid {
       }
     }
   }
+
+  &.column-color {
+    ag-grid-angular {
+      --ag-cell-horizontal-border: solid #e5e7eb;
+    }
+  }
 }

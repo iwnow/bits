@@ -7,6 +7,7 @@ import {
   DTOCompanyUserObject,
   DTOListRequest,
   DTOListResult,
+  DTOPlace,
   DTOUser,
 } from './dto';
 import { CompanyService } from './company.service';
@@ -192,5 +193,23 @@ export class AdminService {
     const url = this.common.apiUrl(`objects/${id}`);
 
     return this.common.http.delete<any>(url);
+  }
+
+  placeList(args: DTOListRequest) {
+    const url = this.common.apiUrl('places/search');
+
+    return this.common.http.post<DTOListResult<DTOPlace>>(url, args);
+  }
+
+  createPlace(place: Partial<DTOPlace>) {
+    const url = this.common.apiUrl('places');
+
+    return this.common.http.post<DTOListResult<DTOPlace>>(url, place);
+  }
+
+  place(id: number): Observable<DTOPlace> {
+    const url = this.common.apiUrl(`places/${id}`);
+
+    return this.common.http.get<DTOPlace>(url);
   }
 }

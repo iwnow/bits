@@ -42,6 +42,7 @@ export class FrmsComponent {
   components = input<FrmComponents>(this._componentsInitial || {});
   formClass = input('');
   fieldClass = input('');
+  hiddenFields = input<string[]>([]);
 
   _injector = inject(Injector);
   _fb = inject(FormBuilder);
@@ -59,6 +60,14 @@ export class FrmsComponent {
       fg.patchValue(value);
     }
     return fg;
+  });
+  _hf = computed(() => {
+    const hf = this.hiddenFields();
+    const idx: Record<string, boolean> = hf.reduce((acc, cur) => {
+      acc[cur] = true;
+      return acc;
+    }, {});
+    return idx;
   });
 
   get valid() {
@@ -111,7 +120,7 @@ export class FrmsComponent {
     const componentType = components[options.type]?.type;
     const componentInputs = {
       ...(components[options.type]?.inputs || {}),
-      placeholder: options.placeholder || options.label,
+      placeholder: options.placeholder || options.label || '',
       ...(options.inputs || {}),
       formControl: control,
     };
@@ -155,5 +164,9 @@ export class FrmsComponent {
       }
     });
     return ret;
+  }
+
+  isHiddenField(field) {
+    return !!this._hf()[field];
   }
 }

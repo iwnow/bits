@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FrmsControlBaseComponent } from 'bits-frms';
+import { JsonEditorComponent } from 'bits-json-editor';
 import { jsonTryParse, jsonTryStringify } from 'crm-utils';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 
@@ -9,7 +10,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
   templateUrl: './json.component.html',
   styleUrls: ['./json.component.css'],
   standalone: true,
-  imports: [ReactiveFormsModule, InputTextareaModule],
+  imports: [ReactiveFormsModule, InputTextareaModule, JsonEditorComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JsonComponent extends FrmsControlBaseComponent implements OnInit {

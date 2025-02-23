@@ -82,7 +82,7 @@
     [attr.data-field]="field"
     [attr.data-path]="path.join('.')"
     [style.order]="getControlOrder(path)"
-    [class.frms-field-hidden]="control.$options?.hide"
+    [class.frms-field-hidden]="control.$options?.hide || isHiddenField(path.join('.'))"
   >
     @if (control.$options?.label !== false) {
     <div class="frms-field-label">

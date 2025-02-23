@@ -33,15 +33,15 @@ export interface DTOCompanyObject {
 export interface DTOPlace {
   id: number;
   name: string;
-  photo_file_id: number;
+  photo_file_id?: number;
   url: string;
   cover: DTOPlaceCover;
-  cover_id: number;
-  object?: DTOCompanyObject;
+  cover_id?: number;
+  object?: Partial<DTOCompanyObject>;
   is_sectioned?: boolean;
-  section_columns: number;
-  section_rows: number;
-  sections: DTOPlaceSection[];
+  section_columns?: number;
+  section_rows?: number;
+  sections?: DTOPlaceSection[];
   cameras?: Array<{
     url: string;
     name: string;
@@ -49,6 +49,14 @@ export interface DTOPlace {
   dimension_height?: number;
   dimension_length?: number;
   dimension_width?: number;
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+  };
+  photo?: {
+    file_id: number;
+  };
 }
 
 export interface DTOPlaceCover {

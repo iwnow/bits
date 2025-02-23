@@ -2,9 +2,23 @@
   <b-frms
     [entity]="userEntity"
     [value]="user"
+    [hiddenFields]="['password']"
     fieldClass="col-12 md:col-6 lg:col-4"
     formClass="grid"
   ></b-frms>
+</p-panel>
+<p-panel header="Смена пароля" class="block mt-2">
+  <div class="flex flex-row gap-2 align-items-center">
+    <b-frms
+      [entity]="passwordEntity"
+      [value]="passwordEntityValue"
+      fieldClass="col-12 md:col-6 lg:col-4"
+      formClass="grid"
+    ></b-frms>
+    <div style="margin-top: 15px">
+      <p-button>Сохранить пароль</p-button>
+    </div>
+  </div>
 </p-panel>
 <p-panel header="Доступ к компании" class="block mt-2">
   <div class="flex flex-column gap-2">
