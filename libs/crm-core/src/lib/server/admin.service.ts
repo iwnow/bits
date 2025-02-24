@@ -212,4 +212,13 @@ export class AdminService {
 
     return this.common.http.get<DTOPlace>(url);
   }
+
+  changePassword(userId: number, pass: string) {
+    const url = this.common.apiUrl(`password`);
+
+    return this.common.http.put<any>(url, {
+      new_password: pass,
+      userid: userId,
+    });
+  }
 }

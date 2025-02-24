@@ -7,7 +7,17 @@ import { uiElements } from 'crm/core/ui-elements';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { PanelModule } from 'primeng/panel';
 import { CheckboxModule } from 'primeng/checkbox';
-import { forkJoin, takeUntil } from 'rxjs';
+import {
+  catchError,
+  delay,
+  exhaustMap,
+  filter,
+  forkJoin,
+  map,
+  of,
+  Subject,
+  takeUntil,
+} from 'rxjs';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
@@ -22,14 +32,17 @@ import { ButtonModule } from 'primeng/button';
     PanelModule,
     CheckboxModule,
     FormsModule,
-    ButtonModule
+    ButtonModule,
   ],
 })
 export class AdminPageUserEditInfoComponent implements OnInit {
   ad = useAdminCommon();
 
-  @ViewChild(FrmsComponent)
+  @ViewChild('userFrm')
   frms: FrmsComponent;
+
+  @ViewChild('passFrm')
+  passFrm: FrmsComponent;
 
   userEntity = DOMAIN.User;
   saving = false;
@@ -42,6 +55,7 @@ export class AdminPageUserEditInfoComponent implements OnInit {
   passwordEntityValue: PasswordEntity = {
     password: '',
   };
+  updatePassword$ = new Subject();
 
   ngOnInit() {
     this.routeData = inheritResolvers(this.ad.route);
@@ -76,6 +90,26 @@ export class AdminPageUserEditInfoComponent implements OnInit {
     this.ad.destroy$.subscribe(() => {
       this.ad.page.clearRibbonMenu();
     });
+    this.updatePassword$
+      .pipe(
+        map(() => this.passFrm.getValue<PasswordEntity>().password?.trim()),
+        filter((pass) => pass?.length > 3),
+        exhaustMap((pass) =>
+          this.ad.crm.server.admin.changePassword(this.user.id, pass).pipe(
+            catchError((err) => {
+              const message = parseErrorMessage(err);
+              this.ad.msg.add({
+                severity: 'error',
+                summary: 'Ошибка обновления пароля',
+                detail: message,
+              });
+              return of(err).pipe(delay(3000));
+            })
+          )
+        ),
+        takeUntil(this.ad.destroy$)
+      )
+      .subscribe();
   }
 
   saveUser() {

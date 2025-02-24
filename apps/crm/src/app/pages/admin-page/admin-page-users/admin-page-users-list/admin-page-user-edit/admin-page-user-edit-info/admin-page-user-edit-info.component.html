@@ -1,5 +1,6 @@
 <p-panel header="Редактирование пользователя">
   <b-frms
+    #userFrm
     [entity]="userEntity"
     [value]="user"
     [hiddenFields]="['password']"
@@ -10,13 +11,14 @@
 <p-panel header="Смена пароля" class="block mt-2">
   <div class="flex flex-row gap-2 align-items-center">
     <b-frms
+      #passFrm
       [entity]="passwordEntity"
       [value]="passwordEntityValue"
       fieldClass="col-12 md:col-6 lg:col-4"
       formClass="grid"
     ></b-frms>
     <div style="margin-top: 15px">
-      <p-button>Сохранить пароль</p-button>
+      <p-button (onClick)="updatePassword$.next(0)">Сохранить пароль</p-button>
     </div>
   </div>
 </p-panel>
