@@ -57,6 +57,7 @@ export interface DTOPlace {
   photo?: {
     file_id: number;
   };
+  object_id?: number;
 }
 
 export interface DTOPlaceCover {

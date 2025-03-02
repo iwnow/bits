@@ -1,5 +1,26 @@
 <p-panel header="Новая площадка">
   <span class="p-text-secondary block mb-5">Заполните поля.</span>
 
-  <b-frms [entity]="companyPlaceEntity" [value]="companyPlaceValue"></b-frms>
+  <div>
+    <label>Компания</label>
+    <b-dropdown-company
+      (selectCompany)="selectedCompany.set($event)"
+      class="block"
+    ></b-dropdown-company>
+  </div>
+
+  <div class="mt-4">
+    <label>Объект</label>
+    <b-dropdown-company-objects
+      [companyId]="selectedCompany()?.id"
+      (selectObject)="selectedObject.set($event)"
+      class="block"
+    ></b-dropdown-company-objects>
+  </div>
+
+  <b-frms
+    class="mt-4"
+    [entity]="companyPlaceEntity"
+    [value]="companyPlaceValue"
+  ></b-frms>
 </p-panel>

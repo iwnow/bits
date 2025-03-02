@@ -7,3 +7,4 @@ export * from './lib/date';
 export * from './lib/route';
 export * from './lib/json';
 export * from './lib/array';
+export * from './lib/signal';

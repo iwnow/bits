@@ -1,9 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FrmsComponent } from 'bits-frms';
 import { DOMAIN, DTO } from 'crm-core';
 import { parseErrorMessage } from 'crm-utils';
+import { DropdownCompanyObjectsComponent } from 'crm/components/dropdown-company-objects/dropdown-company-objects.component';
+import { DropdownCompanyComponent } from 'crm/components/dropdown-company/dropdown-company.component';
 import { uiElements } from 'crm/core/ui-elements';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -13,7 +21,7 @@ import { firstValueFrom } from 'rxjs';
 @Component({
   selector: 'b-admin-page-place-create',
   templateUrl: './admin-page-place-create.component.html',
-  styleUrls: ['./admin-page-place-create.component.css'],
+  styleUrls: ['./admin-page-place-create.component.scss'],
   standalone: true,
   imports: [
     CommonModule,
@@ -21,6 +29,8 @@ import { firstValueFrom } from 'rxjs';
     PanelModule,
     CheckboxModule,
     FormsModule,
+    DropdownCompanyObjectsComponent,
+    DropdownCompanyComponent,
   ],
 })
 export class AdminPagePlaceCreateComponent implements OnInit, AfterViewInit {
@@ -32,6 +42,8 @@ export class AdminPagePlaceCreateComponent implements OnInit, AfterViewInit {
   companyPlaceEntity = DOMAIN.CompanyPlace;
   saving = false;
   companyPlaceValue: Partial<DOMAIN.CompanyPlace>;
+  selectedCompany = signal<DTO.DTOCompany>(null);
+  selectedObject = signal<DTO.DTOCompanyObject>(null);
 
   get isValid() {
     return this.frms?._fg().valid;
@@ -74,6 +86,7 @@ export class AdminPagePlaceCreateComponent implements OnInit, AfterViewInit {
         this.frms.getValue(),
         DOMAIN.CompanyObject
       );
+      place.object_id = this.selectedObject().id;
       await firstValueFrom(this.ad.crm.server.admin.createPlace(place));
       this.ad.msg.add({
         severity: 'success',

@@ -1,0 +1,12 @@
+<p-dropdown
+  [(ngModel)]="selectedObject"
+  [options]="objects$ | async"
+  optionLabel="name"
+  placeholder="Объект"
+  styleClass="dropdown-objects"
+  (onChange)="onSelectObject($event)"
+>
+  <ng-template let-o pTemplate="item">
+    <div>{{ o.id }}. {{ o.name }} ({{ o.address }})</div>
+  </ng-template>
+</p-dropdown>

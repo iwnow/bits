@@ -28,7 +28,7 @@ export class CheckboxComponent
     const opts = this.options();
     const value: any[] = this.formControl().value;
     const fa = new FormArray(
-      opts.map((i) => new FormControl(value.includes(i)))
+      opts.map((i) => new FormControl(value?.includes(i) ?? false))
     );
     return fa;
   });
