@@ -65,6 +65,7 @@ export class CompanyPlace {
   })
   @frmControl({
     type: 'checkbox',
+    label: 'Удален',
   })
   is_deleted: boolean;
 
@@ -78,6 +79,7 @@ export class CompanyPlace {
   })
   @frmControl({
     type: 'checkbox',
+    label: 'Секции',
   })
   is_sectioned: boolean;
 

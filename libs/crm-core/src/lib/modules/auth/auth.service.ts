@@ -53,6 +53,14 @@ export class CrmAuthService {
     return !!this.sessionUser;
   }
 
+  get isGod() {
+    return this.sessionUser?.is_god;
+  }
+
+  get isAdmin() {
+    return this.sessionUser?.roles?.includes('admin') || false;
+  }
+
   login(params: CrmAuthLoginParams) {
     this.bus.dispatch({
       name: this.EVENTS.login,

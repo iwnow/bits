@@ -1,21 +1,23 @@
 import { Route } from '@angular/router';
 import { loggedInGuard } from './guards';
 import { Page404Component } from './page-404.component';
+import { adminGuard } from './guards/admin-guard';
 
 export const appSubsystemRoutes: Route[] = [
   {
-    path: 'clients',
-    loadChildren: () => import('./pages/clients-page/clients-page.module'),
+    path: 'crm',
+    loadChildren: () => import('./pages/crm-page/crm-page.routing'),
   },
   {
     path: 'admin',
+    canActivate: [adminGuard()],
     loadChildren: () => import('./pages/admin-page/admin-page.routing'),
   },
   {
     path: '',
     // loadChildren: () => import('./pages/home-page/home-page.module'),
     pathMatch: 'full',
-    redirectTo: 'admin'
+    redirectTo: 'admin',
   },
   notFoundPath(),
 ];

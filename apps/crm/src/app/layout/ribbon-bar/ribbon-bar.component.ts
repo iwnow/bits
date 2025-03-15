@@ -1,21 +1,23 @@
-import { Component, HostBinding, output, signal } from '@angular/core';
+import { Component, HostBinding, input, output, signal } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import {
   ContentTabBarComponent,
   TabItem,
 } from '../content-tab-bar/content-tab-bar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'b-ribbon-bar',
   templateUrl: './ribbon-bar.component.html',
   styleUrls: ['./ribbon-bar.component.scss'],
   standalone: true,
-  imports: [ContentTabBarComponent],
+  imports: [ContentTabBarComponent, CommonModule],
 })
 export class RibbonBarComponent {
   tabs = signal([]);
   menu = signal([]);
   menuBtnClick = output<PointerEvent>();
+  title = input('');
 
   @HostBinding('class.is-empty-menu')
   get isEmptyMenu() {

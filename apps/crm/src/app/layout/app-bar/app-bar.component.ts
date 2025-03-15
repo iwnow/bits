@@ -64,6 +64,10 @@ export class AppBarComponent implements OnInit {
       });
   }
 
+  onCompanyChange(e) {
+    this.crm.company.selectActiveCompany(this.selectedCompany.id);
+  }
+
   createMenuProfile(): MenuItem[] {
     return [
       {

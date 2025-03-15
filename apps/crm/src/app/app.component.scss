@@ -4,6 +4,11 @@
 @import 'primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
 
+:root {
+  --bar-height: 37.5px;
+  --h-full-ex-app-bar: calc(100vh - 3.5rem);
+}
+
 body,
 html {
   font-size: 13px;
@@ -21,4 +26,8 @@ html {
   .p-dialog-header-close.p-button {
     padding: 0.5rem;
   }
+}
+
+.p-menuitem-link-active span {
+  color: var(--primary-500);
 }

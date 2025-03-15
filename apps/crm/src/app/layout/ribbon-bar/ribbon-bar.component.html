@@ -2,4 +2,8 @@
   [tabs]="tabs()"
   [menu]="menu()"
   (menuBtnClick)="onMenuBtnClick($event)"
-></b-content-tab-bar>
+>
+  @if (title()) {
+    <span bar-title class="text-xl">{{ title() }}</span>
+  }
+</b-content-tab-bar>

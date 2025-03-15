@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   readonly router = inject(Router);
 
   ngOnInit(): void {
+    window['bitcrm'] = this.crm;
     this.primengConfig.ripple = true;
     this.primengConfig.setTranslation((locale as any).default.ru);
     this.crm.auth.logoutSuccess().subscribe(() => {

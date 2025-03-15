@@ -1,0 +1,24 @@
+:host ::ng-deep {
+  b-company-places-menu {
+    position: absolute;
+    height: calc(var(--h-full-ex-app-bar) - var(--bar-height));
+    overflow: auto;
+    transition: transform 0.2s;
+    transform: translateX(-200px);
+
+    .p-menu {
+      border: none;
+    }
+  }
+  .calendar-container {
+    transition: transform 0.2s;
+  }
+}
+:host(.menu-opened) ::ng-deep {
+  b-company-places-menu {
+    transform: translateX(0);
+  }
+  .calendar-container {
+    padding-left: 180px;
+  }
+}

@@ -16,6 +16,7 @@
   <p-listbox
     [options]="companies"
     [(ngModel)]="selectedCompany"
+    (onChange)="onCompanyChange($event)"
     optionLabel="name"
     [style]="{ width: '15rem', border: 'none' }"
   ></p-listbox>

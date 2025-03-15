@@ -8,6 +8,8 @@
     (onClick)="onMenuBtnClick($event)"
   ></p-button>
 
+  <ng-content select="[bar-title]"></ng-content>
+
   <div class="b-ctb-tabs">
     @for (tab of tabs(); track tab.id) {
     <div

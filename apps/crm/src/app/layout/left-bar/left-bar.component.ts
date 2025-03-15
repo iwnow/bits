@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { CrmClientService } from 'crm-core';
 
 @Component({
   selector: 'b-left-bar',
@@ -8,11 +9,11 @@ import { Router } from '@angular/router';
 })
 export class LeftBarComponent {
   readonly router = inject(Router);
-
+  readonly crm = inject(CrmClientService);
   readonly menuItems = this.createMenuItems();
 
   createMenuItems() {
-    return [
+    const menu = [
       {
         path: '/',
         icon: 'star',
@@ -26,10 +27,9 @@ export class LeftBarComponent {
         disabled: true,
       },
       {
-        path: '/calendar',
+        path: '/crm/calendar',
         icon: 'calendar',
         tooltip: 'Календарь',
-        disabled: true,
       },
       {
         path: '/orders',
@@ -37,12 +37,15 @@ export class LeftBarComponent {
         tooltip: 'Заказы',
         disabled: true,
       },
-      {
+    ];
+    if (this.crm.auth.isAdmin) {
+      menu.push({
         path: '/admin',
         icon: 'cog',
         tooltip: 'Администрирование',
-      },
-    ];
+      });
+    }
+    return menu;
   }
 
   severityValue(item: MenuItem) {

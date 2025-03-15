@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   HostBinding,
@@ -15,7 +16,7 @@ import { MenubarModule, Menubar } from 'primeng/menubar';
   templateUrl: './content-tab-bar.component.html',
   styleUrls: ['./content-tab-bar.component.scss'],
   standalone: true,
-  imports: [ButtonModule, MenubarModule, RouterModule],
+  imports: [ButtonModule, MenubarModule, RouterModule, CommonModule],
 })
 export class ContentTabBarComponent {
   menuBtnClick = output<PointerEvent>();

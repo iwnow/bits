@@ -74,6 +74,10 @@ p-button {
   .companies-panel {
     .p-overlaypanel-content {
       padding: 0;
+
+      .p-listbox-item.p-highlight {
+        pointer-events: none;
+      }
     }
   }
 }
