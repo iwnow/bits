@@ -31,3 +31,11 @@ html {
 .p-menuitem-link-active span {
   color: var(--primary-500);
 }
+
+.p-dropdown.p-component {
+  &.dropdown-sm {
+    .p-dropdown-label {
+      padding: 0.5rem;
+    }
+  }
+}

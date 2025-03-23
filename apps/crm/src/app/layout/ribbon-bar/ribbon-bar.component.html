@@ -4,6 +4,7 @@
   (menuBtnClick)="onMenuBtnClick($event)"
 >
   @if (title()) {
-    <span bar-title class="text-xl">{{ title() }}</span>
+  <span bar-title class="text-xl">{{ title() }}</span>
   }
+  <ng-content></ng-content>
 </b-content-tab-bar>

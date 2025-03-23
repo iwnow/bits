@@ -1,9 +1,15 @@
-<b-ribbon-bar (menuBtnClick)="toggleMenu()" title="Календарь"> </b-ribbon-bar>
+<b-ribbon-bar (menuBtnClick)="toggleMenu()" title="Календарь">
+  <b-company-places-menu
+    viewMode="combo"
+    [companyId]="activeCompanyId()"
+    [initPlaceIdGetter]="initPlaceIdGetter"
+    [placeLinkGetter]="placeLinkGetter"
+    class="ml-2"
+    (selectPlace)="onSelectPlace($event)"
+  ></b-company-places-menu>
+</b-ribbon-bar>
 
-<b-company-places-menu
-  [companyId]="activeCompanyId()"
-  [placeLinkGetter]="placeLinkGetter"
-></b-company-places-menu>
+<div class="sub-nav-menu"></div>
 
 <div class="calendar-container">
   <router-outlet></router-outlet>

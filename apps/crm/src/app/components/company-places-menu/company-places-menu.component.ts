@@ -1,21 +1,38 @@
-import { Component, computed, inject, input, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal,
+} from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { CrmClientService } from 'crm-core';
-import { filter, of, switchMap } from 'rxjs';
 import { MenuModule } from 'primeng/menu';
+import { filter, switchMap } from 'rxjs';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'b-company-places-menu',
   templateUrl: './company-places-menu.component.html',
   styleUrls: ['./company-places-menu.component.css'],
   standalone: true,
-  imports: [MenuModule],
+  imports: [MenuModule, DropdownModule, FormsModule],
 })
 export class CompanyPlacesMenuComponent implements OnInit {
   crm = inject(CrmClientService);
+  router = inject(Router);
 
   companyId = input.required<number>();
-  placeLinkGetter = input<(place: any) => string>((p) => p?.id);
+  placeId = input<number>();
+  placeLinkGetter = input<(place: any) => string>(null);
+  viewMode = input<'combo' | 'menu'>('menu');
+  selectPlace = output<any>();
+  initPlaceIdGetter = input<() => number>();
+  initPlaceId = signal<number>(-1);
 
   objects$ = toObservable(this.companyId).pipe(
     filter(Boolean),
@@ -25,18 +42,46 @@ export class CompanyPlacesMenuComponent implements OnInit {
   menuItems = computed(() => {
     const objects = this.objects() || [];
     const linkGetter = this.placeLinkGetter();
+    const placeId = this.initPlaceId();
     return objects.map((o) => {
       return {
+        data: o,
         label: o.name,
         items: o.places.map((p) => {
-          return {
+          const item = {
+            data: p,
             label: p.name,
             routerLink: linkGetter?.(p),
           };
+          if (placeId && p.id === placeId) {
+            this.selectedPlace = item;
+          } else if (!this.selectedPlace) {
+            this.selectedPlace = item;
+            this.onPlaceChange({ init: true });
+          }
+          return item;
         }),
       };
     });
   });
+  selectedPlace = null;
+  groupedPlaces = computed(() => {
+    const menu = this.menuItems();
+    return menu;
+  });
 
-  ngOnInit() {}
+  ngOnInit() {
+    const initPlaceIdGetter = this.initPlaceIdGetter();
+    const initPlaceId = initPlaceIdGetter();
+    this.initPlaceId.set(initPlaceId);
+  }
+
+  onPlaceChange(e) {
+    this.selectPlace.emit({ place: this.selectedPlace });
+    const linkGetter = this.placeLinkGetter();
+    if (this.selectedPlace && linkGetter) {
+      const link = linkGetter(this.selectedPlace.data);
+      this.router.navigate([link]);
+    }
+  }
 }

@@ -1,1 +1,22 @@
+@if (viewMode() === 'menu') {
+
 <p-menu [model]="menuItems()"></p-menu>
+
+} @else if (viewMode() === 'combo') {
+
+<p-dropdown
+  [options]="groupedPlaces()"
+  [(ngModel)]="selectedPlace"
+  placeholder="Выберите площадку"
+  [group]="true"
+  styleClass="dropdown-sm"
+  (onChange)="onPlaceChange($event)"
+>
+  <ng-template let-group pTemplate="group">
+    <div class="flex align-items-center">
+      <span>{{ group.label }}</span>
+    </div>
+  </ng-template>
+</p-dropdown>
+
+}

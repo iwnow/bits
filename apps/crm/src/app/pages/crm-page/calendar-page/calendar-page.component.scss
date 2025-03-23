@@ -1,5 +1,5 @@
 :host ::ng-deep {
-  b-company-places-menu {
+  .sub-nav-menu {
     position: absolute;
     height: calc(var(--h-full-ex-app-bar) - var(--bar-height));
     overflow: auto;
@@ -15,7 +15,7 @@
   }
 }
 :host(.menu-opened) ::ng-deep {
-  b-company-places-menu {
+  .sub-nav-menu {
     transform: translateX(0);
   }
   .calendar-container {

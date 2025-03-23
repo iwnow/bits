@@ -11,6 +11,7 @@ import {
   firstValueFrom,
   forkJoin,
   map,
+  of,
   takeUntil,
   tap,
 } from 'rxjs';
@@ -104,7 +105,7 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
   }
 
   saveRights() {
-    if (this.saving) {
+    if (this.saving || !this.frms) {
       return;
     }
     const { rights }: DTO.DTOCompanyUser = this.frms.getValue();
@@ -114,27 +115,29 @@ export class AdminPageUserEditCompanyComponent implements OnInit {
       rights,
     });
 
+    let updateUserObjectRights$: Observable<any> = of(null);
     const uo = this.userObject();
-    const { rights: userObjectRights } = this.userObjectRef.getValue<any>();
-    let updateUserObjectRights$: Observable<any>;
-    if (uo.id) {
-      updateUserObjectRights$ = this.ad.crm.server.admin.updateUserObject({
-        rights: userObjectRights,
-        id: uo.id,
-      });
-    } else {
-      updateUserObjectRights$ = this.ad.crm.server.admin
-        .createUserObject({
-          company_user: uc.id,
-          object_id: uo.object_id,
+    if (uo) {
+      const { rights: userObjectRights } = this.userObjectRef.getValue<any>();
+      if (uo.id) {
+        updateUserObjectRights$ = this.ad.crm.server.admin.updateUserObject({
           rights: userObjectRights,
-        })
-        .pipe(
-          tap((r) => {
-            uo.id = r.detail.id;
-            this.userObject.set({ ...uo });
+          id: uo.id,
+        });
+      } else {
+        updateUserObjectRights$ = this.ad.crm.server.admin
+          .createUserObject({
+            company_user: uc.id,
+            object_id: uo.object_id,
+            rights: userObjectRights,
           })
-        );
+          .pipe(
+            tap((r) => {
+              uo.id = r.detail.id;
+              this.userObject.set({ ...uo });
+            })
+          );
+      }
     }
 
     forkJoin([companyUserUpdate$, updateUserObjectRights$]).subscribe({
