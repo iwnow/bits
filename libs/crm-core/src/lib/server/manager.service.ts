@@ -7,6 +7,7 @@ import {
   objectExcludeProps,
   objectToSearchString,
 } from 'crm-utils';
+import { DTO } from 'crm-core';
 
 @Injectable({ providedIn: 'root' })
 export class ManagerService {
@@ -23,7 +24,7 @@ export class ManagerService {
     const { placeId } = params;
     params.with_entities = params.with_entities || [
       'order',
-      'order_contact',
+      'order_customer',
       'order_legal',
       'section',
     ];
@@ -33,5 +34,10 @@ export class ManagerService {
     const search = objectToSearchString(restParams);
     url += `?${search}`;
     return this.common.http.get<Array<any>>(url);
+  }
+
+  place(id) {
+    const url = this.common.apiUrl(`places/${id}`);
+    return this.common.http.get<DTO.DTOPlace>(url);
   }
 }

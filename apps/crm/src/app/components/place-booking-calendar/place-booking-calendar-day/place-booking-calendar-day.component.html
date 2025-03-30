@@ -1,97 +1,96 @@
 <div
   #dayContainer
-	class="day-container"
-	[class.no-hour-label]="!showHours()"
-	[attr.data-date-view]="dateView()"
-	[attr.data-date]="date()"
-	[attr.data-is-today]="dayIsToday()"
-	style="{{containerStyles()}}"
+  class="day-container"
+  [class.no-hour-label]="!showHours()"
+  [attr.data-date-view]="dateView()"
+  [attr.data-date]="date()"
+  [attr.data-is-today]="dayIsToday()"
+  style="{{ containerStyles() }}"
 >
-	<!-- <div class="day-label bg-base-200 px-2 rounded-box border-base-300 border border-solid text-xs">
+  <!-- <div class="day-label bg-base-200 px-2 rounded-box border-base-300 border border-solid text-xs">
 		{dateView}
 	</div> -->
 
   @for (itemHour of hours; track $index) {
+  <div class="hour-block border-base-300" [attr.data-hour]="itemHour.hour">
+    @if (showHours()) {
+    <div class="hour-label bg-base-100 px-1 text-2xs">
+      {{ itemHour.hourView }}
+    </div>
+    }
+    <!-- <div class="month-label bg-base-100 px-1 text-2xs">{dateView}</div> -->
+  </div>
+  } @for (bookingView of bookingsView(); track $index; let index = $index) {
+
+  <div
+    class="booking text-sm flex items-center cursor-pointer"
+    [attr.data-day-first-booking]="index === 0"
+    style="{{ bookingViewStyles(bookingView) }}"
+  >
+    @if (bookingView.order) {
     <div
-			class="hour-block border-base-300"
-			[attr.data-hour]="itemHour.hour"
-		>
-			@if (showHours()) {
-        <div
-          class="hour-label bg-base-100 px-1 text-2xs"
-        >
-          {{itemHour.hourView}}
-        </div>
+      class="h-full w-1 absolute top-0 bottom-0 rounded-box rounded-tr-none rounded-br-none {{
+        getOrderBgClass(bookingView.order.state_id)
+      }}"
+    ></div>
+    }
+    <div
+      class="booking-comment pl-2 pt-0.5 h-full max-h-full overflow-hidden flex flex-col break-all"
+    >
+      @if (bookingView?.order?.customer_contact ||
+      bookingView?.order?.customer_legal) {
+      <div class="line-clamp-2">
+        @if (activitiesEmoji[bookingView.activityId]) {
+        <span>{{ activitiesEmoji[bookingView.activityId].emoji }}</span>
+        }
+        {{
+          (
+            bookingView?.order?.customer_contact ||
+            bookingView?.order?.customer_legal
+          ).name
+        }}
+        <!-- <SourceTag class="!text-2xs" id={bookingView.source_id}></SourceTag> -->
+      </div>
+      } @if (bookingView.comment) {
+      <div>
+        {{ bookingView.comment }}
+      </div>
+      } @if (bookingView.sectionName) {
+      <div>
+        {{ bookingView.sectionName }}
+      </div>
       }
-			<!-- <div class="month-label bg-base-100 px-1 text-2xs">{dateView}</div> -->
-		</div>
-  }
-
-  @for (bookingView of bookingsView(); track $index; let index = $index) {
-
-    <div
-			class="booking bg-base-300 dark:bg-base-200 rounded-md text-2xs border-base-100 border border-solid flex items-center relative cursor-pointer hover:border-secondary"
-			data-day-first-booking={index === 0}
-			style="{{bookingViewStyles(bookingView)}}"
-		>
-			@if (bookingView.order) {
-				<div
-					class="h-full w-1 absolute top-0 bottom-0 rounded-box rounded-tr-none rounded-br-none {{getOrderBgClass(
-						bookingView.order.state_id
-					)}}"
-				></div>
-			}
-			<div
-				class="booking-comment pl-2 pt-0.5 h-full max-h-full overflow-hidden flex flex-col break-all"
-			>
-      @if (bookingView?.order?.customer_contact || bookingView?.order?.customer_legal) {
-					<div class="line-clamp-2">
-						@if (activitiesEmoji[bookingView.activityId]) {
-							<span>{{activitiesEmoji[bookingView.activityId].emoji}}</span>
-            }
-						{{(bookingView?.order?.customer_contact ||  bookingView?.order?.customer_legal).name}}
-						<!-- <SourceTag class="!text-2xs" id={bookingView.source_id}></SourceTag> -->
-					</div>
-				}
-
-				@if (bookingView.comment) {
-					<div>
-						{{bookingView.comment}}
-					</div>
-				}
-
-				@if (bookingView.sectionName) {
-					<div>
-          {{bookingView.sectionName}}
-					</div>
-				}
-			</div>
-			@if (bookingView.order) {
-				<div class="h-full flex flex-col p-1 ml-auto flex-shrink-0">
-					<div class="text-right font-bold">
-						<span
-							[class.text-success]="bookingView.order.amount_paid === bookingView.order.amount_total"
-							[class.text-error]="bookingView.order.amount_paid < bookingView.order.amount_total"
-							[class.text-warning]="bookingView.order.amount_paid > bookingView.order.amount_total"
-						>{{bookingView.order.amount_paid}}</span>
-						<!-- &nbsp;/&nbsp;
+    </div>
+    @if (bookingView.order) {
+    <div class="h-full flex flex-col p-1 ml-auto flex-shrink-0">
+      <div class="text-right font-bold">
+        <span
+          [class.text-success]="
+            bookingView.order.amount_paid === bookingView.order.amount_total
+          "
+          [class.text-error]="
+            bookingView.order.amount_paid < bookingView.order.amount_total
+          "
+          [class.text-warning]="
+            bookingView.order.amount_paid > bookingView.order.amount_total
+          "
+          >{{ bookingView.order.amount_paid }}</span
+        >
+        <!-- &nbsp;/&nbsp;
 						<span use:fmtCurrency={bookingView.order.amount_total || 0}></span> -->
-					</div>
-					<hr class="my-1 border-current" />
-					<div class="text-right text-info font-bold">
-						<span use:fmtCurrency={bookingView.order.amount_total || 0}>{{bookingView.order.amount_total}}</span>
-					</div>
-				</div>
-			}
-		</div>
+      </div>
+      <hr class="my-1 border-current" />
+      <div class="text-right text-info font-bold">
+        <span>{{ bookingView.order.amount_total }}</span>
+      </div>
+    </div>
+    }
+  </div>
 
-  }
-
-
-	@if (showTimeMarker() && dayIsToday()) {
-		<div
-			class="current-time-marker bg-red-500"
-			style="{{timeMarkerFullWidth() ? 'left: 0;width: 100%;' : ''}}"
-		></div>
+  } @if (showTimeMarker() && dayIsToday()) {
+  <div
+    class="current-time-marker bg-red-500"
+    style="{{ timeMarkerFullWidth() ? 'left: 0;width: 100%;' : '' }}"
+  ></div>
   }
 </div>

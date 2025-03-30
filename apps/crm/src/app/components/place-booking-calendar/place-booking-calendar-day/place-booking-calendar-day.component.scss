@@ -25,7 +25,7 @@
 }
 .hour-block {
   height: var(--hour-height);
-  border-top: 1px dashed rgb(110, 112, 116);
+  border-top: 1px dashed var(--surface-300);
 }
 .hour-label {
   display: inline-block;
@@ -53,6 +53,9 @@
     (var(--booking-day-minutes-to) - var(--booking-day-minutes-from)) *
       var(--minute-height)
   );
+  border: 1px solid var(--surface-400);
+  background-color: var(--surface-200);
+  border-radius: 4px;
 }
 .no-hour-label .booking {
   transform: translateX(0)
