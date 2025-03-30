@@ -12,6 +12,9 @@ import { map } from 'rxjs';
   styleUrls: ['./calendar-page.component.scss'],
   standalone: true,
   imports: [RouterModule, CompanyPlacesMenuComponent, RibbonBarComponent],
+  host: {
+    class: 'content-page content-page-full-h',
+  },
 })
 export class CalendarPageComponent implements OnInit {
   route = inject(ActivatedRoute);
@@ -25,7 +28,7 @@ export class CalendarPageComponent implements OnInit {
   placeLinkGetter = (place) => `/crm/calendar/place/${place.id}`;
 
   @HostBinding('class.menu-opened')
-  menuOpened = true;
+  menuOpened = false;
 
   readonly lastCalendarPlaceIdKey = 'calendar_lsp';
 

@@ -10,7 +10,7 @@ import {
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { CrmClientService } from 'crm-core';
 import { MenuModule } from 'primeng/menu';
-import { filter, switchMap } from 'rxjs';
+import { filter, switchMap, tap } from 'rxjs';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -34,35 +34,51 @@ export class CompanyPlacesMenuComponent implements OnInit {
   initPlaceIdGetter = input<() => number>();
   initPlaceId = signal<number>(-1);
 
+  setupInitSelect = false;
+  readyInit = false;
   objects$ = toObservable(this.companyId).pipe(
     filter(Boolean),
-    switchMap((cid) => this.crm.company.selectCompanyObjects(cid))
+    switchMap((cid) => this.crm.company.selectCompanyObjects(cid)),
+    tap(() => {
+      this.readyInit = true;
+    })
   );
   objects = toSignal(this.objects$);
   menuItems = computed(() => {
     const objects = this.objects() || [];
     const linkGetter = this.placeLinkGetter();
-    const placeId = this.initPlaceId();
-    return objects.map((o) => {
+    const initPlaceId = this.initPlaceId();
+    const places = [];
+    const items = objects.map((o) => {
       return {
         data: o,
         label: o.name,
         items: o.places.map((p) => {
+          places.push(p);
           const item = {
             data: p,
             label: p.name,
             routerLink: linkGetter?.(p),
           };
-          if (placeId && p.id === placeId) {
+          if (
+            !this.setupInitSelect &&
+            this.readyInit &&
+            initPlaceId &&
+            p.id === initPlaceId
+          ) {
             this.selectedPlace = item;
-          } else if (!this.selectedPlace) {
-            this.selectedPlace = item;
-            this.onPlaceChange({ init: true });
           }
           return item;
         }),
       };
     });
+    if (!this.setupInitSelect && this.readyInit && !this.selectedPlace) {
+      this.selectedPlace = places[0];
+    }
+    if (!this.setupInitSelect && this.readyInit) {
+      this.onPlaceChange({ init: true });
+    }
+    return items;
   });
   selectedPlace = null;
   groupedPlaces = computed(() => {

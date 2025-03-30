@@ -1,0 +1,36 @@
+.days-container {
+//   height: calc(100% - 30px);
+  overflow: auto;
+  padding-top: 8px;
+}
+.col-calendar-multi-place .days-container {
+//   height: calc(100% - 86px);
+}
+.day-container,
+.day-container-head {
+  min-width: calc(
+    1px * var(--day-min-width) * var(--places-count) + var(--add-width, 0)
+  );
+  width: calc(100% / var(--days-col-count));
+  line-height: 1.25rem;
+}
+.day-place-header {
+  min-width: calc(1px * var(--day-min-width));
+  width: calc(100% / var(--days-col-count));
+  text-align: center;
+  z-index: 1;
+  height: 40px;
+  max-height: 40px;
+}
+.day-container-multi {
+  min-width: calc(1px * var(--day-min-width) + var(--add-width));
+  width: calc(100% / var(--days-col-count));
+}
+.col-calendar-host {
+  height: 100%;
+  width: 100%;
+}
+.days-container-head {
+  width: 100%;
+  overflow: hidden;
+}

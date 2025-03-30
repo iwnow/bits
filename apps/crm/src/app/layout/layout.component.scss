@@ -9,4 +9,14 @@
       padding-top: calc(3.5rem - 2px);
     }
   }
+  .layout-content {
+    .content-page {
+      position: relative;
+      display: block;
+
+      &.content-page-full-h {
+        height: var(--h-full-ex-app-bar);
+      }
+    }
+  }
 }

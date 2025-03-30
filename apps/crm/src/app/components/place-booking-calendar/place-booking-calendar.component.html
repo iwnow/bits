@@ -1,0 +1,76 @@
+<div
+  class="col-calendar-host"
+  [class.col-calendar-multi-place]="{multiPlace}"
+  style="{{ styleContainer() }}"
+>
+  <div
+    class="flex border-b border-base-300 days-container-head"
+    #daysContainerHead
+  >
+    @for (date of dates(); track $index) {
+    <div
+      class="p-2 text-center text-sm day-container-head"
+      [class.text-primary]="date | isToday"
+      [class.font-semibold]="date | isToday"
+    >
+      {{ date | dateFormat : 'dd MMMM, EEEEEE' }}
+    </div>
+    }
+  </div>
+
+  <!-- {#if multiPlace}
+  <div
+    #placeHeaderContainer
+    class="flex day-container overflow-x-hidden"
+    style="padding-top: 8px; width: auto"
+  >
+    {#each dates as date} {#each places as place, index} {#if index == 0}
+    <div style="min-width: 2.5rem" />
+    {/if}
+    <div
+      class="day-place-header text-sm {index === 0 ? 'pr-1' : index - 1 === places.length ? 'pl-1' : 'px-1'}"
+    >
+      <div
+        class="rounded-md h-full flex items-center justify-center p-1 text-white font-semibold"
+        style="background-color: {placeColor(place)}; line-height: 1.1;"
+      >
+        <div class="line-clamp-2">
+          {place.name} {#if place.dimension_length && place.dimension_width}
+          &nbsp;{place.dimension_length}&times;{place.dimension_width} {/if}
+        </div>
+      </div>
+    </div>
+    {/each} {/each}
+  </div>
+  {/if} -->
+
+  <div #daysContainer class="flex days-container">
+    @for (date of dates(); track $index) {
+    <div class="day-container">
+      @if (multiPlace()) {
+      <div class="flex">
+        @for (place of places(); track $index; let placeIndex = $index) {
+        <div
+          class="day-container-multi {index > 0 ? 'border-l border-dashed border-base-300' : ''}"
+          style="--add-width: {{ placeIndex === 0 ? '2.5rem' : '0px' }};"
+        >
+          <!-- <Day {place} {date} {tZone} showHours={index === 0}
+                timeMarkerFullWidth={index > 0} updater={dayUpdater}
+                height={dayHeightPx} {showTimeMarker} on:hour-click on:booking-click
+                /> -->
+        </div>
+        }
+      </div>
+      } @else {
+      <b-place-booking-calendar-day
+        [place]="place()"
+        [date]="date"
+        [tZone]="tZone()"
+        [height]="dayHeightPx()"
+        [showTimeMarker]="showTimeMarker()"
+      />
+      }
+    </div>
+    }
+  </div>
+</div>

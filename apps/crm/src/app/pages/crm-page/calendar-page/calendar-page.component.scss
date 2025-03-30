@@ -12,6 +12,7 @@
   }
   .calendar-container {
     transition: transform 0.2s;
+    height: calc(100% - var(--bar-height));
   }
 }
 :host(.menu-opened) ::ng-deep {

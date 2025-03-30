@@ -1,6 +1,7 @@
 <b-content-tab-bar
   [tabs]="tabs()"
   [menu]="menu()"
+  [menuBtnEnabled]="menuBtnEnabled()"
   (menuBtnClick)="onMenuBtnClick($event)"
 >
   @if (title()) {

@@ -1,4 +1,8 @@
-<b-ribbon-bar (menuBtnClick)="toggleMenu()" title="Календарь">
+<b-ribbon-bar
+  (menuBtnClick)="toggleMenu()"
+  title="Календарь"
+  [menuBtnEnabled]="false"
+>
   <b-company-places-menu
     viewMode="combo"
     [companyId]="activeCompanyId()"

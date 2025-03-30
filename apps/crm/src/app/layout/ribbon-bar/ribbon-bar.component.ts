@@ -18,6 +18,7 @@ export class RibbonBarComponent {
   menu = signal([]);
   menuBtnClick = output<PointerEvent>();
   title = input('');
+  menuBtnEnabled = input(true);
 
   @HostBinding('class.is-empty-menu')
   get isEmptyMenu() {

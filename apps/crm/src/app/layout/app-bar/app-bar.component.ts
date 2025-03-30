@@ -7,10 +7,11 @@ import {
   signal,
 } from '@angular/core';
 import { LayoutService } from '../layout.service';
-import { CrmClientService, stringToHslColor } from 'crm-core';
+import { CrmClientService } from 'crm-core';
 import { map, shareReplay, takeUntil } from 'rxjs';
 import { viewDestroy } from 'crm/utils';
 import { MenuItem, MessageService } from 'primeng/api';
+import { stringToHslColor } from 'crm-utils';
 
 @Component({
   selector: 'b-bar',

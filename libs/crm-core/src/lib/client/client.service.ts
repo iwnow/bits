@@ -11,3 +11,7 @@ export class CrmClientService {
   readonly company = inject(CrmCompanyService);
   readonly server = inject(CrmServerService);
 }
+
+export function useCrm() {
+  return inject(CrmClientService);
+}

@@ -6,6 +6,7 @@
     severity="secondary"
     class="p-button-no-focus"
     (onClick)="onMenuBtnClick($event)"
+    [disabled]="!menuBtnEnabled()"
   ></p-button>
 
   <ng-content select="[bar-title]"></ng-content>

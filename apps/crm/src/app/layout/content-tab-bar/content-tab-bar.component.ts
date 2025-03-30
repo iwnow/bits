@@ -23,6 +23,7 @@ export class ContentTabBarComponent {
 
   tabs = input<TabItem[]>([]);
   menu = input<MenuItem[]>([]);
+  menuBtnEnabled = input(true);
 
   @ViewChild(Menubar)
   menubar: Menubar;

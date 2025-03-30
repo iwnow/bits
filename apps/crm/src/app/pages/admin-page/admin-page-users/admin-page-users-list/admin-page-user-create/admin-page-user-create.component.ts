@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { useAdminCommon } from 'crm/pages/admin-page/admin-common';
 import { PanelModule } from 'primeng/panel';
 import { uiElements } from 'crm/core/ui-elements';
-import { dateUtil, parseErrorMessage } from 'crm-utils';
+import { parseErrorMessage } from 'crm-utils';
 import { DOMAIN, DTO } from 'crm-core';
 
 @Component({

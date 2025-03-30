@@ -8,3 +8,7 @@ export * from './lib/route';
 export * from './lib/json';
 export * from './lib/array';
 export * from './lib/signal';
+export * from './lib/platform';
+export * from './lib/base-href';
+export * from './lib/colors';
+export * from './lib/object';

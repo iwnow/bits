@@ -1,0 +1,61 @@
+.current-time-marker {
+  position: absolute;
+  height: 2px;
+  width: calc(100% - 34px);
+  left: 34px;
+  top: calc(var(--day-absolute-minute) * var(--minute-height));
+}
+[data-is-today='false'] .current-time-marker {
+  display: none;
+}
+.day-container {
+  position: relative;
+  box-sizing: border-box;
+}
+.day-label {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+.hour-block {
+  box-sizing: border-box;
+  position: relative;
+}
+.hour-block {
+  height: var(--hour-height);
+  border-top: 1px dashed rgb(110, 112, 116);
+}
+.hour-label {
+  display: inline-block;
+  position: absolute;
+  transform: translateY(-50%);
+}
+.month-label {
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.booking {
+  line-height: 1.15;
+  --width-area-col: calc((100% - 3rem) / var(--area-cols, 1));
+  --pad-left: calc(var(--width-area-col) * var(--area-left-pad, 0));
+  top: 0;
+  left: var(--pad-left);
+  position: absolute;
+  transform: translateX(2.5rem)
+    translateY(calc((var(--booking-day-minutes-from) * var(--minute-height))));
+  /* width: calc((var(--booking-size) / 60) * 100% - 3rem); */
+  width: calc((100% - 3rem) * var(--area-book, 1) / var(--area-cols, 1));
+  height: calc(
+    (var(--booking-day-minutes-to) - var(--booking-day-minutes-from)) *
+      var(--minute-height)
+  );
+}
+.no-hour-label .booking {
+  transform: translateX(0)
+    translateY(calc((var(--booking-day-minutes-from) * var(--minute-height))));
+  width: calc((100%) * var(--area-book, 1) / var(--area-cols, 1));
+}
