@@ -1,12 +1,12 @@
 import { Routes } from '@angular/router';
-import { AdminPageObjectsComponent } from './admin-page-objects/admin-page-objects.component';
-import { AdminPageTariffsComponent } from './admin-page-tariffs/admin-page-tariffs.component';
-import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.component';
-import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
-import { AdminPageComponent } from './admin-page.component';
 import adminPagesObjectsRouting from './admin-page-objects/admin-page-objects-routing';
-import { AdminPagePlacesComponent } from './admin-page-places/admin-page-places.component';
+import { AdminPageObjectsComponent } from './admin-page-objects/admin-page-objects.component';
 import adminPagesPlacesRouting from './admin-page-places/admin-page-places-routing';
+import { AdminPagePlacesComponent } from './admin-page-places/admin-page-places.component';
+import adminPagesTariffsRouting from './admin-page-tariffs/admin-page-tariffs.routing';
+import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
+import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.component';
+import { AdminPageComponent } from './admin-page.component';
 
 export const adminPagesRouting: Routes = [
   {
@@ -31,7 +31,7 @@ export const adminPagesRouting: Routes = [
       },
       {
         path: 'tariffs',
-        component: AdminPageTariffsComponent,
+        children: adminPagesTariffsRouting,
       },
       {
         path: '**',

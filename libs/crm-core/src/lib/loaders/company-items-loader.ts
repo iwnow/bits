@@ -1,6 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { ItemsLoaderResult, ItemsLoaderService } from './items-loader';
-import { MaybeAsync } from 'crm-utils';
+import {
+  ItemsLoaderResult,
+  ItemsLoaderService,
+  useItemsLoaderFactory,
+} from './items-loader';
+import { MaybeAsync, maybePromise } from 'crm-utils';
 import { CrmClientService } from '../client';
 import { map } from 'rxjs';
 
@@ -15,4 +19,9 @@ export class CompanyItemsLoaderService implements ItemsLoaderService {
       }))
     );
   }
+}
+
+export function useCompanyItemsLoader() {
+  const factory = useItemsLoaderFactory();
+  return maybePromise(factory.run('company'));
 }

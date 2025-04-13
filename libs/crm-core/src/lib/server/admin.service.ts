@@ -8,6 +8,7 @@ import {
   DTOListRequest,
   DTOListResult,
   DTOPlace,
+  DTOTariff,
   DTOUser,
 } from './dto';
 import { CompanyService } from './company.service';
@@ -220,5 +221,17 @@ export class AdminService {
       new_password: pass,
       userid: userId,
     });
+  }
+
+  tariffList(args: DTOListRequest) {
+    const url = this.common.apiUrl('company-place-tariffs/search');
+
+    return this.common.http.post<DTOListResult<DTOTariff>>(url, args);
+  }
+
+  tariff(id: number) {
+    const url = this.common.apiUrl(`company-place-tariffs/${id}`);
+
+    return this.common.http.get<DTOTariff>(url);
   }
 }

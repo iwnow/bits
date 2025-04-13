@@ -7,7 +7,11 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FrmsControlBaseComponent } from 'bits-frms';
-import { ItemsLoader, ItemsLoaderFactory } from 'crm-core';
+import {
+  ItemsLoader,
+  ItemsLoaderFactory,
+  useItemsLoaderFactory,
+} from 'crm-core';
 import { maybePromise } from 'crm-utils';
 import { ScrollerOptions, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
@@ -36,7 +40,7 @@ export class SelectComponent
     lazy: true,
     onLazyLoad: this.onLazyLoad.bind(this),
   };
-  loaderFactory = this.inj.get(ItemsLoaderFactory);
+  loaderFactory = useItemsLoaderFactory();
 
   ngOnInit(): void {
     this.allItems.set(this.items() || []);

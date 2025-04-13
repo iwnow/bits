@@ -56,3 +56,7 @@ export class ItemsLoaderFactory {
     return loaderService.load(...args);
   }
 }
+
+export function useItemsLoaderFactory() {
+  return inject(ItemsLoaderFactory);
+}
