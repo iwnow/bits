@@ -4,5 +4,70 @@
       (companyObjectName ? ' &#x00AB;' + companyObjectName + '&#x00BB;' : '')
   }}"
 >
-  <!-- <b-frms [entity]="companyPlaceEntity" [value]="companyPlace"></b-frms> -->
+  <div>
+    <label>Компания</label>
+    <b-dropdown-company
+      [setupCompany]="setupCompany()"
+      class="block"
+      (selectCompany)="selectedCompany.set($event)"
+    ></b-dropdown-company>
+  </div>
+
+  <b-frms
+    class="mt-4"
+    [entity]="companyTariffEntity"
+    [value]="companyTariffValue"
+  ></b-frms>
+
+  <div class="mt-4" [formGroup]="fgTariff">
+    <label>Периоды</label>
+    <ng-container formArrayName="periods">
+      <ng-container
+        *ngFor="
+          let periodControl of periodsFormArray.controls;
+          let i = index;
+          let count = count
+        "
+      >
+        <div
+          class="period-control flex gap-2 align-items-end"
+          [class.mt-2]="i > 0"
+          [formGroup]="periodControl"
+        >
+          <div>
+            @if (i === 0) {
+            <div class="mb-1">С</div>
+            }
+            <p-calendar formControlName="start" [timeOnly]="true" />
+          </div>
+          <div>
+            @if (i === 0) {
+            <div class="mb-1">По</div>
+            }
+            <p-calendar formControlName="end" [timeOnly]="true" />
+          </div>
+          <div>
+            @if (i === 0) {
+            <div class="mb-1">Стоимость</div>
+            }
+            <p-inputNumber formControlName="amount" />
+          </div>
+          @if (count > 1) {
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            (onClick)="onRemovePeriod(i, $event)"
+          />
+          }
+        </div>
+      </ng-container>
+    </ng-container>
+    <div class="period-control-add mt-2">
+      <p-button
+        label="Добавить"
+        icon="pi pi-plus"
+        (onClick)="onAddPeriod($event)"
+      />
+    </div>
+  </div>
 </p-panel>

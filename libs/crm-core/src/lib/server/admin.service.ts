@@ -234,4 +234,16 @@ export class AdminService {
 
     return this.common.http.get<DTOTariff>(url);
   }
+
+  tariffCreate(tariff: Partial<DTOTariff>) {
+    const url = this.common.apiUrl(`company-place-tariffs`);
+
+    return this.common.http.post<any>(url, tariff);
+  }
+
+  tariffEdit(tariff: Partial<DTOTariff>) {
+    const url = this.common.apiUrl(`company-place-tariffs/${tariff.id}`);
+
+    return this.common.http.patch<any>(url, tariff);
+  }
 }

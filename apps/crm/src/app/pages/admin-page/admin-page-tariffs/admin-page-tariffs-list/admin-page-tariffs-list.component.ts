@@ -9,6 +9,7 @@ import { DOMAIN } from 'crm-core';
 import { uiElements } from 'crm/core/ui-elements';
 import { takeUntil } from 'rxjs';
 import { mapGridRequest } from 'crm/utils/ag-grid';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'b-admin-page-tariffs-list',

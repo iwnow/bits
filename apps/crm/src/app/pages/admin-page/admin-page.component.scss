@@ -11,6 +11,8 @@
     top: 85px;
     border-radius: 6px;
     transition: transform 0.2s;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .admin-content {
     padding-left: 13.5rem;

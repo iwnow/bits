@@ -25,8 +25,13 @@ export class DropdownCompanyComponent implements OnInit {
   companies$ = this.crm.company.selectCompanies().pipe(shareReplay(1));
   selectedCompany: DTO.DTOCompany;
   selectCompany = output<DTO.DTOCompany>();
+  setupCompany = input<DTO.DTOCompany>();
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (this.setupCompany()) {
+      this.selectedCompany = this.setupCompany();
+    }
+  }
 
   onSelectObject(e) {
     this.selectedCompany = e.value;

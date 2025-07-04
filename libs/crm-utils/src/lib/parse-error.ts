@@ -19,6 +19,9 @@ export function parseErrorMessage(err: any) {
       const details = detail.errors.join('\n ');
       return `${err.message}\n ${details}`;
     }
+    if (err.error?.sysinfo?.message) {
+      return err.message + '\n' + err.error?.sysinfo?.message;
+    }
     return err.message;
   }
   if (err instanceof Error) {

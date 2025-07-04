@@ -3,12 +3,12 @@ export interface DTOTariff {
   name: string;
   company_id: number;
   data: DTOTariffRules;
-  created_at: string;
+  created_at?: string;
 }
 
 export interface DTOTariffRules {
   periods: DTOTariffPeriodRule[];
-  default_amount: number;
+  default_amount?: number;
 }
 
 export interface DTOTariffPeriodRule {

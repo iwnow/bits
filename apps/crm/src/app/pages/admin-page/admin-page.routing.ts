@@ -7,6 +7,7 @@ import adminPagesTariffsRouting from './admin-page-tariffs/admin-page-tariffs.ro
 import { adminPagesUsersRouting } from './admin-page-users/admin-page-users-routing';
 import { AdminPageUsersComponent } from './admin-page-users/admin-page-users.component';
 import { AdminPageComponent } from './admin-page.component';
+import { AdminPageTariffsComponent } from './admin-page-tariffs/admin-page-tariffs.component';
 
 export const adminPagesRouting: Routes = [
   {
@@ -31,6 +32,7 @@ export const adminPagesRouting: Routes = [
       },
       {
         path: 'tariffs',
+        component: AdminPageTariffsComponent,
         children: adminPagesTariffsRouting,
       },
       {

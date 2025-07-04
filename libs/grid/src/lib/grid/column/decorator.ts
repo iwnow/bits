@@ -40,6 +40,7 @@ export function jsonColumnDesc(desc: Partial<BGridCol>) {
     },
     wrapText: true,
     autoHeight: true,
+    valueFormatter: (e) => (e.value ? JSON.stringify(e.value, null, 4) : ''),
     ...desc,
   });
 }
