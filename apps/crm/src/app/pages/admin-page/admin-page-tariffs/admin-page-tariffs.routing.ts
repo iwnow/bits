@@ -5,6 +5,8 @@ import { AdminPageTariffEditComponent } from './admin-page-tariffs-list/admin-pa
 import { tariffResolver } from 'crm/resolvers/tariff.resolver';
 import { AdminPageTariffEditInfoComponent } from './admin-page-tariffs-list/admin-page-tariff-edit/admin-page-tariff-edit-info/admin-page-tariff-edit-info.component';
 import { AdminPageTariffsListComponent } from './admin-page-tariffs-list/admin-page-tariffs-list.component';
+import { AdminPageTariffsPlaceComponent } from './admin-page-tariffs-place/admin-page-tariffs-place.component';
+import { placeResolver } from 'crm/resolvers/place.resolver';
 
 export const adminPagesTariffsRouting: Routes = [
   {
@@ -28,6 +30,13 @@ export const adminPagesTariffsRouting: Routes = [
   {
     path: 'list',
     component: AdminPageTariffsListComponent,
+  },
+  {
+    path: 'p/:placeId',
+    component: AdminPageTariffsPlaceComponent,
+    resolve: {
+      companyPlace: placeResolver,
+    },
   },
   rootPathTo('list'),
   notFoundPath(),

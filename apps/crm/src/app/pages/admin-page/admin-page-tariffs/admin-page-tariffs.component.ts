@@ -59,18 +59,27 @@ export class AdminPageTariffsComponent implements OnInit {
               },
             ],
           },
-          ...data.map((c) => {
-            return {
-              label: c.company.name,
-              items: c.objects.flatMap((o) => {
-                return o.places.map((p) => {
-                  return {
-                    label: p.name,
-                  };
-                });
-              }),
-            };
-          }),
+          ...data
+            .sort((a, b) => a.company.name.localeCompare(b.company.name))
+            .map((c) => {
+              return {
+                label: c.company.name,
+                items: c.objects
+                  .sort((a, b) => a.name.localeCompare(b.name))
+                  .flatMap((o) => {
+                    return o.places
+                      .sort((a, b) => a.name.localeCompare(b.name))
+                      .map((p, idx) => {
+                        const item: MenuItem = {
+                          label: p.name,
+                          preHeaderLabel: idx === 0 ? o.name : null,
+                          routerLink: `tariffs/p/${p.id}`,
+                        };
+                        return item;
+                      });
+                  }),
+              };
+            }),
         ];
         this.ad.page.updateMenuItems(menu);
       });

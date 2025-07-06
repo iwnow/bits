@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { CommonService } from './common.service';
 import { Observable, forkJoin, map } from 'rxjs';
+import { CommonService } from './common.service';
+import { CompanyService } from './company.service';
 import {
   DTOCompanyObject,
   DTOCompanyUser,
@@ -9,10 +10,9 @@ import {
   DTOListResult,
   DTOPlace,
   DTOTariff,
+  DTOTariffPlaceRule,
   DTOUser,
 } from './dto';
-import { CompanyService } from './company.service';
-import { objectToQueryParams } from 'crm-utils';
 
 @Injectable({ providedIn: 'root' })
 export class AdminService {
@@ -245,5 +245,27 @@ export class AdminService {
     const url = this.common.apiUrl(`company-place-tariffs/${tariff.id}`);
 
     return this.common.http.patch<any>(url, tariff);
+  }
+
+  tariffPlaceRules(placeId: number) {
+    const url = this.common.apiUrl('company-place-tariff-rules/search');
+    const params: DTOListRequest = {
+      limit: 50,
+      skip: 0,
+      filters: {
+        items: [
+          {
+            key: 'place_id',
+            op: 'EQ',
+            value: placeId,
+          },
+        ],
+        op: 'AND',
+      },
+    };
+    return this.common.http.post<DTOListResult<DTOTariffPlaceRule>>(
+      url,
+      params
+    );
   }
 }

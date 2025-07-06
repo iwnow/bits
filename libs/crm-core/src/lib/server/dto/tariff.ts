@@ -16,3 +16,14 @@ export interface DTOTariffPeriodRule {
   end: string;
   amount: number;
 }
+
+export interface DTOTariffPlaceRule {
+  id: number;
+  date_from: string;
+  date_to: string;
+  place_id: number;
+  tariff: DTOTariff;
+  weekdays: number[];
+  section_id?: any;
+  created_at?: string;
+}

@@ -18,13 +18,21 @@ import { AdminPageService } from './admin-page.service';
 import { waitFor } from 'crm-utils';
 import { provideFrmsComponents } from 'bits-frms';
 import { crmFrmComponents } from 'crm/core/frms.components';
+import { RippleModule } from 'primeng/ripple';
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'b-admin-page',
   templateUrl: './admin-page.component.html',
   styleUrls: ['./admin-page.component.scss'],
   standalone: true,
-  imports: [CommonModule, MenuModule, RibbonBarComponent],
+  imports: [
+    CommonModule,
+    MenuModule,
+    RibbonBarComponent,
+    BadgeModule,
+    RippleModule,
+  ],
   providers: [AdminPageService, provideFrmsComponents(crmFrmComponents)],
 })
 export class AdminPageComponent implements OnInit {

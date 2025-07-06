@@ -1,4 +1,4 @@
-import { inject } from '@angular/core';
+import { inject, Injector, Signal } from '@angular/core';
 import {
   Router,
   ActivatedRoute,
@@ -8,7 +8,8 @@ import { CrmClientService } from 'crm-core';
 import { viewDestroy } from 'crm-utils';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { AdminPageService } from './admin-page.service';
-import { fromEvent, map } from 'rxjs';
+import { fromEvent, map, Observable } from 'rxjs';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 const EVENT_updateNavMenu = 'crm:admin:updateNavMenu';
 
@@ -21,6 +22,7 @@ export function useAdminCommon() {
     router: inject(Router),
     route: inject(ActivatedRoute),
     confirm: inject(ConfirmationService),
+    injector: inject(Injector),
     toRootRoute: () => {
       const seg = ad.router.url.split('/').filter(Boolean).slice(0, 2);
       ad.router.navigate(seg);
@@ -34,6 +36,10 @@ export function useAdminCommon() {
       fromEvent<CustomEvent>(window, EVENT_updateNavMenu).pipe(
         map((e) => e.detail)
       ),
+    signalToObs: <T>(s: Signal<T>) =>
+      toObservable(s, { injector: ad.injector }),
+    obsToSignal: <T>(s: Observable<T>) =>
+      toSignal(s, { injector: ad.injector }),
   };
   return ad;
 }
