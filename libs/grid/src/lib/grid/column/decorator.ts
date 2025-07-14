@@ -17,7 +17,7 @@ export function column(desc?: BGridCol) {
   };
 }
 
-export function columnsFromClass(type: any) {
+export function columnsFromClass<R = BGridCol>(type: any): Array<R> {
   const proto = type?.prototype;
   if (!proto[symColumn]) {
     return [];

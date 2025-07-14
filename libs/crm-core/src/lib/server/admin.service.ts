@@ -268,4 +268,16 @@ export class AdminService {
       params
     );
   }
+
+  tariffPlaceRuleDelete(ruleId: number) {
+    const url = this.common.apiUrl(`company-place-tariff-rules/${ruleId}`);
+    return this.common.http.delete<any>(url);
+  }
+
+  tariffPlaceRuleCreate(
+    e: Partial<DTOTariffPlaceRule> & { tariff_id: number }
+  ) {
+    const url = this.common.apiUrl(`company-place-tariff-rules`);
+    return this.common.http.post<any>(url, e);
+  }
 }

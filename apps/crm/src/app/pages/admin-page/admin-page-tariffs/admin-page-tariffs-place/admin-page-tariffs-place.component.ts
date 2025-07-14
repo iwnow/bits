@@ -1,19 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { useAdminCommon } from '../../admin-common';
 import { DOMAIN, DTO } from 'crm-core';
-import { inheritResolvers } from 'crm-utils';
+import { addDays, inheritResolvers } from 'crm-utils';
 import { FormsModule } from '@angular/forms';
 import { FrmsComponent } from 'bits-frms';
 import { CheckboxModule } from 'primeng/checkbox';
 import { PanelModule } from 'primeng/panel';
-import { switchMap, takeUntil } from 'rxjs';
+import { firstValueFrom, forkJoin, switchMap, takeUntil, tap } from 'rxjs';
 import { uiElements } from 'crm/core/ui-elements';
 import { MoneyPipe } from 'crm/pipes/money.pipe';
 import { DividerModule } from 'primeng/divider';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { ButtonModule } from 'primeng/button';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { TariffsListSearchComponent } from '../tariffs-list-search/tariffs-list-search.component';
 
 @Component({
   selector: 'b-admin-page-tariffs-place',
@@ -32,12 +34,15 @@ import { ButtonModule } from 'primeng/button';
     SelectButtonModule,
     ButtonModule,
   ],
+  providers: [DialogService],
 })
 export class AdminPageTariffsPlaceComponent implements OnInit {
   ad = useAdminCommon();
   routeData: any;
   companyPlace = signal<DOMAIN.CompanyPlace>(null);
   rules = signal<DTO.DTOTariffPlaceRule[]>([]);
+  dialog = inject(DialogService);
+  dialogRef: DynamicDialogRef | undefined;
 
   get placeName() {
     return this.companyPlace()?.name || '';
@@ -91,7 +96,95 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
       });
   }
 
-  save() {}
+  async save() {
+    try {
+      const createRules = this.rules().filter((r) => r.id < 0);
+      await firstValueFrom(
+        forkJoin(
+          createRules.map((cr) =>
+            this.ad.crm.server.admin
+              .tariffPlaceRuleCreate({
+                ...cr,
+                tariff_id: cr.tariff.id,
+                tariff: undefined,
+                id: undefined,
+              })
+              .pipe(
+                tap((r) => {
+                  console.log(r);
+                })
+              )
+          )
+        )
+      );
+    } catch (error) {
+      console.error(error);
+      this.ad.msgError('Ошибка сохранения тарифных правил');
+    }
+  }
 
-  add() {}
+  add() {
+    const selectedTariffs = this.rules().map((r) => r.tariff);
+    this.dialogRef = this.dialog.open(TariffsListSearchComponent, {
+      header: 'Выберите тарифф',
+      data: {
+        selectedTariffs,
+      },
+    });
+    this.ad.destroy$.subscribe(() => {
+      this.dialogRef.close();
+    });
+    this.dialogRef.onClose.pipe(takeUntil(this.ad.destroy$)).subscribe((r) => {
+      if (!r?.tariffs) {
+        return;
+      }
+      const place_id = this.companyPlace().id;
+
+      const newRules: DTO.DTOTariffPlaceRule[] = r.tariffs
+        .filter((t) => !selectedTariffs.find((st) => st.id == t.id))
+        .map((i: DTO.DTOTariff) => {
+          const rule: DTO.DTOTariffPlaceRule = {
+            id: -1,
+            date_from: new Date().toISOString(),
+            date_to: addDays(new Date(), 7).toISOString(),
+            tariff: i,
+            weekdays: [],
+            place_id,
+          };
+          return rule;
+        });
+
+      const rules = [...this.rules(), ...newRules];
+      this.rules.set(rules);
+    });
+  }
+
+  removeRule(rule: DTO.DTOTariffPlaceRule, e?: Event) {
+    const remove = () => {
+      const rules = this.rules().filter((r) => r !== rule);
+      this.rules.set(rules);
+    };
+    this.ad.confirmPopup({
+      target: e.target as EventTarget,
+      message: `Удалить тарифное правило для "${rule.tariff.name}"?`,
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        if (rule.id === -1) {
+          remove();
+        } else {
+          this.ad.crm.server.admin.tariffPlaceRuleDelete(rule.id).subscribe({
+            next: () => {
+              remove();
+              this.ad.msgSuccess('Удалено тарифное правило');
+            },
+            error: (err) => {
+              console.error(err);
+              this.ad.msgError('При удалении правила произошла ошибка');
+            },
+          });
+        }
+      },
+      reject: () => {},
+    });
+  }
 }

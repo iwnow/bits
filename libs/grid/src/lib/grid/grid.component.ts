@@ -75,6 +75,9 @@ export class BitsGridComponent implements OnInit {
   height = '450px';
 
   @Input()
+  width = '100%';
+
+  @Input()
   rowHeight = 30;
 
   @Input()

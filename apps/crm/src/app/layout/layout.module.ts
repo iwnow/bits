@@ -7,6 +7,7 @@ import { AppBarModule } from './app-bar/app-bar.module';
 import { LayoutComponent } from './layout.component';
 import { LeftBarModule } from './left-bar/left-bar.module';
 import { appSubsystemRoutes } from 'crm/app.routes';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { appSubsystemRoutes } from 'crm/app.routes';
     ]),
     ToastModule,
     ConfirmDialogModule,
+    ConfirmPopupModule,
   ],
   declarations: [LayoutComponent],
 })

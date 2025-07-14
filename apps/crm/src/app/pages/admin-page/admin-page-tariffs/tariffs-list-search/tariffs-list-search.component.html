@@ -1,0 +1,10 @@
+<b-grid
+  [options]="options"
+  (err)="onError($event)"
+  height="480px"
+  width="800px"
+></b-grid>
+<div class="flex justify-content-end gap-2 mt-4">
+  <p-button label="Добавить" (onClick)="onAdd()" [disabled]="!hasSelected()" />
+  <p-button label="Отмена" severity="secondary" (onClick)="onCancel()" />
+</div>

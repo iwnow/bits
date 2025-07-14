@@ -6,7 +6,7 @@ import {
 } from '@angular/router';
 import { CrmClientService } from 'crm-core';
 import { viewDestroy } from 'crm-utils';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { Confirmation, ConfirmationService, MessageService } from 'primeng/api';
 import { AdminPageService } from './admin-page.service';
 import { fromEvent, map, Observable } from 'rxjs';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
@@ -22,6 +22,32 @@ export function useAdminCommon() {
     router: inject(Router),
     route: inject(ActivatedRoute),
     confirm: inject(ConfirmationService),
+    msgError: (msg: string) => {
+      return ad.msg.add({
+        severity: 'error',
+        summary: 'Ошибка',
+        detail: msg,
+      });
+    },
+    msgInfo: (msg: string, title = 'Инфо') => {
+      return ad.msg.add({
+        severity: 'info',
+        summary: title,
+        detail: msg,
+      });
+    },
+    msgSuccess: (msg: string, title = 'Инфо') => {
+      return ad.msg.add({
+        severity: 'success',
+        summary: title,
+        detail: msg,
+      });
+    },
+    confirmPopup: (e: Confirmation) =>
+      ad.confirm.confirm({
+        ...e,
+        key: 'confirmPopup',
+      }),
     injector: inject(Injector),
     toRootRoute: () => {
       const seg = ad.router.url.split('/').filter(Boolean).slice(0, 2);
