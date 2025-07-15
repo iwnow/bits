@@ -52,6 +52,7 @@ export class TariffsListSearchComponent {
             mode: 'multiRow',
             checkboxes: true,
             headerCheckbox: false,
+            enableClickSelection: true,
           },
           suppressContextMenu: true,
           suppressCellFocus: true,

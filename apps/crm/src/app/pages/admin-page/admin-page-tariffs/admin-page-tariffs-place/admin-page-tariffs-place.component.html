@@ -1,35 +1,66 @@
 <p-panel [header]="'Тарифы на площадке ' + placeName + ', ' + objectName">
-  @for (rule of rules(); track $index) { @if ($index > 0) {
-  <p-divider />
-  }
-
-  <div class="grid">
-    <div class="col-3">
-      {{ rule.tariff.name }}
+  <div style="max-width: 1440px">
+    @for (rule of rules(); track $index) { @if ($index > 0) {
+    <p-divider />
+    } @if ($index === 0) {
+    <div class="grid mb-4">
+      <div class="col-2 font-semibold">Название тарифа</div>
+      <div class="col-2 font-semibold">Периоды</div>
+      <div class="col-4 font-semibold">Дни недели</div>
+      <div class="col-3 font-semibold">Время действия</div>
+      <div class="col-1 font-semibold"></div>
     </div>
-
-    <div class="col-2" style="font-variant-numeric: tabular-nums">
-      @for (period of rule.tariff.data.periods; track $index) {
-      <div class="pb-2">
-        {{ period.start }} - {{ period.end }}
-        <span class="text-primary ml-2">{{ period.amount | money }}</span>
+    }
+    <div class="grid">
+      <div class="col-2">
+        {{ rule.tariff.name }}
       </div>
-      }
+
+      <div class="col-2" style="font-variant-numeric: tabular-nums">
+        @for (period of rule.tariff.data.periods; track $index) {
+        <div class="pb-2">
+          {{ period.start }} - {{ period.end }}
+          <span class="text-primary ml-2">{{ period.amount | money }}</span>
+        </div>
+        }
+      </div>
+
+      <div class="col-4">
+        <p-selectButton
+          [options]="weekdays"
+          [(ngModel)]="rule.weekdays"
+          [multiple]="true"
+          optionLabel="name"
+          optionValue="value"
+        />
+      </div>
+      <div class="col-3">
+        <p-calendar
+          [(ngModel)]="rule.date_from"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          inputId="icondisplay"
+          [inputStyle]="{ width: '120px' }"
+        />
+        <span class="px-4">-</span>
+        <p-calendar
+          [(ngModel)]="rule.date_to"
+          [iconDisplay]="'input'"
+          [showIcon]="true"
+          inputId="icondisplay"
+          [inputStyle]="{ width: '120px' }"
+        />
+      </div>
+      <div class="col-1">
+        <p-button
+          label="Удалить"
+          [rounded]="true"
+          severity="danger"
+          (onClick)="removeRule(rule, $event)"
+        />
+      </div>
     </div>
 
-    <div class="col-4">
-      <p-selectButton
-        [options]="weekdays"
-        [(ngModel)]="rule.weekdays"
-        [multiple]="true"
-        optionLabel="name"
-        optionValue="value"
-      />
-    </div>
-    <div class="col-2">
-      <p-button label="Удалить" [rounded]="true" severity="danger" (onClick)="removeRule(rule, $event)"/>
-    </div>
+    }
   </div>
-
-  }
 </p-panel>

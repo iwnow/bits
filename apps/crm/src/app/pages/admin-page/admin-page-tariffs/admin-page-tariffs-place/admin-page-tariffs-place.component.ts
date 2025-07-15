@@ -16,6 +16,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ButtonModule } from 'primeng/button';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { TariffsListSearchComponent } from '../tariffs-list-search/tariffs-list-search.component';
+import { CalendarModule } from 'primeng/calendar';
 
 @Component({
   selector: 'b-admin-page-tariffs-place',
@@ -33,6 +34,7 @@ import { TariffsListSearchComponent } from '../tariffs-list-search/tariffs-list-
     DividerModule,
     SelectButtonModule,
     ButtonModule,
+    CalendarModule,
   ],
   providers: [DialogService],
 })
@@ -92,6 +94,10 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
         takeUntil(this.ad.destroy$)
       )
       .subscribe((rules) => {
+        rules.data.forEach((rd) => {
+          rd.date_from = new Date(rd.date_from) as any;
+          rd.date_to = new Date(rd.date_to) as any;
+        });
         this.rules.set(rules.data);
       });
   }
@@ -99,9 +105,10 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
   async save() {
     try {
       const createRules = this.rules().filter((r) => r.id < 0);
+      const updRules = this.rules().filter((r) => r.id > 0);
       await firstValueFrom(
-        forkJoin(
-          createRules.map((cr) =>
+        forkJoin([
+          ...createRules.map((cr) =>
             this.ad.crm.server.admin
               .tariffPlaceRuleCreate({
                 ...cr,
@@ -111,12 +118,17 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
               })
               .pipe(
                 tap((r) => {
+                  cr.id = 0.1;
                   console.log(r);
                 })
               )
-          )
-        )
+          ),
+          ...updRules.map((cr) =>
+            this.ad.crm.server.admin.tariffPlaceRuleUpdate(cr)
+          ),
+        ])
       );
+      this.ad.msgSuccess('Тарифы сохранены успешно');
     } catch (error) {
       console.error(error);
       this.ad.msgError('Ошибка сохранения тарифных правил');

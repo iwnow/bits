@@ -280,4 +280,14 @@ export class AdminService {
     const url = this.common.apiUrl(`company-place-tariff-rules`);
     return this.common.http.post<any>(url, e);
   }
+
+  tariffPlaceRuleUpdate(e: Partial<DTOTariffPlaceRule>) {
+    const url = this.common.apiUrl(`company-place-tariff-rules/${e.id}`);
+    return this.common.http.patch<any>(url, {
+      date_from: e.date_from,
+      date_to: e.date_to,
+      // section_id: 0,
+      weekdays: e.weekdays,
+    });
+  }
 }
