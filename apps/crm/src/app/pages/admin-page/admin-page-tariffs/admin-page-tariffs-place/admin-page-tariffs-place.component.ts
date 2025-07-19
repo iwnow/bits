@@ -199,4 +199,8 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
       reject: () => {},
     });
   }
+
+  tariffInfoUrl(tariff: DTO.DTOTariff) {
+    return `/admin/tariffs/edit/${tariff.id}/info`;
+  }
 }

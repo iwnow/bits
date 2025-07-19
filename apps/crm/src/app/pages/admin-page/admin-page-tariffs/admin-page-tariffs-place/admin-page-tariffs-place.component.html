@@ -13,7 +13,7 @@
     }
     <div class="grid">
       <div class="col-2">
-        {{ rule.tariff.name }}
+        <span class="underline cursor-pointer" [routerLink]="tariffInfoUrl(rule.tariff)">{{ rule.tariff.name }}</span>
       </div>
 
       <div class="col-2" style="font-variant-numeric: tabular-nums">
