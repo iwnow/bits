@@ -235,8 +235,8 @@ export class AdminService {
     return this.common.http.get<DTOTariff>(url);
   }
 
-  tariffCreate(tariff: Partial<DTOTariff>) {
-    const url = this.common.apiUrl(`company-place-tariffs`);
+  tariffCreate(tariff: Partial<DTOTariff>, minutes = 60) {
+    const url = this.common.apiUrl(`company-place-tariffs?minutes=${minutes}`);
 
     return this.common.http.post<any>(url, tariff);
   }

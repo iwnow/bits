@@ -145,7 +145,6 @@ export class AdminPageTariffEditInfoComponent implements OnInit {
         severity: 'success',
         summary: 'Тариф успешно сохранен',
       });
-      this.cancelRoute();
     } catch (err) {
       const message = parseErrorMessage(err);
       this.ad.msg.add({
