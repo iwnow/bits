@@ -118,8 +118,7 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
               })
               .pipe(
                 tap((r) => {
-                  cr.id = 0.1;
-                  console.log(r);
+                  cr.id = r.id;
                 })
               )
           ),
