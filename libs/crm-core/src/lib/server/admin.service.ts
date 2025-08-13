@@ -226,24 +226,47 @@ export class AdminService {
   tariffList(args: DTOListRequest) {
     const url = this.common.apiUrl('company-place-tariffs/search');
 
-    return this.common.http.post<DTOListResult<DTOTariff>>(url, args);
+    return this.common.http.post<DTOListResult<DTOTariff>>(url, args).pipe(
+      map((r) => {
+        r.data.forEach((t) => {
+          t.data.periods.forEach((p) => {
+            p.amount = p.amount * 4; // 15 minutes
+          });
+        });
+        return r;
+      })
+    );
   }
 
   tariff(id: number) {
     const url = this.common.apiUrl(`company-place-tariffs/${id}`);
 
-    return this.common.http.get<DTOTariff>(url);
+    return this.common.http.get<DTOTariff>(url).pipe(
+      map((r) => {
+        r.data.periods.forEach((p) => {
+          p.amount = p.amount * 4; // 15 minutes
+        });
+        return r;
+      })
+    );
   }
 
-  tariffCreate(tariff: Partial<DTOTariff>, minutes = 60) {
-    const url = this.common.apiUrl(`company-place-tariffs?minutes=${minutes}`);
+  tariffCreate(tariff: Partial<DTOTariff>) {
+    tariff = structuredClone(tariff);
+    tariff.data.periods.forEach((p) => {
+      p.amount = p.amount / 4; // 15 minutes
+    });
+    const url = this.common.apiUrl(`company-place-tariffs`);
 
     return this.common.http.post<any>(url, tariff);
   }
 
   tariffEdit(tariff: Partial<DTOTariff>) {
+    tariff = structuredClone(tariff);
+    tariff.data.periods.forEach((p) => {
+      p.amount = p.amount / 4; // 15 minutes
+    });
     const url = this.common.apiUrl(`company-place-tariffs/${tariff.id}`);
-
     return this.common.http.patch<any>(url, tariff);
   }
 
@@ -263,10 +286,18 @@ export class AdminService {
         op: 'AND',
       },
     };
-    return this.common.http.post<DTOListResult<DTOTariffPlaceRule>>(
-      url,
-      params
-    );
+    return this.common.http
+      .post<DTOListResult<DTOTariffPlaceRule>>(url, params)
+      .pipe(
+        map((r) => {
+          r.data.forEach((t) => {
+            t.tariff.data.periods.forEach((p) => {
+              p.amount = p.amount * 4; // 15 minutes
+            });
+          });
+          return r;
+        })
+      );
   }
 
   tariffPlaceRuleDelete(ruleId: number) {
