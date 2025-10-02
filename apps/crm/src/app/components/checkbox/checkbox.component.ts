@@ -8,6 +8,8 @@ import {
 } from '@angular/core';
 import { FormArray, FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FrmsControlBaseComponent } from 'bits-frms';
+import { ItemsLoader, useItemsLoaderFactory } from 'crm-core';
+import { maybePromise } from 'crm-utils';
 import { CheckboxModule } from 'primeng/checkbox';
 import { takeUntil } from 'rxjs';
 
@@ -24,8 +26,11 @@ export class CheckboxComponent
 {
   group = input(false);
   options = input([]);
+  visibleOptions = signal([]);
+  itemsLoader = input<ItemsLoader>(null);
+  labelMapper = input<(o: any) => string>(null);
   fa = computed(() => {
-    const opts = this.options();
+    const opts = this.visibleOptions();
     const value: any[] = this.formControl().value;
     const fa = new FormArray(
       opts.map((i) => new FormControl(value?.includes(i) ?? false))
@@ -36,7 +41,7 @@ export class CheckboxComponent
   setupValuesEffect = effect(() => {
     const fc = this.formControl();
     const fa = this.fa();
-    const options = this.options();
+    const options = this.visibleOptions();
     fa.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(() => {
       const values = [];
       const faValue = fa.value;
@@ -50,5 +55,21 @@ export class CheckboxComponent
     });
   });
 
-  ngOnInit(): void {}
+  loaderFactory = useItemsLoaderFactory();
+
+  ngOnInit(): void {
+    const loader = this.itemsLoader();
+    this.visibleOptions.set(this.options() || []);
+    if (loader) {
+      this.visibleOptions.set([]);
+      maybePromise(this.loaderFactory.run(loader)).then((res) => {
+        const mapper = this.labelMapper();
+        if (Array.isArray(res.data)) {
+          this.visibleOptions.set(
+            res.data.map((i) => (mapper ? mapper(i) : i))
+          );
+        }
+      });
+    }
+  }
 }

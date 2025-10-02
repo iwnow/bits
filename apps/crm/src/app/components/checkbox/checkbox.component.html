@@ -2,7 +2,7 @@
 <p-checkbox [formControl]="formControl()" [binary]="true" inputId="binary" />
 } @else {
 <div class="checkbox-group">
-  @for (opt of options(); track $index) {
+  @for (opt of visibleOptions(); track $index) {
   <p-checkbox
     [formControl]="fa().controls[$index]"
     [binary]="true"

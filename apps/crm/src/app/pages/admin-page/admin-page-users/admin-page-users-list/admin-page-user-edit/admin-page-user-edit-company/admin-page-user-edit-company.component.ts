@@ -186,6 +186,8 @@ class UserCompanyForm extends DTO.DTOCompanyUser {
     label: false,
     inputs: {
       options: Object.values(DOMAIN.RIGHTS.COMPANY),
+      itemsLoader: 'company-roles',
+      labelMapper: (i) => i.name,
     },
   })
   override rights: string[];
