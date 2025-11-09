@@ -72,23 +72,9 @@ export class AppBarComponent implements OnInit {
   createMenuProfile(): MenuItem[] {
     return [
       {
-        label: 'Update',
-        icon: 'pi pi-refresh',
-        command: () => {
-          this.update();
-        },
-      },
-      {
-        label: 'Delete',
-        icon: 'pi pi-times',
-        command: () => {
-          this.delete();
-        },
-      },
-      {
-        label: 'Angular',
+        label: 'Campus CRM',
         icon: 'pi pi-external-link',
-        url: 'http://angular.io',
+        url: 'https://campus-crm.beinteam.ru/',
       },
       {
         separator: true,

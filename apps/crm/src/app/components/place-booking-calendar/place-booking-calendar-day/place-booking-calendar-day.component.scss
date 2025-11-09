@@ -62,3 +62,54 @@
     translateY(calc((var(--booking-day-minutes-from) * var(--minute-height))));
   width: calc((100%) * var(--area-book, 1) / var(--area-cols, 1));
 }
+.w-1 {
+  width: 0.25rem !important;
+}
+.p-1 {
+  padding: 0.25rem;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+.h-full {
+  height: 100%;
+}
+.flex {
+  display: flex;
+}
+.ml-auto {
+  margin-left: auto;
+}
+hr,
+.border-current {
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}
+.text-error {
+  color: var(--red-500);
+}
+.text-info {
+  color: var(--blue-700);
+}
+.pt-0\.5 {
+  padding-top: 0.125rem;
+}
+.pl-2 {
+  padding-left: 0.5rem;
+}
+.break-all {
+  word-break: break-all;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+.max-h-full {
+  max-height: 100%;
+}
+.hover\:border-secondary:hover {
+  border-color: var(--primary-color);
+}

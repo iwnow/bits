@@ -23,7 +23,7 @@
   } @for (bookingView of bookingsView(); track $index; let index = $index) {
 
   <div
-    class="booking text-sm flex items-center cursor-pointer"
+    class="booking text-sm flex items-center cursor-pointer hover:border-secondary"
     [attr.data-day-first-booking]="index === 0"
     style="{{ bookingViewStyles(bookingView) }}"
   >
@@ -37,16 +37,15 @@
     <div
       class="booking-comment pl-2 pt-0.5 h-full max-h-full overflow-hidden flex flex-col break-all"
     >
-      @if (bookingView?.order?.customer_contact ||
-      bookingView?.order?.customer_legal) {
+      @if (bookingView?.order?.customer || bookingView?.order?.legal) {
       <div class="line-clamp-2">
         @if (activitiesEmoji[bookingView.activityId]) {
         <span>{{ activitiesEmoji[bookingView.activityId].emoji }}</span>
         }
         {{
           (
-            bookingView?.order?.customer_contact ||
-            bookingView?.order?.customer_legal
+            bookingView?.order?.customer ||
+            bookingView?.order?.legal
           ).name
         }}
         <!-- <SourceTag class="!text-2xs" id={bookingView.source_id}></SourceTag> -->

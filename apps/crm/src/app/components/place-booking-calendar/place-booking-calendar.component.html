@@ -45,32 +45,19 @@
   {/if} -->
 
   <div #daysContainer class="flex days-container">
-    @for (date of dates(); track $index) {
+    @if (!multiPlace()) { @for (booking of (booking$ | async); track $index; let
+    placeIndex = $index) {
     <div class="day-container">
-      @if (multiPlace()) {
-      <div class="flex">
-        @for (place of places(); track $index; let placeIndex = $index) {
-        <div
-          class="day-container-multi {index > 0 ? 'border-l border-dashed border-base-300' : ''}"
-          style="--add-width: {{ placeIndex === 0 ? '2.5rem' : '0px' }};"
-        >
-          <!-- <Day {place} {date} {tZone} showHours={index === 0}
-                timeMarkerFullWidth={index > 0} updater={dayUpdater}
-                height={dayHeightPx} {showTimeMarker} on:hour-click on:booking-click
-                /> -->
-        </div>
-        }
-      </div>
-      } @else {
       <b-place-booking-calendar-day
         [place]="place()"
-        [date]="date"
+        [date]="booking.date"
+        [bookings]="booking.data"
         [tZone]="tZone()"
         [height]="dayHeightPx()"
         [showTimeMarker]="showTimeMarker()"
       />
-      }
     </div>
-    }
+
+    } }
   </div>
 </div>

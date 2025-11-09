@@ -20,7 +20,14 @@ import {
   startOfDay,
   utcToZonedTime,
 } from 'crm-utils';
-import { combineLatest, filter, interval, switchMap, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  from,
+  interval,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'b-place-booking-calendar-day',
@@ -37,6 +44,7 @@ export class PlaceBookingCalendarDayComponent implements OnInit {
   showHours = input(true);
   timeMarkerFullWidth = input(false);
   tZone = input('Europe/Moscow');
+  bookings = input([]);
 
   destroy$ = useDestroyStream();
   crm = useCrm();
@@ -91,6 +99,7 @@ export class PlaceBookingCalendarDayComponent implements OnInit {
   };
   date$ = toObservable(this.date);
   place$ = toObservable(this.place);
+  bookings$ = toObservable(this.bookings);
 
   ngOnInit() {
     this.dayIsToday.set(isToday(this.date()));
@@ -101,79 +110,87 @@ export class PlaceBookingCalendarDayComponent implements OnInit {
         this.dayMinute.set(getDayAbsoluteMinute());
       });
 
-    combineLatest({
-      date: this.date$,
-      place: this.place$,
-    })
-      .pipe(
-        filter((e) => e.place?.id > 0 && isDateValid(e.date)),
-        switchMap((e) => {
-          return this.crm.server.manager.bookings({
-            placeId: e.place.id,
-            date_from: dateToISO(startOfDay(e.date)),
-            date_to: dateToISO(addDays(startOfDay(e.date), 1)),
-          });
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe((bookings) => {
-        const booksView = bookings
-          .map((booking, idx) => {
-            const tzFrom = utcToZonedTime(booking.date_from, this.tZone());
-            const tzTo = utcToZonedTime(booking.date_to, this.tZone());
-            const msDiff = tzTo.getTime() - tzFrom.getTime();
-            const dayMinutesFrom = tzFrom.getHours() * 60 + tzFrom.getMinutes();
-            const dayMinutesTo =
-              dayMinutesFrom + Math.round(msDiff / (60 * 1000));
-            return {
-              tzFrom,
-              tzTo,
-              fromMs: tzFrom.getTime(),
-              toMs: tzTo.getTime(),
-              booking,
-              order: booking.order_product?.order,
-              source_id: booking.order_product?.order?.source_id,
-              dayMinutesFrom,
-              dayMinutesTo,
-              comment:
-                booking?.comment || booking.order_product?.order?.comment,
-              $left: 0,
-              sectionName: booking.section?.name,
-              activityId: booking.activity_id,
-            };
-          })
-          .sort((a, b) => {
-            return a.fromMs - b.fromMs;
-          });
-        const place = this.place();
-        const areaCols = this.areaCols();
-        if (place.is_sectioned) {
-          // add left padding collisions
-          for (let i = 0; i < booksView.length; i++) {
-            const cur = booksView[i];
-            cur.$left = cur.$left || 0;
-            const curColsArea = this.calcAreaBook(cur.booking);
-            if (cur.$left + curColsArea > areaCols) {
-              cur.$left = 0;
-            }
-            for (let j = i + 1; j < booksView.length; j++) {
-              const nex = booksView[j];
-              //time---------------------------------------->
-              //nex: -----     -----    --  -------  ---
-              //cur:  -----  -----    -----  -----   ---
-              const intersected =
-                (nex.toMs > cur.fromMs && nex.toMs <= cur.toMs) ||
-                (nex.fromMs > cur.fromMs && nex.fromMs < cur.toMs) ||
-                cur.fromMs === nex.fromMs ||
-                cur.toMs === nex.toMs;
-              if (intersected) {
-                nex.$left = cur.$left + curColsArea;
-              }
-            }
+    // combineLatest({
+    //   date: this.date$,
+    //   place: this.place$,
+    // })
+    //   .pipe(
+    //     filter((e) => e.place?.id > 0 && isDateValid(e.date)),
+    //     switchMap((e) => {
+    //       return from(
+    //         this.crm.server.manager.bookingsPromise({
+    //           placeId: e.place.id,
+    //           date_from: dateToISO(startOfDay(e.date)),
+    //           date_to: dateToISO(addDays(startOfDay(e.date), 1)),
+    //         })
+    //       );
+    //     }),
+    //     takeUntil(this.destroy$)
+    //   )
+    //   .subscribe((bookings) => {
+    //     this.updateBoolingsView(bookings);
+    //   });
+
+    this.bookings$.pipe(takeUntil(this.destroy$)).subscribe((bookings) => {
+      this.updateBoolingsView(bookings);
+    });
+  }
+
+  updateBoolingsView(bookings) {
+    const booksView = bookings
+      .map((booking, idx) => {
+        const tzFrom = utcToZonedTime(booking.date_from, this.tZone());
+        const tzTo = utcToZonedTime(booking.date_to, this.tZone());
+        const msDiff = tzTo.getTime() - tzFrom.getTime();
+        const dayMinutesFrom = tzFrom.getHours() * 60 + tzFrom.getMinutes();
+        const dayMinutesTo = dayMinutesFrom + Math.round(msDiff / (60 * 1000));
+        return {
+          tzFrom,
+          tzTo,
+          fromMs: tzFrom.getTime(),
+          toMs: tzTo.getTime(),
+          booking,
+          order: booking.order_product?.order,
+          source_id: booking.order_product?.order?.source_id,
+          dayMinutesFrom,
+          dayMinutesTo,
+          comment: booking?.comment || booking.order_product?.order?.comment,
+          $left: 0,
+          sectionName: booking.section?.name,
+          activityId: booking.activity_id,
+        };
+      })
+      .sort((a, b) => {
+        return a.fromMs - b.fromMs;
+      });
+    const place = this.place();
+    const areaCols = this.areaCols();
+    if (place?.is_sectioned) {
+      // add left padding collisions
+      for (let i = 0; i < booksView.length; i++) {
+        const cur = booksView[i];
+        cur.$left = cur.$left || 0;
+        const curColsArea = this.calcAreaBook(cur.booking);
+        if (cur.$left + curColsArea > areaCols) {
+          cur.$left = 0;
+        }
+        for (let j = i + 1; j < booksView.length; j++) {
+          const nex = booksView[j];
+          //time---------------------------------------->
+          //nex: -----     -----    --  -------  ---
+          //cur:  -----  -----    -----  -----   ---
+          const intersected =
+            (nex.toMs > cur.fromMs && nex.toMs <= cur.toMs) ||
+            (nex.fromMs > cur.fromMs && nex.fromMs < cur.toMs) ||
+            cur.fromMs === nex.fromMs ||
+            cur.toMs === nex.toMs;
+          if (intersected) {
+            nex.$left = cur.$left + curColsArea;
           }
         }
-        this.bookingsView.set(booksView);
-      });
+      }
+    }
+    this.bookingsView.set(booksView);
   }
 
   calcAreaBook(booking) {

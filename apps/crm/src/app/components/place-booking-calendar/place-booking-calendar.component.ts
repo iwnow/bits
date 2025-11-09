@@ -1,9 +1,18 @@
 import { Component, computed, input, OnInit, viewChild } from '@angular/core';
-import { DTO } from 'crm-core';
-import { addDays, createArray } from 'crm-utils';
+import { DTO, useCrm, useDestroyStream } from 'crm-core';
+import {
+  addDays,
+  createArray,
+  dateToISO,
+  startOfDay,
+  utcToZonedTime,
+} from 'crm-utils';
 import { DateFormatPipe, IsTodayPipe } from 'crm/pipes/date.pipes';
 import { PlaceColorPipe } from 'crm/pipes/place-color.pipe';
 import { PlaceBookingCalendarDayComponent } from './place-booking-calendar-day/place-booking-calendar-day.component';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'b-place-booking-calendar',
@@ -11,6 +20,7 @@ import { PlaceBookingCalendarDayComponent } from './place-booking-calendar-day/p
   styleUrls: ['./place-booking-calendar.component.scss'],
   standalone: true,
   imports: [
+    AsyncPipe,
     PlaceColorPipe,
     DateFormatPipe,
     IsTodayPipe,
@@ -27,6 +37,8 @@ export class PlaceBookingCalendarComponent implements OnInit {
   position = input<'static' | 'absolute'>('static');
   showTimeMarker = input(true);
   tZone = input('Europe/Moscow');
+  destroy$ = useDestroyStream();
+  crm = useCrm();
 
   multiPlace = computed(() => {
     const place = this.place();
@@ -61,6 +73,49 @@ export class PlaceBookingCalendarComponent implements OnInit {
     const days = createArray(daysCount, (idx) => addDays(initialDay, idx));
     return days;
   });
+  dates$ = toObservable(this.dates);
+  booking$ = toObservable(this.place).pipe(
+    filter(Boolean),
+    switchMap((place) => this.dates$.pipe(map((dates) => ({ dates, place })))),
+    switchMap(({ dates, place }) => {
+      const sorted = dates.sort((a, b) => a - b);
+      const start = sorted[0],
+        end = sorted[sorted.length - 1];
+      return this.crm.server.manager
+        .bookings({
+          placeId: place.id,
+          date_from: dateToISO(startOfDay(start)),
+          date_to: dateToISO(addDays(startOfDay(end), 1)),
+        })
+        .pipe(map((bookings) => ({ bookings, dates, place })));
+    }),
+    map(({ bookings, dates, place }) => {
+      return dates.map((date) => {
+        const from = startOfDay(date);
+        const to = addDays(startOfDay(date), 1);
+        const placeTZ = this.tZone();
+        const sliceData = bookings.filter((i) => {
+          const i_tz_from = utcToZonedTime(i.date_from, placeTZ);
+          const i_tz_to = utcToZonedTime(i.date_to, placeTZ);
+          const i_f = new Date(i.date_from);
+          const i_t = new Date(i.date_to);
+          if (
+            (i_tz_from >= from && i_tz_to <= to) ||
+            (i_tz_from >= from && i_tz_to >= to && i_tz_from < to) ||
+            (i_tz_from <= from && i_tz_to > from)
+          ) {
+            return true;
+          }
+          return false;
+        });
+        return {
+          date,
+          data: sliceData,
+        };
+      });
+    }),
+    shareReplay({ bufferSize: 1, refCount: true })
+  );
 
   ngOnInit() {}
 }
