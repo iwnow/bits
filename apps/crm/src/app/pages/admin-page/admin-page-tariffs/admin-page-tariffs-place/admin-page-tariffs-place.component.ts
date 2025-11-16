@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { useAdminCommon } from '../../admin-common';
-import { DOMAIN, DTO } from 'crm-core';
+import { DOMAIN, DTO, HELPERS } from 'crm-core';
 import { addDays, inheritResolvers } from 'crm-utils';
 import { FormsModule } from '@angular/forms';
 import { FrmsComponent } from 'bits-frms';
@@ -68,15 +68,7 @@ export class AdminPageTariffsPlaceComponent implements OnInit {
     }),
   ];
 
-  weekdays: any[] = [
-    { name: 'Пн', value: 0 },
-    { name: 'Вт', value: 1 },
-    { name: 'Ср', value: 2 },
-    { name: 'Чт', value: 3 },
-    { name: 'Пт', value: 4 },
-    { name: 'Сб', value: 5 },
-    { name: 'Вс', value: 6 },
-  ];
+  weekdays = HELPERS.HELPER_WEEKDAYS.WEEKDAYS;
 
   ngOnInit() {
     this.ad.route.params.pipe(takeUntil(this.ad.destroy$)).subscribe(() => {

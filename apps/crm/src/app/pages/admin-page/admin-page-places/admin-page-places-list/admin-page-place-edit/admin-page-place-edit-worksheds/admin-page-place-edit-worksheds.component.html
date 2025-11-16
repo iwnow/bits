@@ -1,0 +1,31 @@
+@if (selectedEditWorkshed()) {
+<p-panel header="Редактирование расписания"> </p-panel>
+} @else {
+<p-panel
+  header="{{
+    'Режим работы площадки' +
+      (companyPlace() ? ' &#x00AB;' + companyPlace().name + '&#x00BB;' : '')
+  }}"
+>
+  @let dfs = 'dd MMM, yyyy'; @for (item of worksheds(); track $index) {
+
+  <div class="flex">
+    <div>
+      <div class="font-semibold">
+        {{ item.date_from | dateFormat : dfs }} -
+        {{ item.date_to | dateFormat : dfs }}
+      </div>
+      <div class="flex gap-2 mt-2">
+        @for (di of item.data; track $index) {
+        <p-tag styleClass="py-2" severity="info">
+          <span class="font-semibold mr-2">{{ WEEKDAYS_ID_NAME[di.day] }}</span>
+          {{ di.start.slice(0, 5) }} - {{ di.end.slice(0, 5) }}
+        </p-tag>
+        }
+      </div>
+    </div>
+  </div>
+
+  }
+</p-panel>
+}

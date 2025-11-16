@@ -1,6 +1,6 @@
 export class DTOListRequest {
-  skip: number;
-  limit: number;
+  skip?: number;
+  limit?: number;
   sort_by?: string;
   sort_is_desc?: boolean;
   filters?: {

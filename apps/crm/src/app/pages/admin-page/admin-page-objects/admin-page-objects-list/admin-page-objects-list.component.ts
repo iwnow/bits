@@ -47,6 +47,7 @@ export class AdminPageObjectsListComponent implements OnInit {
           rowSelection: 'single',
           onSelectionChanged: () => {
             const selected = this.grid.gapi.getSelectedRows();
+            const selectedNodes = this.grid.gapi.getSelectedNodes();
             if (selected.length) {
               this.ad.page.updateRibbonMenu([
                 ...this.defaultRibbonItems,
@@ -59,7 +60,9 @@ export class AdminPageObjectsListComponent implements OnInit {
                 uiElements.menuItems.deleteButton({
                   command: () => {
                     const { id, name } = selected[0];
-                    this.deleteObject(id, name);
+                    this.deleteObject(id, name).then((deleted) => {
+                      this.grid.gapi.refreshServerSide();
+                    });
                   },
                 }),
               ]);
@@ -86,7 +89,11 @@ export class AdminPageObjectsListComponent implements OnInit {
                 icon: uiElements.icons.delete(),
                 action: (e) => {
                   const { id, name } = e.node.data;
-                  this.deleteObject(id, name);
+                  this.deleteObject(id, name).then((deleted) => {
+                    if (deleted) {
+                      this.grid.gapi.refreshServerSide();
+                    }
+                  });
                 },
               },
               'separator',
@@ -138,29 +145,37 @@ export class AdminPageObjectsListComponent implements OnInit {
   }
 
   deleteObject(id: number, name?: string) {
-    this.ad.confirm.confirm({
-      // target: event.target as EventTarget,
-      message: `Удалить обьект${name ? ' "' + name + '"' : ''}?`,
-      header: 'Подтвердить удаление',
-      icon: 'pi pi-info-circle',
-      acceptButtonStyleClass: 'p-button-danger p-button-text',
-      rejectButtonStyleClass: 'p-button-text p-button-text',
-      acceptIcon: 'none',
-      rejectIcon: 'none',
+    return new Promise((res, rej) => {
+      this.ad.confirm.confirm({
+        // target: event.target as EventTarget,
+        message: `Удалить обьект${name ? ' "' + name + '"' : ''}?`,
+        header: 'Подтвердить удаление',
+        icon: 'pi pi-info-circle',
+        acceptButtonStyleClass: 'p-button-danger p-button-text',
+        rejectButtonStyleClass: 'p-button-text p-button-text',
+        acceptIcon: 'none',
+        rejectIcon: 'none',
 
-      accept: () => {
-        this.ad.crm.server.admin.deleteObject(id).subscribe({
-          next: () => {
-            this.ad.msg.add({
-              severity: 'info',
-              summary: 'Выполнено',
-              detail: 'Обьект удален',
-            });
-          },
-          error: (err) => this.onError(err),
-        });
-      },
-      reject: () => {},
+        accept: () => {
+          this.ad.crm.server.admin.deleteObject(id).subscribe({
+            next: () => {
+              this.ad.msg.add({
+                severity: 'info',
+                summary: 'Выполнено',
+                detail: 'Обьект удален',
+              });
+              res(true);
+            },
+            error: (err) => {
+              this.onError(err);
+              rej(err);
+            },
+          });
+        },
+        reject: () => {
+          res(false);
+        },
+      });
     });
   }
 

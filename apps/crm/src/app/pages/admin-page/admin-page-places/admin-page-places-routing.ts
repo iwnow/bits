@@ -5,6 +5,7 @@ import { AdminPagePlaceCreateComponent } from './admin-page-places-list/admin-pa
 import { AdminPagePlaceEditInfoComponent } from './admin-page-places-list/admin-page-place-edit/admin-page-place-edit-info/admin-page-place-edit-info.component';
 import { AdminPagePlaceEditComponent } from './admin-page-places-list/admin-page-place-edit/admin-page-place-edit.component';
 import { AdminPagePlacesListComponent } from './admin-page-places-list/admin-page-places-list.component';
+import { AdminPagePlaceEditWorkshedsComponent } from './admin-page-places-list/admin-page-place-edit/admin-page-place-edit-worksheds/admin-page-place-edit-worksheds.component';
 
 export const adminPagesPlacesRouting: Routes = [
   {
@@ -21,6 +22,10 @@ export const adminPagesPlacesRouting: Routes = [
       {
         path: 'info',
         component: AdminPagePlaceEditInfoComponent,
+      },
+      {
+        path: 'workscheds',
+        component: AdminPagePlaceEditWorkshedsComponent,
       },
       rootPathTo('info'),
     ],

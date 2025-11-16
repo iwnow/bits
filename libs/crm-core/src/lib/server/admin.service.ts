@@ -9,6 +9,7 @@ import {
   DTOListRequest,
   DTOListResult,
   DTOPlace,
+  DTOPlaceWorkshed,
   DTOTariff,
   DTOTariffPlaceRule,
   DTOUser,
@@ -320,5 +321,42 @@ export class AdminService {
       // section_id: 0,
       weekdays: e.weekdays,
     });
+  }
+
+  placeWorksheds(placeId: number) {
+    const url = this.common.apiUrl(`/company-place-workscheds/search`);
+    const params: DTOListRequest = {
+      filters: {
+        items: [
+          {
+            key: 'place_id',
+            op: 'EQ',
+            value: placeId,
+          },
+        ],
+        op: 'AND',
+      },
+    };
+    return this.common.http.post<DTOListResult<DTOPlaceWorkshed>>(url, params);
+  }
+
+  workshedsDelete(id: number) {
+    const url = this.common.apiUrl(`company-place-workscheds/${id}`);
+    return this.common.http.delete<any>(url);
+  }
+
+  workshedsGet(id: number) {
+    const url = this.common.apiUrl(`company-place-workscheds/${id}`);
+    return this.common.http.get<DTOPlaceWorkshed>(url);
+  }
+
+  workshedsCreate(data: DTOPlaceWorkshed) {
+    const url = this.common.apiUrl(`company-place-workscheds`);
+    return this.common.http.post<any>(url, data);
+  }
+
+  workshedsEdit(id: number, data: DTOPlaceWorkshed) {
+    const url = this.common.apiUrl(`company-place-workscheds/${id}`);
+    return this.common.http.patch<any>(url, data);
   }
 }

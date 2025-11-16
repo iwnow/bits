@@ -74,7 +74,7 @@
       &.menu-opened {
         b-ribbon-bar {
           .b-ctb-row-menu {
-             padding-left: calc(var(--width-left-menu) + 1rem);
+            padding-left: calc(var(--width-left-menu) + 1rem);
           }
         }
       }
@@ -106,6 +106,13 @@
           }
         }
       }
+    }
+  }
+  .admin-menu {
+    .p-menu .p-submenu-header {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
     }
   }
 }
