@@ -15,6 +15,7 @@ import {
 import { maybePromise } from 'crm-utils';
 import { ScrollerOptions, SelectItem } from 'primeng/api';
 import { DropdownModule } from 'primeng/dropdown';
+import { delay, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'b-select',
@@ -36,23 +37,76 @@ export class SelectComponent
   allItems = signal([]);
   options: ScrollerOptions = {
     delay: 250,
-    showLoader: true,
+    showLoader: false,
     lazy: true,
     onLazyLoad: this.onLazyLoad.bind(this),
   };
   loaderFactory = useItemsLoaderFactory();
+  itemsLoaderArgs = input<Array<{ context: string; getter: string }>>([]);
+  refreshControlOnChange = input<string>();
+  initValueAfterItemsLoaderById = input<boolean | string>(false);
+  initValueAfterItemsLoaderByIdDone = false;
 
   ngOnInit(): void {
     this.allItems.set(this.items() || []);
+    this.refresh();
+    if (this.refreshControlOnChange()) {
+      this.formControl()
+        .parent.get(this.refreshControlOnChange())
+        .valueChanges.pipe(delay(1), takeUntil(this.destroy$))
+        .subscribe(() => {
+          this.refresh();
+        });
+    }
+  }
+
+  onLazyLoad(e) {}
+
+  refresh() {
     const loader = this.itemsLoader();
     if (loader) {
-      maybePromise(this.loaderFactory.run(loader)).then((res) => {
+      const args = this.getItemsLoadersAgrs();
+      maybePromise(this.loaderFactory.run(loader, ...args)).then((res) => {
         if (res.data) {
           this.allItems.set(res.data);
+          const initValueAfterItemsLoaderById =
+            this.initValueAfterItemsLoaderById();
+          if (
+            initValueAfterItemsLoaderById &&
+            !this.initValueAfterItemsLoaderByIdDone
+          ) {
+            this.initValueAfterItemsLoaderByIdDone = true;
+            const key =
+              typeof initValueAfterItemsLoaderById === 'string'
+                ? initValueAfterItemsLoaderById
+                : 'id';
+            const ctrlCtx = this.formControl().value || this.formControl().parent?.value;
+            const ctrlValueId = ctrlCtx?.[key];
+            if (ctrlValueId) {
+              const value = res.data.find((i) => (i[key] || i.id) === ctrlValueId);
+              if (value) {
+                this.formControl().setValue(value, { emitEvent: false });
+              }
+            }
+          }
         }
       });
     }
   }
 
-  onLazyLoad(e) {}
+  getItemsLoadersAgrs() {
+    const getContext = (ctx: string) => {
+      if (ctx?.toLowerCase() === 'thisFormGroup'.toLowerCase()) {
+        return this.formControl().parent.value;
+      }
+    };
+    const args = this.itemsLoaderArgs().map((desc) => {
+      const context = getContext(desc.context);
+      const value = desc.getter
+        .split('.')
+        .reduce((o, key) => o?.[key], context);
+      return value;
+    });
+    return args;
+  }
 }

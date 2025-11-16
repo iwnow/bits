@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CrmClientService, DTO } from 'crm-core';
-import { useObservable } from 'crm-utils';
+import { shareLast, useObservable } from 'crm-utils';
 import { DropdownModule } from 'primeng/dropdown';
 import { filter, shareReplay, switchMap } from 'rxjs';
 
@@ -27,7 +27,7 @@ export class DropdownCompanyObjectsComponent implements OnInit {
   objects$ = this.companyId$.pipe(
     filter((id) => id > 0),
     switchMap((id) => this.crm.server.manager.companyObjects(id)),
-    shareReplay(1)
+    shareLast()
   );
   selectedObject: DTO.DTOCompanyObject;
   selectObject = output<DTO.DTOCompanyObject>();

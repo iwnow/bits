@@ -12,3 +12,7 @@ export interface Type<T> extends Function {
 export function ket<T>(type: Type<T>, key: keyof T) {
   return key as string;
 }
+
+export function propFrom<T>(key: keyof T) {
+  return key as string;
+}

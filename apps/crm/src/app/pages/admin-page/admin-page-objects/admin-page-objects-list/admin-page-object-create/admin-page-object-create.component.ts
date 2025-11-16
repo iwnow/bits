@@ -44,7 +44,7 @@ export class AdminPageObjectCreateComponent implements OnInit, AfterViewInit {
   };
 
   get isValid() {
-    return this.frms?._fg().valid;
+    return this.frms?.getValid();
   }
 
   ngOnInit() {
@@ -89,6 +89,7 @@ export class AdminPageObjectCreateComponent implements OnInit, AfterViewInit {
       object.address = object.address_info.address;
       object.company_id = object.company?.id;
       object.city_id = object.address_info.city?.id;
+      object.district_id = object.address_info.district?.id;
       delete object.address_info;
       delete object.company;
       await firstValueFrom(this.ad.crm.server.admin.createObject(object));

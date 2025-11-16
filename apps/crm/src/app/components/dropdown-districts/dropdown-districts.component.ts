@@ -14,15 +14,17 @@ import { DropdownModule } from 'primeng/dropdown';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
-  selector: 'b-dropdown-company',
-  templateUrl: './dropdown-company.component.html',
-  styleUrls: ['./dropdown-company.component.scss'],
+  selector: 'b-dropdown-districts',
+  templateUrl: './dropdown-districts.component.html',
+  styleUrls: ['./dropdown-districts.component.scss'],
   standalone: true,
   imports: [CommonModule, DropdownModule, FormsModule],
 })
-export class DropdownCompanyComponent implements OnInit {
+export class DropdownDistrictsComponent implements OnInit {
   crm = inject(CrmClientService);
-  companies$ = this.crm.company.selectCompanies().pipe(shareLast());
+  companies$ = this.crm.company
+    .selectCompanies()
+    .pipe(shareLast());
   selectedCompany: DTO.DTOCompany;
   selectCompany = output<DTO.DTOCompany>();
   setupCompany = input<DTO.DTOCompany>();

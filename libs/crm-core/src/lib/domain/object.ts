@@ -41,7 +41,7 @@ export class CompanyObject {
   })
   name: string;
 
-  @frmGroup(AddressInfo)
+  @frmGroup(AddressInfo, { label: 'Адрес' })
   @column({
     headerName: 'Адрес',
     field: 'address_info.address',

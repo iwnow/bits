@@ -1,0 +1,12 @@
+<p-dropdown
+  [(ngModel)]="selectedCompany"
+  [options]="companies$ | async"
+  optionLabel="name"
+  placeholder="Район"
+  styleClass="dropdown-districts"
+  (onChange)="onSelectObject($event)"
+>
+  <ng-template let-o pTemplate="item">
+    <div>{{ o.name }}</div>
+  </ng-template>
+</p-dropdown>

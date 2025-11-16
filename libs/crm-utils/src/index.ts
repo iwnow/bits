@@ -12,3 +12,4 @@ export * from './lib/platform';
 export * from './lib/base-href';
 export * from './lib/colors';
 export * from './lib/object';
+export * from './lib/rx';

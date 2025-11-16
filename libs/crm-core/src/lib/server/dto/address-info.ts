@@ -2,6 +2,7 @@ export interface DTOAddressInfo {
   address: string;
   city: DTOAddressCity;
   district: DTOAddressDistrict;
+  district_id?: number;
 }
 
 export interface DTOAddressCity {
@@ -9,6 +10,7 @@ export interface DTOAddressCity {
   name: string;
   tzone: string;
   country?: DTOAddressCountry;
+  districts?: DTOAddressDistrict[];
 }
 
 export interface DTOAddressDistrict {
@@ -21,3 +23,4 @@ export interface DTOAddressCountry {
   name: string;
   id: number;
 }
+

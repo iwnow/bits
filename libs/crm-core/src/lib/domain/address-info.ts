@@ -8,6 +8,7 @@ import {
 } from '../server/dto';
 import { addDTOMapper } from './to-dto';
 import { City } from './city';
+import { ket, propFrom } from 'crm-utils';
 
 @frmGroup()
 export class AddressInfo implements DTOAddressInfo {
@@ -15,6 +16,39 @@ export class AddressInfo implements DTOAddressInfo {
     hide: true,
   })
   id: number;
+
+  // @frmGroup(City)
+  @frmControl({
+    type: 'select',
+    inputs: {
+      textField: propFrom<DTOAddressCity>('name'),
+      itemsLoader: 'cities',
+      initValueAfterItemsLoaderById: true,
+    },
+    label: 'Город',
+    validators: [Validators.required],
+  })
+  city: DTOAddressCity;
+
+  @frmControl({
+    type: 'select',
+    inputs: {
+      textField: propFrom<DTOAddressDistrict>('name'),
+      itemsLoader: 'districts',
+      itemsLoaderArgs: [{ context: 'thisFormGroup', getter: 'city.id' }],
+      refreshControlOnChange: 'city',
+      initValueAfterItemsLoaderById: 'district_id',
+    },
+    label: 'Район',
+    validators: [Validators.required],
+  })
+  district: DTOAddressDistrict;
+
+  @frmControl({
+    type: 'number',
+    hide: true,
+  })
+  district_id: number;
 
   @frmControl({
     type: 'string',
@@ -27,11 +61,6 @@ export class AddressInfo implements DTOAddressInfo {
     sortable: true,
   })
   address: string;
-
-  @frmGroup(City)
-  city: DTOAddressCity;
-
-  district: DTOAddressDistrict;
 
   toDTO(): DTOAddressInfo {
     const dto: AddressInfo = {

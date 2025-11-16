@@ -57,7 +57,7 @@ export function frmsMeta(type: any) {
   return proto[SYM_FRMS] as FrmsMeta;
 }
 
-export function frmGroup(type?: any, options?: FrmControlOptions) {
+export function frmGroup(type?: any, options?: Partial<FrmControlOptions>) {
   return (ctor: any, field?: string) => {
     const meta = frmsMeta(ctor);
     if (typeof field === 'string') {
@@ -158,6 +158,7 @@ export type FrmControlOptions = Extendable<
       inputs: Record<string, any>;
       valueGetter: (opt: { control: FormControl; value: any }) => any;
       valueSetter: (opt: { value: any }) => any;
+      hide: boolean;
     }>,
     'type'
   >
